@@ -1,14 +1,15 @@
 shop-management/
 │
 ├── backend/               # Node.js server (API)
-│   ├── controllers/       # Xử lý logic của từng chức năng
-│   ├── models/            # Định nghĩa cấu trúc dữ liệu (MongoDB/MySQL)
+│   ├── controllers/       # Xử lý logic của từng chức năng từ yêu cầu của routes
 │   ├── routes/            # Tạo các đường dẫn API
 │   ├── config/            # Cấu hình DB, Kết nối DB
+│   ├── model/            # Xử lý dữ liệu DTB ( thêm sữa xóa). Dữ liệu từ controllers gửi đến
 │   ├── server.js          # File khởi động server chính
 │
 ├── frontend/              # ReactJS + TailwindCSS
 │   ├── public/            # Static files (favicon, index.html,...)
+│   │   ├── upload/        # Dùng để lưu ảnh khi user upload lên
 │   ├── src/
 │   │   ├── assets/        # Ảnh, icon,...
 │   │   ├── components/    # Các component tái sử dụng

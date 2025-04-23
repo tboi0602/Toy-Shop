@@ -1,17 +1,18 @@
 import React from "react";
-import "./styles/main.css";
-import Login from "../components/Login";
-import Signup from "../components/Signup";
-import logo from "../assets/logo.png"
+import "../Styles/main.css";
+import LoginButton from "../components/Button/LoginButton";
+import SignupButton from "../components/Button/SignupButton";
+import logo from "../assets/logo.png";
+import { Navigate } from "react-router-dom";
 const Header = () => {
   return (
-    <div className=" flex p-5 gap-5 sticky top-0 z-10 bg-white">
-      <button className=" center px-5">
-        <img className="fix-img h-[55px]" src={logo} alt="" />
+    <header className=" flex p-5 gap-5 sticky top-0 z-10 bg-white">
+      <button className=" center">
+        <img onClick={()=>{Navigate("/")}} className="min-w-[127px] h-[55px] overflow-hidden hover:scale-105" src={logo} alt="" />
       </button>
       <div
         className=" 
-          min-w-[300px]
+          min-w-[80px]
           flex-1
           center
           bg-gray-100 
@@ -63,10 +64,10 @@ const Header = () => {
         </div>
       </div>
       <div className="flex gap-2">
-        <Login></Login>
-        <Signup></Signup>
+        <LoginButton></LoginButton>
+        <SignupButton></SignupButton>
       </div>
-    </div>
+    </header>
   );
 };
 
