@@ -80,7 +80,7 @@ const DbCustomer = () => {
   }, []);
   return (
     <div className="">
-      <HdCustomer></HdCustomer>
+      <HdCustomer styleCart="btn-line" styleOrder="btn-line" stylePro="btn-line"></HdCustomer>
         {/* Hình ảnh chính */}
       <div className="w-full h-[100vh]">
         <img

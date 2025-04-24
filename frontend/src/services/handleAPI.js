@@ -24,6 +24,13 @@ export const logout = async () => {
   return res.json();
 };
 
+export const loadinfo = async()=>{
+  const res = await fetch("http://localhost:5000/api/info",{
+    method:"POST",
+    credentials: "include",
+  })
+  return res.json();
+}
 export const checkSession = async () => {
   const res = await fetch("http://localhost:5000/api/check-session", {
     credentials: "include", 

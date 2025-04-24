@@ -4,7 +4,7 @@ import logo from "../assets/logo.png";
 import { useNavigate } from "react-router-dom"; //
 import { logout } from "../services/handleAPI";
 
-const HdCustomer = () => {
+const HdCustomer = ({stylePro,styleCart,styleOrder}) => {
   const navigate = useNavigate();
 
   const handleLogout = async () => {
@@ -19,7 +19,7 @@ const HdCustomer = () => {
     }
   };
   return (
-    <header className=" flex p-5 gap-5 sticky top-0 z-10 bg-white">
+    <header className=" flex p-5 gap-5 sticky top-0 z-10 bg-white shadow-md">
       <button className=" center">
         <img
           onClick={() => {
@@ -31,7 +31,7 @@ const HdCustomer = () => {
         />
       </button>
       <div
-        className=" 
+        className=" Box-Search
           min-w-[80px]
           flex-1
           center
@@ -40,7 +40,6 @@ const HdCustomer = () => {
           h-[56px] 
           rounded-full border 
           border-transparent  
-
           "
       >
         <input
@@ -65,7 +64,7 @@ const HdCustomer = () => {
               />
             </svg>
           </button>
-          <button className="h-10 w-10  rounded-full bg-red-600 hover:bg-red-500 text-white center">
+          <button className="iconSearch h-10 w-10  rounded-full bg-red-600 hover:bg-red-500 text-white center">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -84,7 +83,7 @@ const HdCustomer = () => {
         </div>
       </div>
       <div className="flex gap-10">
-        <button className="btn-line center hover:scale-110">
+        <button className={`Orders ${styleOrder} center hover:scale-110`}onClick={()=>{navigate("/myorders")}}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -101,7 +100,7 @@ const HdCustomer = () => {
           </svg>
           Orders{" "}
         </button>
-        <button className="btn-line hover:scale-110">
+        <button className="Notificatiom btn-line hover:scale-110"onClick={()=>{}}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -117,7 +116,7 @@ const HdCustomer = () => {
             />
           </svg>
         </button>
-        <button className="btn-line hover:scale-110">
+        <button className={`Cart ${styleCart} hover:scale-110 `}onClick={()=>{navigate("/mycart")}}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -133,7 +132,7 @@ const HdCustomer = () => {
             />
           </svg>
         </button>
-        <button className="btn-line hover:scale-110 center">
+        <button className={`Profile ${stylePro} hover:scale-110 center`} onClick={()=>{navigate("/profile")}}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -150,7 +149,7 @@ const HdCustomer = () => {
           </svg>
           Tboi0602
         </button>
-        <button className="btn-error px-5 rounded-full" onClick={handleLogout}>
+        <button className="btn-error px-5 rounded-full whitespace-nowrap" onClick={handleLogout}>
           Log out
         </button>
       </div>

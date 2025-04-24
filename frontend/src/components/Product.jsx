@@ -1,9 +1,9 @@
 import React from "react";
 const Product = ({image,name,price,oldprice,sales}) => {
   return (
-    <div className="w-[190px] h-[300px] rounded-lg shadow-lg text-[18px] hover:scale-105 cursor-pointer">
+    <div className="w-[190px] h-[300px] rounded-lg shadow-lg text-[18px] hover:scale-105 cursor-pointer bg-white">
       <div className="w-full h-[188px]">
-        <img className="fix-img" src={image} alt="product" />
+        <img className="fix-img rounded-t-lg" src={image} alt="product" />
       </div>
       <h1 className="px-3 py-2 font-medium h-[70px] line-clamp-2">{name}</h1>
       <div className="flex items-center">

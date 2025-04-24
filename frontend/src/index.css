@@ -1,6 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+body{
+  @apply bg-[#F9F9F9]
+}
 @layer components {
   .btn-primary {
     @apply bg-blue-600 text-white  hover:bg-blue-500 font-bold;
@@ -28,5 +31,8 @@
   }
   .btn-line{
     @apply text-red-600 font-bold border-b-2 border-transparent hover:border-red-600
+  }
+  .line{
+    @apply text-red-600 font-bold border-b-2 border-transparent border-red-600
   }
 }

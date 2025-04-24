@@ -6,7 +6,7 @@ import logo from "../assets/logo.png";
 import { Navigate } from "react-router-dom";
 const Header = () => {
   return (
-    <header className=" flex p-5 gap-5 sticky top-0 z-10 bg-white">
+    <header className=" flex p-5 gap-5 sticky top-0 z-10 bg-white shadow-md">
       <button className=" center">
         <img onClick={()=>{Navigate("/")}} className="min-w-[127px] h-[55px] overflow-hidden hover:scale-105" src={logo} alt="" />
       </button>
