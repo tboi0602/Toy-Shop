@@ -3,7 +3,6 @@ import "../Styles/main.css";
 import logo from "../assets/logo.png";
 import { useNavigate } from "react-router-dom"; //
 import { logout } from "../services/handleAPI";
-
 const HdCustomer = ({stylePro,styleCart,styleOrder}) => {
   const navigate = useNavigate();
 

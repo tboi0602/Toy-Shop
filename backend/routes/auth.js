@@ -3,6 +3,8 @@ import {
   handleRegister,
   handleLogin,
   handleLogout,
+  getInfo,
+  updateInfo
 } from "../controllers/authController.js";
 const router = express.Router();
 
@@ -11,11 +13,11 @@ router.post("/login", handleLogin);
 router.post("/logout", handleLogout);
 router.get("/check-session", (req, res) => {
   if (req.session.user) {
-    // Đã đăng nhập
     res.json({ loggedIn: true, user: req.session.user });
   } else {
-    // Chưa đăng nhập
     res.json({ loggedIn: false });
   }
 });
+router.get("/info",getInfo);
+router.post("/info",updateInfo);
 export default router;

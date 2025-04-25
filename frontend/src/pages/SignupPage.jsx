@@ -4,6 +4,7 @@ import InputUser from "../components/InputUser";
 import "../Styles/main.css";
 import { useNavigate } from "react-router-dom";
 import { register } from "../services/handleAPI";
+import Swal from "sweetalert2";
 const SignupPage = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
@@ -24,10 +25,14 @@ const SignupPage = () => {
       return;
     }
     try {
-      const data = await register(username, password);
-    
+      const data = await register(username, password,"Customer");
       if (data.success) {
-        navigate("/");
+        Swal.fire({
+          icon: 'success',
+          title: 'Success',
+          text: 'You are Sign up Success',
+          confirmButtonColor: '#d33'
+        }).then(()=>navigate("/login"))
       } else {
         setError(data.message || "Sign up failed!");
       }

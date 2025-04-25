@@ -5,21 +5,8 @@ import BackgroundContent from "../assets/onepiec1.jpg";
 import luffy from "../assets/1.jpg";
 import Footer from "../layouts/Footer";
 import HdCustomer from "../layouts/HdCustomer";
-import { useNavigate } from "react-router-dom";
-import { checkSession } from "../services/handleAPI";
+import { CheckLogin } from "../Function/CheckLogin";
 const DbCustomer = () => {
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const checkUser = async () => {
-      const data = await checkSession();
-      if (!data.loggedIn) {
-        navigate("/login");
-      }
-    };
-    checkUser();
-  }, [navigate]);
-
   const [products, setProducts] = useState([]);
   useEffect(() => {
     // Giả lập API call,  thay bằng fetch
@@ -80,12 +67,12 @@ const DbCustomer = () => {
   }, []);
   return (
     <div className="">
+      <CheckLogin/>
       <HdCustomer styleCart="btn-line" styleOrder="btn-line" stylePro="btn-line"></HdCustomer>
         {/* Hình ảnh chính */}
-      <div className="w-full h-[100vh]">
+      <div className="w-full " style={{ height: "calc(100vh - 100px)" }}>
         <img
-          className="w-full fix-img"
-          style={{ height: "calc(100vh - 100px)" }}
+          className="w-full h-[100vh] fix-img"
           src={BackgroundContent}
           alt=""
         />

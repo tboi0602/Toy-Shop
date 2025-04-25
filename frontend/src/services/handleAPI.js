@@ -1,3 +1,4 @@
+//!Log in
 export async function login(username, password) {
   const res = await fetch("http://localhost:5000/api/login", {
     method: "POST",
@@ -7,15 +8,19 @@ export async function login(username, password) {
   });
   return res.json();
 }
-export async function register(username, password) {
+
+//!Sign up
+export async function register(username, password,position) {
   const res = await fetch("http://localhost:5000/api/register", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     credentials: "include",
-    body: JSON.stringify({ username, password })
+    body: JSON.stringify({ username, password ,position})
   });
   return res.json();
 }
+
+//!Log out
 export const logout = async () => {
   const res = await fetch("http://localhost:5000/api/logout", {
     method: "POST",
@@ -24,16 +29,32 @@ export const logout = async () => {
   return res.json();
 };
 
-export const loadinfo = async()=>{
-  const res = await fetch("http://localhost:5000/api/info",{
-    method:"POST",
-    credentials: "include",
-  })
-  return res.json();
-}
+//!check ss
 export const checkSession = async () => {
   const res = await fetch("http://localhost:5000/api/check-session", {
     credentials: "include", 
   });
   return res.json();
 };
+
+//!Load info
+export const loadinfo = async () => {
+  const res = await fetch("http://localhost:5000/api/info", {
+    method: "GET",
+    credentials: "include",
+    headers: { "Accept": "application/json" }
+  });
+  return res.json();
+};
+
+//!Update info
+export const updateinfo = async(data)=>{
+  const res = await fetch("http://localhost:5000/api/info",{
+    method:"POST",
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+    body: JSON.stringify(data),
+  })
+  return res.json();
+}
+
