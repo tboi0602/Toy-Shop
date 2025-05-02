@@ -4,14 +4,17 @@ import Product from "../components/Product";
 import BackgroundContent from "../assets/onepiec1.jpg";
 import luffy from "../assets/1.jpg";
 import Footer from "../layouts/Footer";
-const Dashboard = () => {
-  
+import HdCustomer from "../layouts/HeaderCustomer";
+import { CheckLogin } from "../Function/CheckLogin";
+
+const DashBoardCustomer = () => {
   const [products, setProducts] = useState([]);
+
   useEffect(() => {
-    // Giả lập API call,  thay bằng fetch
-    //fetch("....")
-    //.then((res) => res.json())
-    //.then((data) => setProducts(data));
+    // Giả lập API call, thay bằng fetch
+    // fetch("....")
+    // .then((res) => res.json())
+    // .then((data) => setProducts(data));
     const fakeAPI = [
       {
         id: 1,
@@ -64,35 +67,50 @@ const Dashboard = () => {
     ];
     setProducts(fakeAPI);
   }, []);
-  return (
-    <div className="">
-      <Header></Header>
 
-        {/* Hình ảnh chính */}
-      <div className="w-full" style={{ height: "calc(100vh - 100px)" }}>
-        <img
-          className="w-full fix-img h-[100vh]"
-          src={BackgroundContent}
-          alt=""
+  return (
+    <div className="min-h-screen">
+      {/* Kiểm tra đăng nhập */}
+      <CheckLogin />
+
+      <div className="sticky top-0 z-10">
+        <HdCustomer
+          styleCart="btn-line"
+          styleOrder="btn-line"
+          stylePro="btn-line"
         />
       </div>
 
-      {/* Các sản phẩm */}
-      <div className="my-10 formatProducts gap-y-5">
-        {products.map((item) => (
-          <Product
-            key={item.id}
-            name={item.name}
-            price={item.price}
-            oldprice={item.oldprice}
-            sales={item.sales}
-            image={item.image}
-          ></Product>
-        ))}
+      <div className="relative">
+        {/* Hình ảnh chính */}
+        <div className="w-full" style={{ height: "calc(100vh - 100px)" }}>
+          <img
+            className="w-full h-full object-cover"
+            src={BackgroundContent}
+            alt="Background"
+          />
+        </div>
+
+        {/* Hiển thị sản phẩm */}
+        <div className="my-10 mx-auto px-4 max-w-screen-xl">
+          <div className="formatProducts">
+            {products.map(({ id, name, price, oldprice, sales, image }) => (
+              <Product
+                key={id}
+                name={name}
+                price={price}
+                oldprice={oldprice}
+                sales={sales}
+                image={image}
+              />
+            ))}
+          </div>
+        </div>
       </div>
-      <Footer></Footer>
+
+      <Footer />
     </div>
   );
 };
 
-export default Dashboard;
+export default DashBoardCustomer;

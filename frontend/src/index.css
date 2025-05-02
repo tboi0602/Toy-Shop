@@ -27,7 +27,7 @@ body{
     @apply h-screen bg-no-repeat bg-cover bg-center bg-fixed;
   }
   .formatProducts{
-    @apply grid grid-cols-1 place-items-center sm:grid-cols-2 sm:px-16 md:grid-cols-3 md:px-24 lg:grid-cols-4 lg:px-32 xl:grid-cols-5 xl:px-36
+    @apply grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5 justify-center
   }
   .btn-line{
     @apply text-red-600 font-bold border-b-2 border-transparent hover:border-red-600

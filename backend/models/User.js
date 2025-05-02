@@ -10,6 +10,8 @@ const userSchema = new mongoose.Schema({
   address: { type: String },
   avatar: { type: String },
   position: { type: String },
+  country: { type: String },
+  gender: { type: String },
 });
 // Hash password trước khi save
 userSchema.pre("save", async function (next) {
@@ -21,3 +23,5 @@ userSchema.methods.comparePassword = function (candidate) {
   return bcrypt.compare(candidate, this.password);
 };
 export default mongoose.model("User", userSchema);
+
+

@@ -79,7 +79,7 @@ export const updateInfo = async (req, res) => {
       birthDay,
       country,
       address,
-      avatar, // Thêm password nếu có
+      avatar, 
     }))(req.body);
     await User.findByIdAndUpdate(req.session.user.id, updates);
     res.json({ success: true, message: "Update Successfully" });

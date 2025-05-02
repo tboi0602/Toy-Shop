@@ -1,81 +1,30 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import avt from "../assets/avt.jpg";
 import { countries } from "../Data/Countries.js";
-import { loadinfo, updateinfo } from "../services/handleAPI.js";
-import Swal from "sweetalert2";
+import useInfo from "../Function/UseInfoUser.js"; // Import custom hook
+import { useNavigate } from "react-router-dom";
+
 const Infomation = () => {
+  const navigate = useNavigate();
   const [isEditting, setIsEditting] = useState(false);
-  const [info, setInfo] = useState({
-    username: "",
-    email: "",
-    yourname: "",
-    gender: "",
-    birthDay: "",
-    country: "",
-    address: "",
-    avatar: "",
-    position: "",
-  });
 
-  useEffect(() => {
-    const getData = async () => {
-      const data = await loadinfo();
-      if (data.success) {
-        setInfo({
-          yourname: data.user.yourname,
-          username: data.user.username,
-          gender: data.user.gender,
-          birthDay: data.user.birthDay?.split("T")[0] || "",
-          country: data.user.country,
-          address: data.user.address,
-          email: data.user.email,
-          position: data.user.position,
-        });
-      }
-    };
-    getData();
-  }, []);
+  const { info, handleChange, handleSave, handleCancel } = useInfo(); // Sử dụng custom hook
 
-  const handleEdit = () => {
-    setIsEditting(true);
-  };
-
-  const handleSave = () => {
-    setIsEditting(false);
-    try{
-      const data = updateinfo(info);
-      if(data.success){
-        Swal.fire({
-          icon: 'success',
-          title: 'Success',
-          text: 'You are Sign up Success',
-          confirmButtonColor: '#d33'
-        })
-      }else{
-        console.log(data.message)
-      }
-    }catch(err){console.log(err)}
-    
-  };
-
-  const handleCancel = () => {
-    setIsEditting(false);
-    
-  };
+  const handleEdit = () => setIsEditting(!isEditting);
 
   return (
     <div className="w-11/12 bg-white flex-col justify-center m-auto my-8 rounded-2xl">
       <div className="font-bold text-[20px] text-white w-full rounded-t-2xl py-3 text-center bg-gradient-to-r from-red-600 to-red-400">
         Welcome, {info.username}
       </div>
-      <div className="avt flex ">
+      <div className="avt flex">
         <div className="flex-none avt w-[100px] h-[100px] mx-8 my-4">
-          <img className="fix-img rounded-full" src={avt} alt="" />
+          <img className="fix-img rounded-full" src={avt} alt="Avatar" />
         </div>
-        <div className="grow flex flex-col justify-center">
-          <p className="text-[20px] font-bold">{info.username}</p>
-          <p className="text-gray-500 text-[13px]">{info.email}</p>
-          <p className="text-white bg-red-600 px-2 py-0.5 rounded-lg max-w-fit text-[12px] ">
+        <div className="grow flex flex-col justify-center gap-2">
+          <p className="text-[20px] font-bold leading-none">{info.username}</p>
+          <p className="text-gray-500 text-[13px] leading-none">{info.email}</p>
+          <p className="text-white bg-red-600 px-2 py-0.5 rounded-lg max-w-fit text-[12px]">
             {info.position}
           </p>
         </div>
@@ -91,13 +40,19 @@ const Infomation = () => {
             <div className="flex gap-3">
               <button
                 className="btn-error px-5 py-1 rounded-md"
-                onClick={handleSave}
+                onClick={() => {
+                  handleSave(); 
+                  setIsEditting(!isEditting);
+                }}
               >
                 Save
               </button>
               <button
                 className="btn-error-outline px-5 py-1 rounded-md"
-                onClick={handleCancel}
+                onClick={() => {
+                  handleCancel(); // Đảm bảo gọi hàm handleCancel
+                  setIsEditting(false);
+                }}
               >
                 Cancel
               </button>
@@ -107,40 +62,57 @@ const Infomation = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5 p-8">
-        {[
-          {
-            label: "Full Name",
-            type: "text",
-            placeholder: info.yourname ? info.yourname : "Your full name",
-          },
-          { label: "User Name", type: "text", placeholder: info.username },
-          {
-            label: "Gender",
-            type: "select",
-            options: ["Select", "Male", "Female"],
-            value: "info.gender",
-          },
-          { label: "Birth of day", type: "date" },
-          { label: "Country", type: "select", options: countries },
-          {
-            label: "Address",
-            type: "text",
-            placeholder: "Your address",
-            value: info.address,
-          },
-        ].map((field, index) => (
+        {[{
+          label: "Full Name",
+          type: "text",
+          name: "yourname",
+          value: info.yourname,
+        },
+        {
+          label: "User Name",
+          type: "text",
+          name: "username",
+          value: info.username,
+        },
+        {
+          label: "Gender",
+          type: "select",
+          name: "gender",
+          options: ["Select", "Male", "Female"],
+          value: info.gender,
+        },
+        {
+          label: "Birth of day",
+          type: "date",
+          name: "birthDay",
+          value: info.birthDay,
+        },
+        {
+          label: "Country",
+          type: "select",
+          name: "country",
+          options: countries,
+          value: info.country,
+        },
+        {
+          label: "Address",
+          type: "text",
+          name: "address",
+          value: info.address,
+        }].map((field, index) => (
           <div key={index} className="flex flex-col gap-3">
             <label>{field.label}</label>
             {field.type === "select" ? (
               <select
                 disabled={!isEditting}
-                value={field.label === "Gender" ? info.gender : info.country}
+                name={field.name}
+                value={field.value}
                 className={`h-[50px] rounded-lg px-4 focus:outline-none focus:ring-2 focus:ring-red-600 focus:border-red-600 ${
                   isEditting
                     ? "bg-white border border-red-400"
                     : "bg-[#F9F9F9] cursor-not-allowed text-gray-600"
                 }`}
-                onChange={(e)=>(setInfo(e))} //!Suwax laij
+                onChange={handleChange}
               >
                 {field.options.map((option, idx) => (
                   <option key={idx} value={option}>
@@ -150,14 +122,17 @@ const Infomation = () => {
               </select>
             ) : (
               <input
-                disabled={!isEditting}
+                disabled={!isEditting}  
                 type={field.type}
+                name={field.name}
+                value={field.value || ""}
                 placeholder={field.placeholder || ""}
                 className={`h-[50px] rounded-lg p-4 focus:outline-none focus:ring-2 focus:ring-red-600 focus:border-red-600 ${
                   isEditting
                     ? "bg-white border border-red-400"
                     : "bg-[#F9F9F9] cursor-not-allowed text-gray-600 placeholder:text-gray-600"
                 }`}
+                onChange={handleChange}
               />
             )}
           </div>
@@ -182,17 +157,20 @@ const Infomation = () => {
             <input
               disabled={!isEditting}
               type="text"
-              placeholder={info.email}
+              name="email"
+              value={info.email || ""}
               className={`${
-                !isEditting && !info.email
+                !isEditting
                   ? "bg-transparent outline-none w-3/12 border-b-2 px-2 h-[50px] cursor-not-allowed "
                   : "outline-none w-3/12 border-b-2 px-2 h-[50px] rounded-lg focus:ring-2 focus:ring-red-600 focus:border-red-600 bg-[#F9F9F9] text-gray-500"
               } ${isEditting ? "bg-white border border-red-400" : ""}`}
+              onChange={handleChange}
             />
           </div>
           <button
             className="btn-error-outline p-2 rounded-lg text-[12px] cursor-pointer"
             disabled={!isEditting}
+            onClick={()=>{navigate("/changepassword")}}
           >
             Change password
           </button>

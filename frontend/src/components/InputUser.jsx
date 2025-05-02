@@ -1,16 +1,18 @@
 import React from "react";
-const InputUser = ({ name, icon, placeholder,value,onChange,type}) => {
+
+const InputUser = ({ name, icon, placeholder, value, onChange, type }) => {
   return (
     <div className="flex flex-col gap-y-5">
-      <label className="text-[20px]" htmlFor="username">
+      <label className="text-[20px]" htmlFor={name}>
         {name}
       </label>
-      <div className="flex hover:scale-105">
-        <div className="absolute z-10 text-red-600">{icon}</div>
+      <div className="relative flex items-center  ">
+        <div className="absolute z-10 text-red-600 ml-2 pb-2">{icon}</div>
         <input
-          className="relative w-full border-b-[5px] border-red-600 outline-none pl-8 pb-1 "
+          id={name}
+          className="relative bg-transparent w-full border-b-[5px] border-red-600 outline-none pl-10 pb-1 rounded-t-lg py-2"
           type={type}
-          name="username"
+          name={name}
           placeholder={placeholder}
           value={value}
           onChange={onChange}
@@ -19,4 +21,5 @@ const InputUser = ({ name, icon, placeholder,value,onChange,type}) => {
     </div>
   );
 };
+
 export default InputUser;

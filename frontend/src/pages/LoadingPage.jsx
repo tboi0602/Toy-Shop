@@ -4,15 +4,12 @@ import Product from "../components/Product";
 import BackgroundContent from "../assets/onepiec1.jpg";
 import luffy from "../assets/1.jpg";
 import Footer from "../layouts/Footer";
-import HdCustomer from "../layouts/HdCustomer";
-import { CheckLogin } from "../Function/CheckLogin";
-const DbCustomer = () => {
+
+const LoadingPage = () => {
   const [products, setProducts] = useState([]);
-  useEffect(() => {
-    // Giả lập API call,  thay bằng fetch
-    //fetch("....")
-    //.then((res) => res.json())
-    //.then((data) => setProducts(data));
+
+  // Hàm giả lập API 
+  const fetchProducts = () => {
     const fakeAPI = [
       {
         id: 1,
@@ -64,36 +61,47 @@ const DbCustomer = () => {
       },
     ];
     setProducts(fakeAPI);
+  };
+
+  useEffect(() => {
+    fetchProducts(); // Gọi hàm giả lập API
   }, []);
+
   return (
-    <div className="">
-      <CheckLogin/>
-      <HdCustomer styleCart="btn-line" styleOrder="btn-line" stylePro="btn-line"></HdCustomer>
-        {/* Hình ảnh chính */}
-      <div className="w-full " style={{ height: "calc(100vh - 100px)" }}>
-        <img
-          className="w-full h-[100vh] fix-img"
-          src={BackgroundContent}
-          alt=""
-        />
+    <div>
+      <div className="sticky top-0 z-10">
+        <Header />
       </div>
 
-      {/* Các sản phẩm */}
-      <div className="my-10 formatProducts gap-y-5">
-        {products.map((item) => (
-          <Product
-            key={item.id}
-            name={item.name}
-            price={item.price}
-            oldprice={item.oldprice}
-            sales={item.sales}
-            image={item.image}
-          ></Product>
-        ))}
+      {/* Hình ảnh chính */}
+      <div className="relative">
+        <div className="w-full" style={{ height: "calc(100vh - 100px)" }}>
+          <img
+            className="w-full h-full object-cover object-center"
+            src={BackgroundContent}
+            alt="background"
+          />
+        </div>
+
+        {/* Các sản phẩm */}
+        <div className="my-10 mx-auto px-4 max-w-screen-xl">
+          <div className="formatProducts">
+            {products.map(({ id, name, price, oldprice, sales, image }) => (
+              <Product
+                key={id}
+                name={name}
+                price={price}
+                oldprice={oldprice}
+                sales={sales}
+                image={image}
+              />
+            ))}
+          </div>
+        </div>
       </div>
-      <Footer></Footer>
+
+      <Footer />
     </div>
   );
 };
-
-export default DbCustomer;
+export default LoadingPage;

@@ -8,7 +8,7 @@ const SignupButton = () => {
   };
   return (
     <div>
-      <button className='btn-error-outline px-6 py-4 rounded-full whitespace-nowrap' onClick={handleLoginClick}>Sign up</button>
+      <button  onClick={handleLoginClick}>Sign up</button>
     </div>
   );
 };

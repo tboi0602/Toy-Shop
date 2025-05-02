@@ -4,7 +4,7 @@ import InputUser from "../components/InputUser";
 import "../Styles/main.css";
 import { useNavigate } from "react-router-dom";
 import { login } from "../services/handleAPI";
-//import { login } from "../services/handleAPI";
+
 const LoginPage = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
@@ -20,7 +20,7 @@ const LoginPage = () => {
     try {
       const data = await login(username, password);
       if (data.success) {
-        navigate("/dbcustomer");
+        navigate("/dashboard-customer");
       } else {
         setError(data.message || "Login failed!");
       }
@@ -30,28 +30,26 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 w-full">
+    <div className="grid grid-cols-1 lg:grid-cols-2 w-full h-screen">
       {/* Image: ẩn trên mobile, giữ nguyên kích thước gốc khi hiển thị */}
-      <div className="hidden lg:block h-[100vh] overflow-hidden ">
+      <div className="hidden lg:block h-full overflow-hidden">
         <img
-          onClick={() => {
-            navigate("/");
-          }}
-          className="h-full w-[610px] fix-img fix-img cursor-pointer hover:scale-105"
+          onClick={() => navigate("/")}
+          className="h-full w-full object-cover cursor-pointer hover:scale-105 transition-transform"
           src={BgAce}
           alt="Background"
         />
       </div>
 
-      {/* Form: full width trên mobile, giữ nguyên pr-32 trên lg */}
+      {/* Form: Căn giữa cả chiều ngang và dọc */}
       <form
         onSubmit={handleSubmit}
-        className="h-[100vh] w-full lg:w-auto px-4 lg:px-0 pr-0 lg:pr-32 flex flex-col gap-y-10 font-bold"
+        className="flex flex-col gap-y-10 justify-center items-center w-full lg:w-[400px] px-4 lg:px-0 mx-auto h-full"
       >
-        <h1 className="font-bold text-center text-[40px] pt-28 whitespace-nowrap">
+        <h1 className="font-bold text-center text-3xl lg:text-4xl pt-10 lg:pt-28 whitespace-nowrap">
           Welcome to NinJaShop
         </h1>
-        <div className="flex flex-col pt-8 gap-8">
+        <div className="flex flex-col pt-8 gap-8 w-full">
           <InputUser
             name="User name"
             icon={
@@ -59,13 +57,13 @@ const LoginPage = () => {
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
-                stroke-width="1.5"
+                strokeWidth="1.5"
                 stroke="currentColor"
                 className="w-6 h-6"
               >
                 <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                   d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"
                 />
               </svg>
@@ -74,6 +72,7 @@ const LoginPage = () => {
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
+            autoComplete="off"
           />
           <InputUser
             name="Password"
@@ -82,13 +81,13 @@ const LoginPage = () => {
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
-                stroke-width="1.5"
+                strokeWidth="1.5"
                 stroke="currentColor"
                 className="w-6 h-6"
               >
                 <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                   d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"
                 />
               </svg>
@@ -97,26 +96,32 @@ const LoginPage = () => {
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            autoComplete="off"
           />
         </div>
-        {error ? (
-          <p className="text-red-600 gap">{error}</p>
-        ) : (
-          <p className="h-6"></p>
-        )}
-        <div className="flex gap-8">
-          <button className="btn-error px-16 py-4 rounded-full" type="submit">
+        {error && <p className="text-red-600 text-center">{error}</p>}
+        <div className="flex w-full">
+          <button className="btn-error px-16 py-4 rounded-full w-full" type="submit">
             Log in
           </button>
+        </div>
+        <div className="flex flex-col items-center text-sm text-gray-500">
           <button
-            onClick={() => {
-              navigate("/signup");
-            }}
-            className="btn-error-outline px-14 py-4 rounded-full"
+            onClick={() => navigate("/forgot-password")}
+            className="text-black hover:underline"
             type="button"
           >
-            Sign up
+            Forgot your password?
           </button>
+          <p className="mt-2">
+            Don't have an account?{" "}
+            <span
+              onClick={() => navigate("/signup")}
+              className="text-black hover:underline cursor-pointer"
+            >
+              Sign up
+            </span>
+          </p>
         </div>
       </form>
     </div>

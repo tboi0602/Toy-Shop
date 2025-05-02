@@ -2,7 +2,7 @@ import React from "react";
 
 const Footer = () => {
   return (
-    <footer className="bg-red-800  text-white py-8 px-4 grid grid-cols-2 md:grid-cols-4 gap-6">
+    <footer className="bg-red-800 text-white py-8 px-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
       <div>
         <h2 className="font-bold mb-2">About Us</h2>
         <p>Authenticated anime store since 2025..</p>
@@ -20,9 +20,12 @@ const Footer = () => {
       </div>
       <div>
         <h2 className="font-bold mb-2">Follow Us</h2>
-        <p>🔗 <a href="">FaceBook</a> | <a href="">TikTok</a> | <a href="">YouTube</a></p>
+        <p>🔗 
+          <a href="" className="hover:text-gray-400 transition-colors">FaceBook</a> | 
+          <a href="" className="hover:text-gray-400 transition-colors">TikTok</a> | 
+          <a href="" className="hover:text-gray-400 transition-colors">YouTube</a>
+        </p>
       </div>
-      
     </footer>
   );
 };

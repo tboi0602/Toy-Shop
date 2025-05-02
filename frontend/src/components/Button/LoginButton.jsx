@@ -7,7 +7,7 @@ const LoginButton = () => {
     navigate("/login"); // chuyển đến trang Login
   };
   return (
-      <button className='btn-error px-7 py-4 rounded-full whitespace-nowrap' onClick={handleLoginClick}>Log in</button>
+      <button  onClick={handleLoginClick}>Log in</button>
   );
 };
 
