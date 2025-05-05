@@ -26,7 +26,7 @@ export const handleLogin = async (req, res) => {
       return res
         .status(401)
         .json({ success: false, message: "Incorrect password" });
-    req.session.user = { id: user._id }; // Lưu session
+    req.session.user = { id: user._id ,position: user.position}; // Lưu session
     res.json({ success: true });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });

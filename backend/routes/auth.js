@@ -13,7 +13,7 @@ router.post("/login", handleLogin);
 router.post("/logout", handleLogout);
 router.get("/check-session", (req, res) => {
   if (req.session.user) {
-    res.json({ loggedIn: true, user: req.session.user });
+    res.json({ loggedIn: true, user: req.session.user});
   } else {
     res.json({ loggedIn: false });
   }
