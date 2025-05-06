@@ -4,20 +4,17 @@ import {
   handleLogin,
   handleLogout,
   getInfo,
-  updateInfo
+  updateInfo,
+  checkSeSSion,
+  changePassword,
 } from "../controllers/authController.js";
 const router = express.Router();
-
 router.post("/register", handleRegister);
 router.post("/login", handleLogin);
 router.post("/logout", handleLogout);
-router.get("/check-session", (req, res) => {
-  if (req.session.user) {
-    res.json({ loggedIn: true, user: req.session.user});
-  } else {
-    res.json({ loggedIn: false });
-  }
-});
-router.get("/info",getInfo);
-router.post("/info",updateInfo);
+router.get("/check-session", checkSeSSion);
+router.get("/info", getInfo);
+router.post("/info", updateInfo);
+router.post("/change-pass", changePassword);
+
 export default router;

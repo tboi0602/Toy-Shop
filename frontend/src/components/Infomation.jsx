@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import avt from "../assets/avt.jpg";
-import { countries } from "../Data/Countries.js";
+import { countries } from "../Data/Countries";
 import useInfo from "../Function/UseInfoUser.js"; // Import custom hook
 import { useNavigate } from "react-router-dom";
 
@@ -169,8 +169,7 @@ const Infomation = () => {
           </div>
           <button
             className="btn-error-outline p-2 rounded-lg text-[12px] cursor-pointer"
-            disabled={!isEditting}
-            onClick={()=>{navigate("/changepassword")}}
+            onClick={()=>{navigate("/change-password")}}
           >
             Change password
           </button>
