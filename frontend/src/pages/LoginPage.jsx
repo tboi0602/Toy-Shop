@@ -18,11 +18,11 @@ const LoginPage = () => {
       return;
     }
     try {
-      const data = await login(username, password);
+      const data = await login(username, password); console.log(data)
       if (data.success) {
-        navigate("/dashboard-customer");
+        data.position === "Customer" ? navigate("/dashboard-customer") : data.position === "Admin" ? navigate("/dashboard-admin") : navigate("/dashboard-customer")
       }
-       else {
+      else {
         setError(data.message || "Login failed!");
       }
     } catch (err) {

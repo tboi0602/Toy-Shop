@@ -1,107 +1,69 @@
-import React, { useEffect, useState } from "react";
-import Header from "../layouts/HeaderAdmin";
-import Product from "../components/Product";
+import React, { useState } from "react";
 import BackgroundContent from "../assets/onepiec1.jpg";
-import luffy from "../assets/1.jpg";
 import Footer from "../layouts/Footer";
-import HdCustomer from "../layouts/HeaderCustomer";
+import HdAdmin from "../layouts/HeaderAdmin";
+import { useNavigate } from "react-router-dom";
 import { CheckUser } from "../Function/CheckUser";
 
 const DashboardAdmin = () => {
+  const navigate = useNavigate();
   const [products, setProducts] = useState([]);
-
-  useEffect(() => {
-    // Giả lập API call, thay bằng fetch
-    // fetch("....")
-    // .then((res) => res.json())
-    // .then((data) => setProducts(data));
-    const fakeAPI = [
-      {
-        id: 1,
-        name: "Luffy Gear 2",
-        price: "2.9",
-        oldprice: "4.2",
-        sales: "21.4k",
-        image: luffy,
-      },
-      {
-        id: 2,
-        name: "Luffy Gear 2",
-        price: "2.9",
-        oldprice: "4.2",
-        sales: "21.4k",
-        image: luffy,
-      },
-      {
-        id: 3,
-        name: "Luffy Gear 2",
-        price: "2.9",
-        oldprice: "4.2",
-        sales: "21.4k",
-        image: luffy,
-      },
-      {
-        id: 4,
-        name: "Luffy Gear 2",
-        price: "2.9",
-        oldprice: "4.2",
-        sales: "21.4k",
-        image: luffy,
-      },
-      {
-        id: 5,
-        name: "Luffy Gear 2",
-        price: "2.9",
-        oldprice: "4.2",
-        sales: "21.4k",
-        image: luffy,
-      },
-      {
-        id: 6,
-        name: "Luffy Gear 2",
-        price: "2.9",
-        oldprice: "4.2",
-        sales: "21.4k",
-        image: luffy,
-      },
-    ];
-    setProducts(fakeAPI);
-  }, []);
   CheckUser("Admin");
+
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen flex flex-col">
+      {/* Header cố định */}
       <div className="sticky top-0 z-10">
-        <HdCustomer
+        <HdAdmin
           styleCart="btn-line"
           styleOrder="btn-line"
           stylePro="btn-line"
         />
       </div>
 
-      <div className="relative">
-        {/* Hình ảnh chính */}
-        <div className="w-full" style={{ height: "calc(100vh - 100px)" }}>
+      {/* Body chia 2 phần */}
+      <div className="flex flex-1">
+        {/* Bên trái: Menu dọc */}
+        <div className="flex flex-col gap-4 text-black p-6 h-full w-1/5">
+          <div
+            className="cursor-pointer hover:text-red-500"
+            onClick={() => navigate("/manage-staff")}
+          >
+            Staff
+          </div>
+          <div
+            className="cursor-pointer hover:text-red-500"
+            onClick={() => navigate("/manage-customer")}
+          >
+            Customer
+          </div>
+          <div
+            className="cursor-pointer hover:text-red-500"
+            onClick={() => navigate("/manage-product")}
+          >
+            Product
+          </div>
+          <div
+            className="cursor-pointer hover:text-red-500"
+            onClick={() => navigate("/manage-noti")}
+          >
+            Notification
+          </div>
+          <div
+            className="cursor-pointer hover:text-red-500"
+            onClick={() => navigate("/manage-order")}
+          >
+            Order
+          </div>
+        </div>
+
+        {/* Bên phải: Hình ảnh */}
+        <div className="flex-[3]">
           <img
             className="w-full h-full object-cover"
             src={BackgroundContent}
             alt="Background"
           />
-        </div>
-
-        {/* Hiển thị sản phẩm */}
-        <div className="my-10 mx-auto px-4 max-w-screen-xl">
-          <div className="formatProducts">
-            {products.map(({ id, name, price, oldprice, sales, image }) => (
-              <Product
-                key={id}
-                name={name}
-                price={price}
-                oldprice={oldprice}
-                sales={sales}
-                image={image}
-              />
-            ))}
-          </div>
         </div>
       </div>
 

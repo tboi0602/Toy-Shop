@@ -8,6 +8,13 @@ import DashBoardCustomer from "./pages/DashBoardCustomer";
 import DashboardAdmin from "./pages/DashboardAdmin";
 import ErrorPage from "./pages/ErrorPage";
 import HeaderAdmin from "./layouts/HeaderAdmin";
+import ProfileAdmin from "./pages/ProfileAdmin";
+import ManageCustomer from "./pages/ManageCustomer";
+import ManageNoti from "./pages/ManageNoti";
+import ManageOrder from "./pages/ManageOrder";
+import ManageProduct from "./pages/ManageProduct";
+import ManageStaff from "./pages/ManageStaff";
+
 
 function App() {
   return (
@@ -18,10 +25,19 @@ function App() {
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/dashboard-customer" element={<DashBoardCustomer />} /> // Dashboard of customer
         <Route path="/profile-customer" element={<ProfileCustomer />} /> // profile of customer
+        <Route path="/profile-admin" element={<ProfileAdmin />} /> // profile of admin
         <Route path="/change-password" element={<ChangePass />} /> 
         <Route path="/dashboard-admin" element={<DashboardAdmin />} /> 
         <Route path="/error" element={<ErrorPage />} /> 
         <Route path="/headeradmin" element={<HeaderAdmin />} /> 
+        <Route path="/manage-cus" element={<ManageCustomer />} /> 
+        <Route path="/manage-noti" element={<ManageNoti />} /> 
+        <Route path="/manage-order" element={<ManageOrder />} /> 
+        <Route path="/manage-product" element={<ManageProduct />} /> 
+        <Route path="/manage-staff" element={<ManageStaff />} /> 
+        
+
+
       </Routes>
     </Router>
   );

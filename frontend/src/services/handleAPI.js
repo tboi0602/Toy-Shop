@@ -1,14 +1,10 @@
 //!Log in
-export async function login(username, password,position) {
+export async function login(username, password) {
   const res = await fetch("http://localhost:5000/api/login", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     credentials: "include",
-<<<<<<< HEAD
-    body: JSON.stringify({ username, password, position })
-=======
     body: JSON.stringify({ username, password }),
->>>>>>> 19c0a38ebd5bf6c9e10a14db647f7436deff697e
   });
   return res.json();
 }
