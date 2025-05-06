@@ -5,7 +5,7 @@ import ProfileCustomer from "./pages/ProfileCustomer";
 import ChangePass from "./pages/ChangePass";
 import LoadingPage from "./pages/LoadingPage";
 import DashBoardCustomer from "./pages/DashBoardCustomer";
-import DashboardAdmin from "./pages/DashboardAdmin";
+import DashboardAdmin from "./pages/Dashboard_Admin";
 import ErrorPage from "./pages/ErrorPage";
 import HeaderAdmin from "./layouts/HeaderAdmin";
 import ProfileAdmin from "./pages/ProfileAdmin";
