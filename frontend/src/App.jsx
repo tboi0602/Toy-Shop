@@ -7,6 +7,7 @@ import LoadingPage from "./pages/LoadingPage";
 import DashBoardCustomer from "./pages/DashBoardCustomer";
 import DashboardAdmin from "./pages/DashboardAdmin";
 import ErrorPage from "./pages/ErrorPage";
+import HeaderAdmin from "./layouts/HeaderAdmin";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route path="/change-pasword" element={<ChangePass />} /> 
         <Route path="/dashboard-admin" element={<DashboardAdmin />} /> 
         <Route path="/error" element={<ErrorPage />} /> 
+        <Route path="/headeradmin" element={<HeaderAdmin />} /> 
       </Routes>
     </Router>
   );

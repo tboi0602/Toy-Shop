@@ -21,7 +21,8 @@ const LoginPage = () => {
       const data = await login(username, password);
       if (data.success) {
         navigate("/dashboard-customer");
-      } else {
+      }
+       else {
         setError(data.message || "Login failed!");
       }
     } catch (err) {

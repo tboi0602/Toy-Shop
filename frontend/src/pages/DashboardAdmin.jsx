@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Header from "../layouts/Header";
+import Header from "../layouts/HeaderAdmin";
 import Product from "../components/Product";
 import BackgroundContent from "../assets/onepiec1.jpg";
 import luffy from "../assets/1.jpg";
