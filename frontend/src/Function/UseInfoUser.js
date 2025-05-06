@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { loadinfo, updateinfo } from "../services/handleAPI.js";
+import { loadInfo, updateInfo } from "../services/handleAPI.js";
 import Swal from "sweetalert2";
 
 const useInfo = () => {
@@ -19,7 +19,7 @@ const useInfo = () => {
 
   useEffect(() => {
     const getData = async () => {
-      const data = await loadinfo();
+      const data = await loadInfo();
       if (data.success) {
         const userInfo = {
           yourname: data.user.yourname,
@@ -48,7 +48,7 @@ const useInfo = () => {
 
   const handleSave = async () => {
     try {
-      const data = await updateinfo(info);
+      const data = await updateInfo(info);
       if (data.success) {
         Swal.fire({
           icon: 'success',

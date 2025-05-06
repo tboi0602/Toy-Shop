@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../Styles/main.css";
-import LoginButton from "../components/Button/LoginButton";
-import SignupButton from "../components/Button/SignupButton";
 import logo from "../assets/logo.png";
 
 const Header = () => {
@@ -39,14 +37,19 @@ const Header = () => {
             </button>
           </div>
         </div>
-
         <div className="flex gap-2">
-          <div className="btn-error px-7 py-4 rounded-full whitespace-nowrap max-md:hidden">
-            <LoginButton />
-          </div>
-          <div className="btn-error-outline px-6 py-4 rounded-full whitespace-nowrap max-md:hidden">
-            <SignupButton />
-          </div>
+          <button
+            className="btn-error px-7 py-4 rounded-full whitespace-nowrap max-md:hidden"
+            onClick={() => navigate("/login")}
+          >
+            Log in
+          </button>
+          <button
+            className="btn-error-outline px-6 py-4 rounded-full whitespace-nowrap max-md:hidden"
+            onClick={() => navigate("/signup")}
+          >
+            Sign up
+          </button>
           <div
             className="hidden max-md:flex items-center text-red-600 cursor-pointer"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -81,7 +84,11 @@ const XIcon = () => (
     stroke="currentColor"
     className="w-6 h-6"
   >
-    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M6 18L18 6M6 6l12 12"
+    />
   </svg>
 );
 

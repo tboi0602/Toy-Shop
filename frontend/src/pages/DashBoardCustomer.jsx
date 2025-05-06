@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
-import Header from "../layouts/Header";
 import Product from "../components/Product";
 import BackgroundContent from "../assets/onepiec1.jpg";
 import luffy from "../assets/1.jpg";
 import Footer from "../layouts/Footer";
 import HdCustomer from "../layouts/HeaderCustomer";
-import { CheckLogin } from "../Function/CheckLogin";
+import { CheckUser } from "../Function/CheckUser";
 
 const DashBoardCustomer = () => {
   const [products, setProducts] = useState([]);
@@ -67,11 +66,10 @@ const DashBoardCustomer = () => {
     ];
     setProducts(fakeAPI);
   }, []);
+  CheckUser("Customer");
 
   return (
     <div className="min-h-screen">
-      {/* Kiểm tra đăng nhập */}
-      <CheckLogin />
 
       <div className="sticky top-0 z-10">
         <HdCustomer

@@ -1,5 +1,5 @@
 import User from "../models/User.js";
-
+import bcrypt from "bcrypt";
 //!Đăng ký
 export const handleRegister = async (req, res) => {
   try {
@@ -8,7 +8,7 @@ export const handleRegister = async (req, res) => {
     await user.save();
     res.status(201).json({ success: true });
   } catch (err) {
-    res.status(400).json({ success: false, message: err.message });
+    res.status(400).json({ success: false, message: "Error Sign up" });
   }
 };
 
@@ -26,10 +26,10 @@ export const handleLogin = async (req, res) => {
       return res
         .status(401)
         .json({ success: false, message: "Incorrect password" });
-    req.session.user = { id: user._id ,position: user.position}; // Lưu session
+    req.session.user = { id: user._id, position: user.position }; // Lưu session
     res.json({ success: true });
   } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
+    res.status(500).json({ success: false, message: err });
   }
 };
 
@@ -42,6 +42,15 @@ export const handleLogout = async (req, res) => {
     res.clearCookie("connect.sid"); // xoá cookie session
     res.status(200).json({ success: true, message: "Logged out successfully" });
   });
+};
+
+//!Check ss
+export const checkSeSSion = async (req, res) => {
+  if (req.session.user) {
+    res.json({ loggedIn: true, user: req.session.user });
+  } else {
+    res.json({ loggedIn: false });
+  }
 };
 
 //!Lấy dữ liệu user
@@ -79,11 +88,45 @@ export const updateInfo = async (req, res) => {
       birthDay,
       country,
       address,
-      avatar, 
+      avatar,
     }))(req.body);
     await User.findByIdAndUpdate(req.session.user.id, updates);
     res.json({ success: true, message: "Update Successfully" });
   } catch (err) {
     res.status(500).json({ success: false, message: message.err });
+  }
+};
+
+//!change pass
+export const changePassword = async (req, res) => {
+  try {
+    const { oldPassword, newPassword } = req.body;
+    const user = await User.findById(req.session.user.id);
+    if (!user) {
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
+    }
+
+    const isMatch = await bcrypt.compare(oldPassword, user.password);
+    if (!isMatch) {
+      return res
+        .status(401)
+        .json({ success: false, message: "Incorrect password" });
+    }
+
+    user.password = newPassword;
+    await user.save();
+
+    res.json({ success: true, message: "Password updated successfully" });
+  } catch (err) {
+    console.error("Error in changePassword:", err); // In tất cả lỗi để biết chi tiết
+    res
+      .status(500)
+      .json({
+        success: false,
+        message: "Error Change Password",
+        error: err.message,
+      });
   }
 };

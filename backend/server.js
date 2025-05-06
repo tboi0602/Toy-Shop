@@ -4,17 +4,22 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import MongoStore from "connect-mongo";
 import dotenv from "dotenv";
-import { connectDB } from "./config/db.js";
-import authRoutes from "./routes/auth.js";
+import { connectDB } from "./config/db.js";  // Giả sử bạn có config db.js
+import authRoutes from "./routes/auth.js";   // Import route auth.js
+
 dotenv.config();
 await connectDB();
 const app = express();
+
+// Cấu hình CORS cho frontend
 app.use(
   cors({
-    origin: "http://localhost:5173",
-    credentials: true,
+    origin: "http://localhost:5173", // Địa chỉ frontend
+    credentials: true, // Cho phép sử dụng cookies
   })
 );
+
+// Middleware
 app.use(bodyParser.json());
 app.use(
   session({
@@ -31,5 +36,9 @@ app.use(
     },
   })
 );
+
+// Đăng ký các routes
 app.use("/api", authRoutes);
-app.listen(5000, () => console.log("🚀 Server running on port 5000"));
+
+// Start server
+app.listen(5000, () => console.log("Server running on port 5000"));

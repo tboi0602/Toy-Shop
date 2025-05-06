@@ -5,8 +5,7 @@ import BackgroundContent from "../assets/onepiec1.jpg";
 import luffy from "../assets/1.jpg";
 import Footer from "../layouts/Footer";
 import HdCustomer from "../layouts/HeaderCustomer";
-import { CheckAdmin } from "../Function/CheckAdmin";
-
+import { CheckUser } from "../Function/CheckUser";
 
 const DashboardAdmin = () => {
   const [products, setProducts] = useState([]);
@@ -68,11 +67,9 @@ const DashboardAdmin = () => {
     ];
     setProducts(fakeAPI);
   }, []);
-
+  CheckUser("Admin");
   return (
-    
     <div className="min-h-screen">
-      <CheckAdmin></CheckAdmin>
       <div className="sticky top-0 z-10">
         <HdCustomer
           styleCart="btn-line"
