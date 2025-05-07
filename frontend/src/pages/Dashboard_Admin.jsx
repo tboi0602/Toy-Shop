@@ -7,7 +7,6 @@ import { CheckUser } from "../Function/CheckUser";
 
 const DashboardAdmin = () => {
   const navigate = useNavigate();
-  const [products, setProducts] = useState([]);
   CheckUser("Admin");
 
   return (
@@ -54,6 +53,12 @@ const DashboardAdmin = () => {
             onClick={() => navigate("/manage-order")}
           >
             Order
+          </div>
+          <div
+            className="cursor-pointer hover:text-red-500"
+            onClick={() => navigate("/manage-revenue")}
+          >
+            Revenue
           </div>
         </div>
 

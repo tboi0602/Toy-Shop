@@ -5,7 +5,7 @@ import HdAdmin from "../layouts/HeaderAdmin";
 import { useNavigate } from "react-router-dom";
 import { CheckUser } from "../Function/CheckUser";
 
-const ManageProduct = () => {
+const ManageRevenue = () => {
     const navigate = useNavigate();
     CheckUser("Admin");
     return (
@@ -20,4 +20,4 @@ const ManageProduct = () => {
         </div>
     );
 };
-export default ManageProduct;
+export default ManageRevenue;

@@ -130,3 +130,13 @@ export const changePassword = async (req, res) => {
       });
   }
 };
+
+export const getCustomers = async (req, res) => {
+  try {
+    const customers = await User.find({ position: "Customer" });
+    res.json(customers);
+  } catch (error) {
+    console.error("Error taking customers list:", error);
+    res.status(500).json({ message: "" });
+  }
+};

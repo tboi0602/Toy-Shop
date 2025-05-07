@@ -7,6 +7,7 @@ import {
   updateInfo,
   checkSeSSion,
   changePassword,
+  getCustomers,
 } from "../controllers/authController.js";
 const router = express.Router();
 router.post("/register", handleRegister);
@@ -16,5 +17,5 @@ router.get("/check-session", checkSeSSion);
 router.get("/info", getInfo);
 router.post("/info", updateInfo);
 router.post("/change-pass", changePassword);
-
+router.get("/customers", getCustomers);
 export default router;

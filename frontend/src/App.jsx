@@ -14,7 +14,7 @@ import ManageNoti from "./pages/ManageNoti";
 import ManageOrder from "./pages/ManageOrder";
 import ManageProduct from "./pages/ManageProduct";
 import ManageStaff from "./pages/ManageStaff";
-
+import ManageRevenue from "./pages/ManageRevenue";
 
 function App() {
   return (
@@ -30,13 +30,12 @@ function App() {
         <Route path="/dashboard-admin" element={<DashboardAdmin />} /> 
         <Route path="/error" element={<ErrorPage />} /> 
         <Route path="/headeradmin" element={<HeaderAdmin />} /> 
-        <Route path="/manage-cus" element={<ManageCustomer />} /> 
+        <Route path="/manage-customer" element={<ManageCustomer />} /> 
         <Route path="/manage-noti" element={<ManageNoti />} /> 
         <Route path="/manage-order" element={<ManageOrder />} /> 
         <Route path="/manage-product" element={<ManageProduct />} /> 
         <Route path="/manage-staff" element={<ManageStaff />} /> 
-        
-
+        <Route path="/manage-revenue" element={<ManageRevenue />} /> 
 
       </Routes>
     </Router>

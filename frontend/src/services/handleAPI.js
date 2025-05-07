@@ -68,3 +68,4 @@ export const setPassword = async (oldPassword, newPassword) => {
   });
   return res.json();
 };
+
