@@ -5,7 +5,7 @@ import ProfileCustomer from "./pages/ProfileCustomer";
 import ChangePass from "./pages/ChangePass";
 import LoadingPage from "./pages/LoadingPage";
 import DashBoardCustomer from "./pages/DashBoardCustomer";
-import DashboardAdmin from "./pages/Dashboard_Admin";
+import DashboardAdmin from "./pages/DashboardAdmin";
 import ErrorPage from "./pages/ErrorPage";
 import HeaderAdmin from "./layouts/HeaderAdmin";
 import ProfileAdmin from "./pages/ProfileAdmin";
@@ -15,6 +15,7 @@ import ManageOrder from "./pages/ManageOrder";
 import ManageProduct from "./pages/ManageProduct";
 import ManageStaff from "./pages/ManageStaff";
 import ManageRevenue from "./pages/ManageRevenue";
+import ResetPassword from "./pages/ResetPassword";
 
 function App() {
   return (
@@ -36,7 +37,7 @@ function App() {
         <Route path="/manage-product" element={<ManageProduct />} /> 
         <Route path="/manage-staff" element={<ManageStaff />} /> 
         <Route path="/manage-revenue" element={<ManageRevenue />} /> 
-
+        <Route path="/reset-password" element={<ResetPassword />} /> 
       </Routes>
     </Router>
   );

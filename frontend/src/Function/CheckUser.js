@@ -8,8 +8,6 @@ export const CheckUser = (requiredRole = null) => {
   useEffect(() => {
     const check = async () => {
       const data = await checkSession();
-
-      // Kiểm tra nếu người dùng chưa đăng nhập
       if (!data.loggedIn) {
         navigate("/error", { replace: true });
         return;

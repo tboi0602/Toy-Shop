@@ -55,7 +55,7 @@ const SignupPage = () => {
             />
           </div>
           <form
-            onSubmit={handleSubmit}
+            
             className="flex flex-col gap-y-10 justify-center items-center w-full lg:w-[400px] mx-auto h-full px-4 lg:px-0"
           >
             <h1 className="font-bold text-center text-3xl lg:text-4xl  whitespace-nowrap pt-10">
@@ -137,7 +137,7 @@ const SignupPage = () => {
             <div className="flex w-full">
               <button
                 className="btn-error px-16 py-4 rounded-full w-full"
-                type="submit"
+                onClick={handleSubmit}
               >
                 Sign up
               </button>

@@ -43,7 +43,6 @@ const LoginPage = () => {
             />
           </div>
           <form
-            onSubmit={handleSubmit}
             className="flex flex-col gap-y-10 justify-center items-center w-full lg:w-[400px] px-4 lg:px-0 mx-auto h-full"
           >
             <h1 className="font-bold text-center text-3xl lg:text-4xl  whitespace-nowrap pt-10">
@@ -103,14 +102,14 @@ const LoginPage = () => {
             <div className="flex w-full">
               <button
                 className="btn-error px-16 py-4 rounded-full w-full"
-                type="submit"
+                onClick={handleSubmit}
               >
                 Log in
               </button>
             </div>
             <div className="flex flex-col items-center text-sm  text-gray-500 -mt-6 mb-6">
               <button
-                onClick={() => navigate("/forgot-password")}
+                onClick={() => navigate("/reset-password")}
                 className="text-black hover:underline"
                 type="button"
               >

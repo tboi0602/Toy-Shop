@@ -17,7 +17,7 @@ export const handleRegister = async (req, res) => {
     await user.save();
     res.status(201).json({ success: true });
   } catch (err) {
-    res.status(500).json({  
+    res.status(500).json({
       success: false,
       message: "Server error during sign up",
     });
@@ -132,14 +132,47 @@ export const changePassword = async (req, res) => {
 
     res.json({ success: true, message: "Password updated successfully" });
   } catch (err) {
-    console.error("Error in changePassword:", err); // In tất cả lỗi để biết chi tiết
     res.status(500).json({
-      success: false,
-      message: "Error Change Password",
-      error: err.message,
+      message: err,
     });
   }
 };
+//!Check username exist
+export const usernameExist = async (req, res) => {
+  try {
+    const { username } = req.body;
+    const user = await User.findOne({ username });
+    if (!user)
+      return res
+        .status(401)
+        .json({ success: false, message: "Username is not exist" });
+    else res.json({ success: true});
+  } catch (err) {
+    res.status(500).json({ success: false, message: err });
+  }
+};
+//!Reset password
+export const resetPassword = async (req, res) => {
+  try {
+    const { username, newPassword } = req.body;
+    const user = await User.findOne({username});
+    if (!user) {
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
+    }
+    user.password = newPassword;
+    await user.save();
+
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({
+      message: "Error Change Password",
+    });
+  }
+};
+
+
 
 //! Lấy danh sách khách hàng
 export const getCustomers = async (req, res) => {

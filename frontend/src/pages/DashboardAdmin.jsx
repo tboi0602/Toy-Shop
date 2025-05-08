@@ -9,7 +9,6 @@ const DashboardAdmin = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
-      {/* Header cố định */}
       <div className="sticky top-0 z-10">
         <HdAdmin
           styleCart="btn-line"

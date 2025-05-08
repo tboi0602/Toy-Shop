@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { logout } from "../services/handleAPI.js";
 import Swal from "sweetalert2";
 import useInfo from "../Function/UseInfoUser.js"; // Import custom hook
+import BackToTop from "../components/Button/BackToTop.jsx";
 const Icon = ({ children, onClick, className = "" }) => (
   <button onClick={onClick} className={`hover:scale-110 ${className}`}>
     {children}
@@ -35,6 +36,7 @@ const HeaderCustomer = ({ stylePro, styleCart, styleOrder }) => {
   const { info } = useInfo();
   return (
     <header className="relative flex gap-5 p-5 bg-white shadow-md">
+      <BackToTop></BackToTop>
       <button className="center">
         <img
           src={logo}

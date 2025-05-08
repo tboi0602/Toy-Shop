@@ -68,6 +68,27 @@ export const setPassword = async (oldPassword, newPassword) => {
   });
   return res.json();
 };
+//!reset pass
+export const resetPassword = async (username,newPassword) => {
+  const res = await fetch("http://localhost:5000/api/reset-pass", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+    body: JSON.stringify({username, newPassword }),
+  });
+  return res.json();
+};
+
+//!check username
+export const usernameExist = async (username) => {
+  const response = await fetch("http://localhost:5000/api/username-exist", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+    body: JSON.stringify({ username }),
+  });
+  return await response.json();
+};
 
 //!Get customer
 export const loadInfoCustomer = async () => {

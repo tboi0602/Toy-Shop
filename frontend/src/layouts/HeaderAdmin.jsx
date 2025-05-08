@@ -208,7 +208,6 @@ const HeaderAdmin = ({ stylePro }) => {
             {info.username}
           </div>
 
-          {/* Logout button */}
           <div
             className="font-bold text-red-600 cursor-pointer hover:underline"
             onClick={() => {
