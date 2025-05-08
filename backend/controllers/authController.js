@@ -4,11 +4,23 @@ import bcrypt from "bcrypt";
 export const handleRegister = async (req, res) => {
   try {
     const { username, password, position } = req.body;
+
+    const existingUser = await User.findOne({ username });
+    if (existingUser) {
+      return res.status(409).json({
+        success: false,
+        message: "Username already exists",
+      });
+    }
+
     const user = new User({ username, password, position });
     await user.save();
     res.status(201).json({ success: true });
   } catch (err) {
-    res.status(400).json({ success: false, message: "Error Sign up" });
+    res.status(500).json({  
+      success: false,
+      message: "Server error during sign up",
+    });
   }
 };
 
@@ -27,7 +39,7 @@ export const handleLogin = async (req, res) => {
         .status(401)
         .json({ success: false, message: "Incorrect password" });
     req.session.user = { id: user._id, position: user.position }; // Lưu session
-    res.json({ success: true });
+    res.json({ success: true, position: user.position });
   } catch (err) {
     res.status(500).json({ success: false, message: err });
   }
@@ -121,12 +133,26 @@ export const changePassword = async (req, res) => {
     res.json({ success: true, message: "Password updated successfully" });
   } catch (err) {
     console.error("Error in changePassword:", err); // In tất cả lỗi để biết chi tiết
-    res
-      .status(500)
-      .json({
+    res.status(500).json({
+      success: false,
+      message: "Error Change Password",
+      error: err.message,
+    });
+  }
+};
+
+//! Lấy danh sách khách hàng
+export const getCustomers = async (req, res) => {
+  try {
+    const customers = await User.find({ position: "Customer" });
+    if (!customers)
+      return res.json({
         success: false,
-        message: "Error Change Password",
-        error: err.message,
+        message: "No customers have registered yet!",
       });
+    res.json({ success: true, customers });
+  } catch (error) {
+    console.error("Error taking customers list:", error);
+    res.status(500).json({ message: "" });
   }
 };

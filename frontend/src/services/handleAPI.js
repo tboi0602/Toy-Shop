@@ -38,7 +38,7 @@ export const checkSession = async () => {
 };
 
 //!Load info
-export const loadInfo = async () => {
+export const loadInfoUser = async () => {
   const res = await fetch("http://localhost:5000/api/info", {
     method: "GET",
     credentials: "include",
@@ -48,7 +48,7 @@ export const loadInfo = async () => {
 };
 
 //!Update info
-export const updateInfo = async (data) => {
+export const updateInfoUser = async (data) => {
   const res = await fetch("http://localhost:5000/api/info", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -65,6 +65,16 @@ export const setPassword = async (oldPassword, newPassword) => {
     headers: { "Content-Type": "application/json" },
     credentials: "include",
     body: JSON.stringify({ oldPassword, newPassword }),
+  });
+  return res.json();
+};
+
+//!Get customer
+export const loadInfoCustomer = async () => {
+  const res = await fetch("http://localhost:5000/api/customers", {
+    method: "GET",
+    credentials: "include",
+    headers: { Accept: "application/json" },
   });
   return res.json();
 };
