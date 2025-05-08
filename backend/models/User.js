@@ -14,6 +14,7 @@ const userSchema = new mongoose.Schema(
     position: { type: String },
     country: { type: String },
     gender: { type: String },
+    phoneNum: { type: String},
   },
   {
     timestamps: true,

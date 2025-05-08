@@ -172,8 +172,6 @@ export const resetPassword = async (req, res) => {
   }
 };
 
-
-
 //! Lấy danh sách khách hàng
 export const getCustomers = async (req, res) => {
   try {
