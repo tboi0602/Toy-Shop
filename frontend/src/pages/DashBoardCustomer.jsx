@@ -81,9 +81,9 @@ const DashBoardCustomer = () => {
 
       <div className="relative">
         {/* Hình ảnh chính */}
-        <div className="w-full" style={{ height: "calc(100vh - 100px)" }}>
+        <div className="w-full">
           <img
-            className="w-full h-full object-cover"
+            className="w-full object-cover"
             src={BackgroundContent}
             alt="Background"
           />
