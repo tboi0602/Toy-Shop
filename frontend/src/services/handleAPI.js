@@ -99,3 +99,23 @@ export const loadInfoCustomer = async () => {
   });
   return res.json();
 };
+
+//!Get staff
+export const loadInfoStaff = async () => {
+  const res = await fetch("http://localhost:5000/api/staffs", {
+    method: "GET",
+    credentials: "include",
+    headers: { Accept: "application/json" },
+  });
+  return res.json();
+};
+
+export const updateInfoStaff = async (id, data) => {
+  const res = await fetch("http://localhost:5000/api/info", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+    body: JSON.stringify({ _id: id, ...data }),
+  });
+  return res.json();
+};

@@ -8,6 +8,7 @@ import {
   checkSeSSion,
   changePassword,
   getCustomers,
+  getStaffs,
   resetPassword,
   usernameExist
 } from "../controllers/authController.js";
@@ -22,4 +23,5 @@ router.post("/change-pass", changePassword);
 router.post("/username-exist", usernameExist);
 router.post("/reset-pass", resetPassword);
 router.get("/customers", getCustomers);
+router.get("/staffs", getStaffs);
 export default router;

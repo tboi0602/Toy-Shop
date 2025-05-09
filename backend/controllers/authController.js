@@ -187,3 +187,19 @@ export const getCustomers = async (req, res) => {
     res.status(500).json({ message: "" });
   }
 };
+
+// Lấy danh sách Staff
+export const getStaffs = async (req, res) => {
+  try {
+    const staffs = await User.find({ position: "Staff" });
+    if (!staffs)
+      return res.json({
+        success: false,
+        message: "No staffs have registered yet!",
+      });
+    res.json({ success: true, staffs });
+  } catch (error) {
+    console.error("Error taking staffs list:", error);
+    res.status(500).json({ message: "" });
+  }
+};
