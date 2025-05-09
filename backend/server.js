@@ -37,7 +37,7 @@ app.use(
   })
 );
 
-// Routesapp.use("/api", authRoutes);
+  app.use("/api", authRoutes);
 
 async function startServer() {
   try {
