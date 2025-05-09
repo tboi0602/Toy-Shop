@@ -5,6 +5,7 @@ import {
   handleLogout,
   getInfo,
   updateInfo,
+  updateInfoByAdmin,
   checkSeSSion,
   changePassword,
   getCustomers,
@@ -24,4 +25,6 @@ router.post("/username-exist", usernameExist);
 router.post("/reset-pass", resetPassword);
 router.get("/customers", getCustomers);
 router.get("/staffs", getStaffs);
+router.post("/updateInfoByAd", updateInfoByAdmin);
+
 export default router;

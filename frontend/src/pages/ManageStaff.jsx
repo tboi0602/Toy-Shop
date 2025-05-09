@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import HdAdmin from "../layouts/HeaderAdmin";
 import { CheckUser } from "../Function/CheckUser";
-import { loadInfoStaff, register, updateInfoStaff } from "../services/handleAPI";
+import { loadInfoStaff, register, updateInfoByAd } from "../services/handleAPI";
 import InputUser from "../components/InputUser";
 import Swal from "sweetalert2";
 
@@ -67,9 +67,10 @@ const ManageStaff = () => {
     e.preventDefault();
     try {
         const updatedData = { ...editForm, _id: selectedStaff._id };
-        const data = await updateInfoStaff(updatedData);
+        const data = await updateInfoByAd(updatedData);
       if (data.success) {
         Swal.fire("Updated!", "Staff info has been updated.", "success");
+        console.log("Success");
         setShowEditModal(false);
         loadData();
       } else {
@@ -80,7 +81,6 @@ const ManageStaff = () => {
       Swal.fire("Error", "Server error", "error");
     }
   };
-  
 
   const loadData = async () => {
     const data = await loadInfoStaff();
@@ -113,24 +113,24 @@ const ManageStaff = () => {
             onClick={() => setShowModal(true)}
             className="px-6 py-2 text-white bg-red-600 hover:bg-red-700 rounded-full shadow transition"
             >
-            Add Customer
+            Add Staff
             </button>
 
             <button
             onClick={()=>{
-                setIsEditMode(true);
+                setIsEditMode((prev) => !prev);
                 setShowModal(false);
             }}
-            className="px-6 py-2 text-white bg-red-600 hover:bg-red-700 rounded-full shadow transition"
-            >
-            Edit Customer
+            className={`px-6 py-2 text-white rounded-full shadow transition 
+              ${isEditMode ? "bg-green-600 hover:bg-green-700" : "bg-red-600 hover:bg-red-700"}`}            >
+            Edit Staff
             </button>
 
             <button
             
             className="px-6 py-2 text-white bg-red-600 hover:bg-red-700 rounded-full shadow transition"
             >
-            Delete Customer
+            Delete Staff
             </button>
         </div>
         </div>
@@ -173,8 +173,8 @@ const ManageStaff = () => {
                 <span className="truncate">{staff.yourname}</span>
                 <span>{staff.birthDay?.split("T")[0] || ""}</span>
                 <span>{staff.gender}</span>
-                <span className="truncate">{staff.email}</span>
                 <span className="truncate">{staff.phoneNum}</span>
+                <span className="truncate">{staff.email}</span>
               </div>
             ))
           ) : (

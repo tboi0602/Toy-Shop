@@ -203,3 +203,24 @@ export const getStaffs = async (req, res) => {
     res.status(500).json({ message: "" });
   }
 };
+
+export const updateInfoByAdmin = async (req,res) =>{
+  try {
+    const { _id, yourname, birthDay, gender, email, phoneNum } = req.body;
+
+    const result = await User.findByIdAndUpdate(
+      _id,
+      { yourname, birthDay, gender, email, phoneNum },
+      { new: true }
+    );
+
+    if (!result) {
+      return res.status(404).json({ success: false, message: "Staff not found" });
+    }
+
+    res.json({ success: true, staff: result });
+  } catch (error) {
+    console.error("Error updating staff:", error);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+};

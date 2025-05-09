@@ -110,12 +110,13 @@ export const loadInfoStaff = async () => {
   return res.json();
 };
 
-export const updateInfoStaff = async (id, data) => {
-  const res = await fetch("http://localhost:5000/api/info", {
+export const updateInfoByAd = async (updatedData) => {
+  const res = await fetch("http://localhost:5000/api/updateInfoByAd", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     credentials: "include",
-    body: JSON.stringify({ _id: id, ...data }),
+    body: JSON.stringify(updatedData),
   });
   return res.json();
 };
+
