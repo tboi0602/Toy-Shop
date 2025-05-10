@@ -11,7 +11,8 @@ import {
   getCustomers,
   getStaffs,
   resetPassword,
-  usernameExist
+  usernameExist,
+  deleteUser
 } from "../controllers/authController.js";
 const router = express.Router();
 router.post("/register", handleRegister);
@@ -26,5 +27,6 @@ router.post("/reset-pass", resetPassword);
 router.get("/customers", getCustomers);
 router.get("/staffs", getStaffs);
 router.post("/updateInfoByAd", updateInfoByAdmin);
+router.post("/deleteUser", deleteUser);
 
 export default router;

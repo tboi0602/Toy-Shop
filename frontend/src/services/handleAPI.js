@@ -120,3 +120,12 @@ export const updateInfoByAd = async (updatedData) => {
   return res.json();
 };
 
+export const deleteUser = async (updatedData) => {
+  const res = await fetch("http://localhost:5000/api/deleteUser", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+    body: JSON.stringify(updatedData),
+  });
+  return res.json();
+};

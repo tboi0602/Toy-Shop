@@ -22,6 +22,9 @@ const LoginPage = () => {
       if (data.success) {
         data.position === "Customer" ? navigate("/dashboard-customer") : data.position === "Admin" ? navigate("/dashboard-admin") : navigate("/dashboard-customer");
       }
+      if (data.isActive === false){
+        setError("Account is disabled.");
+      }
       else {
         setError(data.message || "Login failed!");
       }

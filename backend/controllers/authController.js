@@ -13,7 +13,7 @@ export const handleRegister = async (req, res) => {
       });
     }
 
-    const user = new User({ username, password, position });
+    const user = new User({ username, password, position});
     await user.save();
     res.status(201).json({ success: true });
   } catch (err) {
@@ -27,12 +27,17 @@ export const handleRegister = async (req, res) => {
 //!Đăng nhập
 export const handleLogin = async (req, res) => {
   try {
-    const { username, password } = req.body;
+    const { username, password} = req.body;
     const user = await User.findOne({ username });
+    console.log("isActive?", user.isActive);
     if (!user)
       return res
         .status(401)
         .json({ success: false, message: "Incorrect username" });
+    if (user.isActive === false) 
+      return res
+        .status(403)
+        .json({success: false,message: "Account has been disabled", });
     const match = await user.comparePassword(password);
     if (!match)
       return res
@@ -221,6 +226,23 @@ export const updateInfoByAdmin = async (req,res) =>{
     res.json({ success: true, staff: result });
   } catch (error) {
     console.error("Error updating staff:", error);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+};
+
+export const deleteUser = async (req, res) => {
+  try {
+    const updated = await User.findByIdAndUpdate(
+      req.body.id,
+      { isActive: false },
+      { new: true }
+    );
+    if (!updated) {
+      return res.status(404).json({ success: false, message: "Customer not found" });
+    }
+    res.json({ success: true, customer: updated });
+  } catch (err) {
+    console.error(err);
     res.status(500).json({ success: false, message: "Server error" });
   }
 };
