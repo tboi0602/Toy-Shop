@@ -1,23 +1,16 @@
-import React, { useState } from "react";
-import BackgroundContent from "../assets/onepiec1.jpg";
+import BackgroundContent from "../assets/picture1.jpg";
 import Footer from "../layouts/Footer";
 import HdAdmin from "../layouts/HeaderAdmin";
-import { useNavigate } from "react-router-dom";
 import { CheckUser } from "../Function/CheckUser";
 
 const ManageProduct = () => {
-    const navigate = useNavigate();
-    CheckUser("Admin");
-    return (
-        <div>
-            <div className="sticky top-0 z-10">
-                <HdAdmin
-                styleCart="btn-line"
-                styleOrder="btn-line"
-                stylePro="btn-line"
-                />
-            </div>
-        </div>
-    );
+  CheckUser("Admin");
+  return (
+    <div>
+      <div className="sticky top-0 z-10">
+        <HdAdmin stylePro="btn-line" />
+      </div>
+    </div>
+  );
 };
 export default ManageProduct;

@@ -4,6 +4,8 @@ import Swal from "sweetalert2";
 import { useNavigate, useLocation } from "react-router-dom";
 import { logout } from "../services/handleAPI.js";
 import useInfo from "../Function/UseInfoUser.js"; // Import custom hook
+import BackToTop from "../components/Button/BackToTop.jsx";
+import { useEffect } from "react";
 
 const Icon = ({ children, onClick, className = "" }) => (
   <button onClick={onClick} className={` ${className}`}>
@@ -12,6 +14,19 @@ const Icon = ({ children, onClick, className = "" }) => (
 );
 
 const HeaderAdmin = ({ stylePro }) => {
+  const [isScrolled, setIsScrolled] = useState(false);
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 10) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   const navigate = useNavigate();
   const location = useLocation();
   const { info } = useInfo();
@@ -30,12 +45,11 @@ const HeaderAdmin = ({ stylePro }) => {
 
     if (result.isConfirmed) {
       const res = await logout();
-      if (res.success) navigate("/login");
+      if (res.success) navigate("/");
       else console.log(res.message);
     }
   };
 
-  // Kiểm tra xem đường dẫn hiện tại có khớp với đường dẫn của mục hay không
   const getLinkClass = (path) => {
     return location.pathname === path
       ? "underline text-red-600" // Gạch chân khi mục được chọn
@@ -43,8 +57,8 @@ const HeaderAdmin = ({ stylePro }) => {
   };
 
   return (
-    <header className="relative flex justify-between items-center p-5 bg-white shadow-md">
-      {/* Logo */}
+    <header className={`relative flex justify-between items-center p-5 bg-white ${isScrolled ? " shadow-md" : ""}`}>
+      <BackToTop></BackToTop>
       <button className="flex items-center">
         <img
           src={logo}
@@ -55,7 +69,7 @@ const HeaderAdmin = ({ stylePro }) => {
       </button>
 
       {/* Menu Links */}
-      <div className="flex-1 flex justify-center gap-10 text-lg hidden xl:flex">
+      <div className="flex-1  justify-center gap-10 text-lg hidden xl:flex">
         <div
           className={`text-red-600 hover:translate-y-[-5px] font-bold cursor-pointer ${getLinkClass(
             "/manage-staff"
@@ -244,7 +258,7 @@ const HeaderAdmin = ({ stylePro }) => {
         </Icon>
         <button
           onClick={handleLogout}
-          className="px-5 py-3 rounded-full btn-error whitespace-nowrap hover:scale-110"
+          className="btn-error px-5 py-2 rounded-lg whitespace-nowrap"
         >
           Log out
         </button>

@@ -12,7 +12,7 @@ body{
     @apply border border-blue-600 text-blue-600 bg-white hover:bg-red-600 hover:text-white font-bold;
   }
   .btn-error{
-    @apply bg-red-600 text-white  hover:bg-red-500 font-bold;
+    @apply bg-red-600 text-white  hover:bg-red-700 font-bold;
   }
   .btn-error-outline{
     @apply border border-red-600 text-red-600 bg-white hover:bg-red-600 hover:text-white font-bold;

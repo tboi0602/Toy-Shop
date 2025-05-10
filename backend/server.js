@@ -4,14 +4,19 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import MongoStore from "connect-mongo";
 import dotenv from "dotenv";
-import { connectDB } from "./config/db.js"; // Giả sử bạn có config db.js
-import authRoutes from "./routes/auth.js"; // Import route auth.js
+import { connectDB } from "./config/db.js";
+import authRoutes from "./routes/auth.js";
+import path from "path";
+import { fileURLToPath } from "url";
 
 dotenv.config();
-
 const app = express();
 
-// Cấu hình CORS cho frontend
+// Định nghĩa __dirname cho ES Modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// CORS
 app.use(
   cors({
     origin: "http://localhost:5173",
@@ -19,7 +24,7 @@ app.use(
   })
 );
 
-// Middleware
+// Middlewares
 app.use(bodyParser.json());
 app.use(
   session({
@@ -36,18 +41,17 @@ app.use(
     },
   })
 );
-
+// Static uploads
+app.use("/uploads", express.static(path.join(__dirname, "public/uploads")));
 app.use("/api", authRoutes);
-
 async function startServer() {
   try {
     await connectDB();
     app.listen(5000, () => {
-      console.log(" Server running on port 5000");
+      console.log("Server running on port 5000");
     });
   } catch (err) {
     console.error("Error starting server:", err);
   }
 }
-
 startServer();

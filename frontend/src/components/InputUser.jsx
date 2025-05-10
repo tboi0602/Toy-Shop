@@ -1,5 +1,3 @@
-import React from "react";
-
 const InputUser = ({ name, icon, placeholder, value, onChange, type }) => {
   return (
     <div className="flex flex-col gap-y-5">

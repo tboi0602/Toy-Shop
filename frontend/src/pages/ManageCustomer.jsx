@@ -105,8 +105,14 @@ const ManageCustomer = () => {
             <span>Name</span>
             <span>Birthday</span>
             <span>Gender</span>
+<<<<<<< HEAD
             <span>Phone number</span>
             <span>Email</span>
+=======
+            <span>Email</span>
+            <span>Addresss</span>
+            <span>Spending</span>
+>>>>>>> e546c94c80ce57e7135faedcfe6d9d9a88cead0f
           </div>
 
           {customerList && customerList.length > 0 ? (
@@ -119,6 +125,7 @@ const ManageCustomer = () => {
                 <span className="truncate">{cus.yourname}</span>
                 <span>{cus.birthDay?.split("T")[0] || ""}</span>
                 <span>{cus.gender}</span>
+<<<<<<< HEAD
                 <span className="truncate">{cus.phoneNum}</span>
                 <span className="truncate">{cus.email}</span>
                 <div className="flex justify-end gap-7">
@@ -140,6 +147,11 @@ const ManageCustomer = () => {
                     </svg>
                   </Icon>
                 </div>
+=======
+                <span className="truncate">{cus.email}</span>
+                <span className="truncate">{cus.address}</span>
+                <span className="truncate">{}</span>
+>>>>>>> e546c94c80ce57e7135faedcfe6d9d9a88cead0f
               </div>
             ))
           ) : (

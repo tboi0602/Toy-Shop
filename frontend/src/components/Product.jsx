@@ -1,4 +1,3 @@
-import React from "react";
 const Product = ({image,name,price,oldprice,sales}) => {
   return (
     <div className="w-[190px] h-[300px] rounded-lg shadow-lg text-[18px] hover:scale-105 cursor-pointer bg-white">

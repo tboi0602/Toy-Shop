@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import avt from "../assets/avt.jpg";
 import { countries } from "../Data/Countries";
 import useInfo from "../Function/UseInfoUser.js"; // Import custom hook
 import { useNavigate } from "react-router-dom";
@@ -7,10 +6,23 @@ import { useNavigate } from "react-router-dom";
 const Infomation = () => {
   const navigate = useNavigate();
   const [isEditting, setIsEditting] = useState(false);
+  const [uploadedImage, setUploadedImage] = useState(null); // Dùng state để lưu ảnh tải lên
 
   const { info, handleChange, handleSave, handleCancel } = useInfo(); // Sử dụng custom hook
 
   const handleEdit = () => setIsEditting(!isEditting);
+
+  const handleUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setUploadedImage(reader.result);
+        handleChange(e);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   return (
     <div className="w-11/12 bg-white flex-col justify-center m-auto my-8 rounded-2xl">
@@ -19,7 +31,22 @@ const Infomation = () => {
       </div>
       <div className="avt flex">
         <div className="flex-none avt w-[100px] h-[100px] mx-8 my-4">
-          <img className="fix-img rounded-full" src={avt} alt="Avatar" />
+          <img
+            className="fix-img rounded-full"
+            src={
+              uploadedImage ||
+              (info.avatar
+                ? `http://localhost:5000/${info.avatar.replace(/^\/+/, "")}`
+                : null)
+            }
+            alt="Avatar"
+          />
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleUpload}
+            className={`${!isEditting ? "hidden" : "flex mt-2"}`}
+          />
         </div>
         <div className="grow flex flex-col justify-center gap-2">
           <p className="text-[20px] font-bold leading-none">{info.username}</p>
@@ -41,7 +68,7 @@ const Infomation = () => {
               <button
                 className="btn-error px-5 py-1 rounded-md"
                 onClick={() => {
-                  handleSave(); 
+                  handleSave(); // Lưu thông tin và ảnh
                   setIsEditting(!isEditting);
                 }}
               >
@@ -62,44 +89,46 @@ const Infomation = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5 p-8">
-        {[{
-          label: "Full Name",
-          type: "text",
-          name: "yourname",
-          value: info.yourname,
-        },
-        {
-          label: "User Name",
-          type: "text",
-          name: "username",
-          value: info.username,
-        },
-        {
-          label: "Gender",
-          type: "select",
-          name: "gender",
-          options: ["Select", "Male", "Female"],
-          value: info.gender,
-        },
-        {
-          label: "Birth of day",
-          type: "date",
-          name: "birthDay",
-          value: info.birthDay,
-        },
-        {
-          label: "Country",
-          type: "select",
-          name: "country",
-          options: countries,
-          value: info.country,
-        },
-        {
-          label: "Address",
-          type: "text",
-          name: "address",
-          value: info.address,
-        }].map((field, index) => (
+        {[
+          {
+            label: "Full Name",
+            type: "text",
+            name: "yourname",
+            value: info.yourname,
+          },
+          {
+            label: "User Name",
+            type: "text",
+            name: "username",
+            value: info.username,
+          },
+          {
+            label: "Gender",
+            type: "select",
+            name: "gender",
+            options: ["Select", "Male", "Female"],
+            value: info.gender,
+          },
+          {
+            label: "Birth of day",
+            type: "date",
+            name: "birthDay",
+            value: info.birthDay,
+          },
+          {
+            label: "Country",
+            type: "select",
+            name: "country",
+            options: countries,
+            value: info.country,
+          },
+          {
+            label: "Address",
+            type: "text",
+            name: "address",
+            value: info.address,
+          },
+        ].map((field, index) => (
           <div key={index} className="flex flex-col gap-3">
             <label>{field.label}</label>
             {field.type === "select" ? (
@@ -122,7 +151,7 @@ const Infomation = () => {
               </select>
             ) : (
               <input
-                disabled={!isEditting}  
+                disabled={!isEditting}
                 type={field.type}
                 name={field.name}
                 value={field.value || ""}
@@ -169,7 +198,9 @@ const Infomation = () => {
           </div>
           <button
             className="btn-error-outline p-2 rounded-lg text-[12px] cursor-pointer"
-            onClick={()=>{navigate("/change-password")}}
+            onClick={() => {
+              navigate("/change-password");
+            }}
           >
             Change password
           </button>
