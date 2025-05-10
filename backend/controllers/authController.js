@@ -24,15 +24,6 @@
     }
   };
 
-<<<<<<< HEAD
-    const user = new User({ username, password, position});
-    await user.save();
-    res.status(201).json({ success: true });
-  } catch (err) {
-    res.status(500).json({
-      success: false,
-      message: "Server error during sign up",
-=======
   //!Đăng nhập
   export const handleLogin = async (req, res) => {
     try {
@@ -62,50 +53,15 @@
       }
       res.clearCookie("connect.sid"); // xoá cookie session
       res.status(200).json({ success: true, message: "Logged out successfully" });
->>>>>>> e546c94c80ce57e7135faedcfe6d9d9a88cead0f
     });
   };
 
-<<<<<<< HEAD
-//!Đăng nhập
-export const handleLogin = async (req, res) => {
-  try {
-    const { username, password} = req.body;
-    const user = await User.findOne({ username });
-    console.log("isActive?", user.isActive);
-    if (!user)
-      return res
-        .status(401)
-        .json({ success: false, message: "Incorrect username" });
-    if (user.isActive === false) 
-      return res
-        .status(403)
-        .json({success: false,message: "Account has been disabled", });
-    const match = await user.comparePassword(password);
-    if (!match)
-      return res
-        .status(401)
-        .json({ success: false, message: "Incorrect password" });
-    req.session.user = { id: user._id, position: user.position }; // Lưu session
-    res.json({ success: true, position: user.position });
-  } catch (err) {
-    res.status(500).json({ success: false, message: err });
-  }
-};
-
-//!Đăng xuất
-export const handleLogout = async (req, res) => {
-  req.session.destroy((err) => {
-    if (err) {
-      return res.status(500).json({ success: false, message: "Logout failed" });
-=======
   //!Check ss
   export const checkSeSSion = async (req, res) => {
     if (req.session.user) {
       res.json({ loggedIn: true, user: req.session.user });
     } else {
       res.json({ loggedIn: false });
->>>>>>> e546c94c80ce57e7135faedcfe6d9d9a88cead0f
     }
   };
 

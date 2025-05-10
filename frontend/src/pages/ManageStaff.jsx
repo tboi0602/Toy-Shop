@@ -322,7 +322,7 @@ const ManageStaff = () => {
                   <button
                     onClick={async() => {
                       setStaffList(prev => prev.filter(staff => staff._id !== selectedIdToDelete));
-                      setShowConfirmModal(false);
+                      setShowConfirmModal(false); // Còn lỗilỗi
                     }}
                     className="bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded-full"
                   >

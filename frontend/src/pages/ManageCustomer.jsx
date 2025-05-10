@@ -105,14 +105,8 @@ const ManageCustomer = () => {
             <span>Name</span>
             <span>Birthday</span>
             <span>Gender</span>
-<<<<<<< HEAD
-            <span>Phone number</span>
-            <span>Email</span>
-=======
             <span>Email</span>
             <span>Addresss</span>
-            <span>Spending</span>
->>>>>>> e546c94c80ce57e7135faedcfe6d9d9a88cead0f
           </div>
 
           {customerList && customerList.length > 0 ? (
@@ -125,12 +119,11 @@ const ManageCustomer = () => {
                 <span className="truncate">{cus.yourname}</span>
                 <span>{cus.birthDay?.split("T")[0] || ""}</span>
                 <span>{cus.gender}</span>
-<<<<<<< HEAD
-                <span className="truncate">{cus.phoneNum}</span>
                 <span className="truncate">{cus.email}</span>
+                <span className="truncate">{cus.address}</span>
                 <div className="flex justify-end gap-7">
                   <Icon className="Trash btn-line" onClick={() => {
-                      setSelectedIdToDelete(staff._id);
+                      setSelectedIdToDelete(cus._id);
                       setShowConfirmModal(true);
                     }}>
                       <svg xmlns="http://www.w3.org/2000/svg" 
@@ -147,11 +140,6 @@ const ManageCustomer = () => {
                     </svg>
                   </Icon>
                 </div>
-=======
-                <span className="truncate">{cus.email}</span>
-                <span className="truncate">{cus.address}</span>
-                <span className="truncate">{}</span>
->>>>>>> e546c94c80ce57e7135faedcfe6d9d9a88cead0f
               </div>
             ))
           ) : (
@@ -224,9 +212,8 @@ const ManageCustomer = () => {
             <div className="flex justify-center gap-4">
               <button
                 onClick={async() => {
-                  await deleteUser({ id: selectedIdToDelete });
+                  setCustomerList(prev => prev.filter(cus => cus._id !== selectedIdToDelete));
                   setShowConfirmModal(false);
-                  loadData();
                 }}
                 className="bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded-full"
               >

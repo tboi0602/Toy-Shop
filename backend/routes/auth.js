@@ -15,10 +15,7 @@ import {
   getStaffs,
   resetPassword,
   usernameExist,
-<<<<<<< HEAD
-  deleteUser
-=======
->>>>>>> e546c94c80ce57e7135faedcfe6d9d9a88cead0f
+  deleteUser,
 } from "../controllers/authController.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
