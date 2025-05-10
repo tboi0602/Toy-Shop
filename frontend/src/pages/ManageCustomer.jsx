@@ -76,13 +76,24 @@ const ManageCustomer = () => {
       {/* Add button */}
       <div className="px-6 py-4 flex justify-between items-center">
         <h2 className="text-2xl font-bold">Customer Management</h2>
-        <button
-          onClick={() => setShowModal(true)}
-          className="px-6 py-2 text-white bg-red-600 hover:bg-red-700 rounded-full shadow transition"
-        >
-          + Add Customer
-        </button>
+        
+        {/* Bọc hai nút trong 1 div flex */}
+        <div className="flex gap-4">
+          <button
+            onClick={() => setShowModal(true)}
+            className="px-6 py-2 text-white bg-red-600 hover:bg-red-700 rounded-full shadow transition"
+          >
+            Add Customer
+          </button>
+          <button
+            onClick={() => setShowModal(true)}
+            className="px-6 py-2 text-white bg-red-600 hover:bg-red-700 rounded-full shadow transition"
+          >
+            Delete Customer
+          </button>
+        </div>
       </div>
+
 
       {/* Customer Table */}
       <div className="px-6 overflow-x-auto">

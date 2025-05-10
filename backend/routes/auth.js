@@ -8,9 +8,11 @@ import {
   handleLogout,
   getInfo,
   updateInfo,
+  updateInfoByAdmin,
   checkSeSSion,
   changePassword,
   getCustomers,
+  getStaffs,
   resetPassword,
   usernameExist,
 } from "../controllers/authController.js";
@@ -48,4 +50,7 @@ router.post("/upload", upload.single("image"), (req, res) => {
   const filePath = `/uploads/${req.file.filename}`;
   res.json({ success: true, path: filePath });
 });
+router.get("/staffs", getStaffs);
+router.post("/updateInfoByAd", updateInfoByAdmin);
+
 export default router;
