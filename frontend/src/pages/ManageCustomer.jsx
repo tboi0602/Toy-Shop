@@ -93,8 +93,8 @@ const ManageCustomer = () => {
             <span>Birthday</span>
             <span>Gender</span>
             <span>Email</span>
-            <span>Country</span>
-            <span>Address</span>
+            <span>Addresss</span>
+            <span>Spending</span>
           </div>
 
           {customerList && customerList.length > 0 ? (
@@ -108,8 +108,8 @@ const ManageCustomer = () => {
                 <span>{cus.birthDay?.split("T")[0] || ""}</span>
                 <span>{cus.gender}</span>
                 <span className="truncate">{cus.email}</span>
-                <span>{cus.country}</span>
                 <span className="truncate">{cus.address}</span>
+                <span className="truncate">{}</span>
               </div>
             ))
           ) : (

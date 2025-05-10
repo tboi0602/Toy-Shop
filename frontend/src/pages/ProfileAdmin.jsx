@@ -3,6 +3,7 @@ import HeaderAdmin from "../layouts/HeaderAdmin";
 import Infomation from "../components/Infomation";
 import Footer from "../layouts/Footer";
 import { CheckUser } from "../Function/CheckUser";
+
 const ProfileAdmin = () => {
   CheckUser("Admin")
   return (

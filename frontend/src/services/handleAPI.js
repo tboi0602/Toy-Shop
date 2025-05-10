@@ -69,12 +69,12 @@ export const setPassword = async (oldPassword, newPassword) => {
   return res.json();
 };
 //!reset pass
-export const resetPassword = async (username,newPassword) => {
+export const resetPassword = async (username, newPassword) => {
   const res = await fetch("http://localhost:5000/api/reset-pass", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     credentials: "include",
-    body: JSON.stringify({username, newPassword }),
+    body: JSON.stringify({ username, newPassword }),
   });
   return res.json();
 };
@@ -98,4 +98,14 @@ export const loadInfoCustomer = async () => {
     headers: { Accept: "application/json" },
   });
   return res.json();
+};
+
+//! Upload Image
+export const uploadImage = async (formData) => {
+  const res = await fetch("http://localhost:5000/api/upload", {
+    method: "POST",
+    credentials: "include",
+    body: formData,
+  });
+  return res.json(); // Trả về: { success: true, path: "/uploads/filename.png" }
 };

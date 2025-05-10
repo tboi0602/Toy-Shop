@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../Styles/main.css";
 import logo from "../assets/logo.png";
+import BackToTop from "../components/Button/BackToTop.jsx";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -13,7 +14,8 @@ const Header = () => {
 
   return (
     <>
-      <header className="flex gap-5 p-5 bg-white shadow-md">
+      <BackToTop></BackToTop>
+      <header className="flex justify-between gap-5 p-5 bg-white shadow-md">
         <button className="center" onClick={handleLogoClick}>
           <img
             src={logo}
@@ -21,22 +23,6 @@ const Header = () => {
             className="min-w-[127px] h-[55px] overflow-hidden hover:scale-105"
           />
         </button>
-
-        <div className="min-w-[80px] flex-1 center bg-gray-100 hover:bg-white hover:border hover:border-red-500 h-[56px] rounded-full border border-transparent">
-          <input
-            type="text"
-            placeholder="What are you looking for?"
-            className="w-11/12 h-full pl-5 bg-transparent outline-none placeholder:text-black"
-          />
-          <div className="flex items-center h-full gap-3">
-            <button className="text-gray-400 hover:text-black">
-              <XIcon />
-            </button>
-            <button className="w-10 h-10 text-white bg-red-600 rounded-full hover:bg-red-500 center">
-              <SearchIcon />
-            </button>
-          </div>
-        </div>
         <div className="flex gap-2">
           <button
             className="btn-error px-7 py-4 rounded-full whitespace-nowrap max-md:hidden"

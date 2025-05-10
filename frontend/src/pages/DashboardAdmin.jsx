@@ -1,5 +1,5 @@
 import React from "react";
-import BackgroundContent from "../assets/onepiec1.jpg";
+import BackgroundContent from "../assets/picture1.jpg";
 import Footer from "../layouts/Footer";
 import HdAdmin from "../layouts/HeaderAdmin";
 import { CheckUser } from "../Function/CheckUser";

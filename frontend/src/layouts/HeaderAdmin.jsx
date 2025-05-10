@@ -4,6 +4,7 @@ import Swal from "sweetalert2";
 import { useNavigate, useLocation } from "react-router-dom";
 import { logout } from "../services/handleAPI.js";
 import useInfo from "../Function/UseInfoUser.js"; // Import custom hook
+import BackToTop from "../components/Button/BackToTop.jsx";
 
 const Icon = ({ children, onClick, className = "" }) => (
   <button onClick={onClick} className={` ${className}`}>
@@ -30,7 +31,7 @@ const HeaderAdmin = ({ stylePro }) => {
 
     if (result.isConfirmed) {
       const res = await logout();
-      if (res.success) navigate("/login");
+      if (res.success) navigate("/");
       else console.log(res.message);
     }
   };
@@ -44,7 +45,7 @@ const HeaderAdmin = ({ stylePro }) => {
 
   return (
     <header className="relative flex justify-between items-center p-5 bg-white shadow-md">
-      {/* Logo */}
+      <BackToTop></BackToTop>
       <button className="flex items-center">
         <img
           src={logo}

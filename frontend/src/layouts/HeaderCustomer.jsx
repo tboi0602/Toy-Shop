@@ -28,7 +28,7 @@ const HeaderCustomer = ({ stylePro, styleCart, styleOrder }) => {
 
     if (result.isConfirmed) {
       const res = await logout();
-      if (res.success) navigate("/login");
+      if (res.success) navigate("/");
       else console.log(res.message);
     }
   };
