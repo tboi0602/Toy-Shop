@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { loadInfoUser, updateInfoUser, uploadImage } from "../services/handleAPI.js";
 import Swal from "sweetalert2";
-import avt from "../assets/avt.jpg";
 
 const useInfo = () => {
   const [info, setInfo] = useState({
@@ -31,7 +30,7 @@ const useInfo = () => {
           address: data.user.address,
           email: data.user.email,
           position: data.user.position,
-          avatar: data.user.avatar || avt, // Mặc định ảnh đại diện
+          avatar: data.user.avatar || "uploads/avt.png", // Mặc định ảnh đại diện
         };
         setInfo(userInfo);
         setInitialInfo(userInfo);

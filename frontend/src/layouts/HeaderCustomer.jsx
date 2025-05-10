@@ -6,6 +6,7 @@ import { logout } from "../services/handleAPI.js";
 import Swal from "sweetalert2";
 import useInfo from "../Function/UseInfoUser.js"; // Import custom hook
 import BackToTop from "../components/Button/BackToTop.jsx";
+import { useEffect } from "react";
 const Icon = ({ children, onClick, className = "" }) => (
   <button onClick={onClick} className={`hover:scale-110 ${className}`}>
     {children}
@@ -13,6 +14,18 @@ const Icon = ({ children, onClick, className = "" }) => (
 );
 
 const HeaderCustomer = ({ stylePro, styleCart, styleOrder }) => {
+  const [isScrolled, setIsScrolled] = useState(false)
+  useEffect(() => {
+      const handleScroll = () => {
+        if (window.scrollY > 10) {
+          setIsScrolled(true);
+        } else {
+          setIsScrolled(false);
+        }
+      };
+      window.addEventListener("scroll", handleScroll);
+      return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
   const handleLogout = async () => {
@@ -32,10 +45,9 @@ const HeaderCustomer = ({ stylePro, styleCart, styleOrder }) => {
       else console.log(res.message);
     }
   };
-
   const { info } = useInfo();
   return (
-    <header className="relative flex gap-5 p-5 bg-white shadow-md">
+    <header className={`relative flex gap-5 p-5 bg-white ${isScrolled ? "shadow-md" :""} `}>
       <BackToTop></BackToTop>
       <button className="center">
         <img
@@ -88,7 +100,7 @@ const HeaderCustomer = ({ stylePro, styleCart, styleOrder }) => {
         </div>
       </div>
 
-      <div className="hidden lg:flex gap-10">
+      <div className="center gap-10 max-lg:hidden ">
         <Icon
           className={`Orders ${styleOrder} center`}
           onClick={() => navigate("/my-orders")}
@@ -167,7 +179,7 @@ const HeaderCustomer = ({ stylePro, styleCart, styleOrder }) => {
         </Icon>
         <button
           onClick={handleLogout}
-          className="px-5 rounded-full btn-error whitespace-nowrap hover:scale-110"
+          className="btn-error px-5 py-2 rounded-lg whitespace-nowrap "
         >
           Log out
         </button>

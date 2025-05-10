@@ -33,7 +33,7 @@ const Infomation = () => {
         <div className="flex-none avt w-[100px] h-[100px] mx-8 my-4">
           <img
             className="fix-img rounded-full"
-            src={ 
+            src={
               uploadedImage ||
               (info.avatar
                 ? `http://localhost:5000/${info.avatar.replace(/^\/+/, "")}`
