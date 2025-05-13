@@ -30,7 +30,7 @@ const DashBoardCustomer = () => {
       {
         id: 1,
         name: "Luffy Gear 2",
-        price: "2.9",
+        saleprice: "2.9",
         oldprice: "4.2",
         sales: "21.4k",
         image: luffy,
@@ -38,7 +38,7 @@ const DashBoardCustomer = () => {
       {
         id: 2,
         name: "Luffy Gear 2",
-        price: "2.9",
+        saleprice: "2.9",
         oldprice: "4.2",
         sales: "21.4k",
         image: luffy,
@@ -46,7 +46,7 @@ const DashBoardCustomer = () => {
       {
         id: 3,
         name: "Luffy Gear 2",
-        price: "2.9",
+        saleprice: "2.9",
         oldprice: "4.2",
         sales: "21.4k",
         image: luffy,
@@ -54,7 +54,7 @@ const DashBoardCustomer = () => {
       {
         id: 4,
         name: "Luffy Gear 2",
-        price: "2.9",
+        saleprice: "2.9",
         oldprice: "4.2",
         sales: "21.4k",
         image: luffy,
@@ -62,7 +62,7 @@ const DashBoardCustomer = () => {
       {
         id: 5,
         name: "Luffy Gear 2",
-        price: "2.9",
+        saleprice: "2.9",
         oldprice: "4.2",
         sales: "21.4k",
         image: luffy,
@@ -70,7 +70,7 @@ const DashBoardCustomer = () => {
       {
         id: 6,
         name: "Luffy Gear 2",
-        price: "2.9",
+        saleprice: "2.9",
         oldprice: "4.2",
         sales: "21.4k",
         image: luffy,
@@ -129,7 +129,7 @@ const DashBoardCustomer = () => {
               <Product
                 key={id}
                 name={name}
-                price={price}
+                saleprice={price}
                 oldprice={oldprice}
                 sales={sales}
                 image={image}

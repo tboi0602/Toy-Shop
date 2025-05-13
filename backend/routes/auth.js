@@ -13,9 +13,12 @@ import {
   changePassword,
   getCustomers,
   getStaffs,
+  getProducts,
   resetPassword,
   usernameExist,
   deleteUser,
+  addProducts,
+  deleteProducts,
 } from "../controllers/authController.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -54,5 +57,8 @@ router.post("/upload", upload.single("image"), (req, res) => {
 router.get("/staffs", getStaffs);
 router.post("/updateInfoByAd", updateInfoByAdmin);
 router.post("/deleteUser", deleteUser);
+router.post("/addProducts", addProducts);
+router.get("/getProducts", getProducts);
+router.post("/deleteProducts", deleteProducts);
 
 export default router;

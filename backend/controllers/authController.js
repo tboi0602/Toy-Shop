@@ -1,4 +1,5 @@
   import User from "../models/User.js";
+  import Product from "../models/Product.js";
   import bcrypt from "bcrypt";
   //!Đăng ký
   export const handleRegister = async (req, res) => {
@@ -233,11 +234,64 @@ export const deleteUser = async (req, res) => {
       { new: true }
     );
     if (!updated) {
-      return res.status(404).json({ success: false, message: "Customer not found" });
+      return res.status(404).json({ success: false, message: "User not found" });
     }
     res.json({ success: true, customer: updated });
   } catch (err) {
     console.error(err);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+};
+
+export const addProducts = async(req, res) => {
+  try {
+    const {productId, productName, oldprice, sales, description} = req.body;
+    const saleprice = oldprice - sales;
+    const existingProduct = await Product.findOne({ productId });
+    if (existingProduct) {
+      return res.status(409).json({
+        success: false,
+        message: "Product already exists",
+      });
+    }
+
+    const product = new Product({productId, productName, oldprice, sales, saleprice,description,});
+    await product.save();
+    res.status(201).json({ success: true });
+  } catch (err) {
+    console.error("Error adding product:", err);
+    res.status(500).json({
+      success: false,
+      message: "Server error during product creation",
+    });
+  }
+};
+
+export const getProducts = async (req, res) => {
+  try {
+    const products = await Product.find();
+    if (!products)
+      return res.json({
+        success: false,
+        message: "No products have added yet!",
+      });
+    res.json({ success: true, products });
+  } catch (error) {
+    console.error("Error taking products list:", error);
+    res.status(500).json({ message: "" });
+  }
+};
+
+export const deleteProducts = async (req, res) => {
+  try {
+    console.log("Product ID received:", req.body.productId);
+    const deleted = await Product.findOneAndDelete({ productId: req.body.productId }); // kiểm tra đúng field chưa
+    if (!deleted) {
+      return res.status(404).json({ success: false, message: "Product not found" });
+    }
+    res.json({ success: true, message: "Product deleted successfully" });
+  } catch (error) {
+    console.error("Delete error:", error); // log ra terminal để kiểm tra lỗi thật sự
     res.status(500).json({ success: false, message: "Server error" });
   }
 };

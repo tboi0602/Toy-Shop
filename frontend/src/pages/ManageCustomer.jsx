@@ -108,9 +108,9 @@ const ManageCustomer = () => {
             <span>Email</span>
             <span>Addresss</span>
           </div>
-
-          {customerList && customerList.length > 0 ? (
-            customerList.map((cus, index) => (
+          
+          {customerList && customerList.filter(cus => cus.isActive).length > 0 ? (
+            customerList.filter(cus => cus.isActive).map((cus, index) => (
               <div
                 key={cus._id || index}
                 className={`grid grid-cols-7 gap-4 border-b p-3 text-sm transition`}              
@@ -211,8 +211,19 @@ const ManageCustomer = () => {
             <p className="text-center mb-6">Do you sure want to disable this customer account?</p>
             <div className="flex justify-center gap-4">
               <button
-                onClick={async() => {
-                  setCustomerList(prev => prev.filter(cus => cus._id !== selectedIdToDelete));
+                onClick={async () => {
+                  const result = await deleteUser({id: selectedIdToDelete});
+                  if (result.success) {
+                    setCustomerList(prev => prev.filter(cus => cus._id !== selectedIdToDelete));
+                    Swal.fire({
+                      icon: "success",
+                      title: "Success",
+                      text: "You have deleted the customer account",
+                      confirmButtonColor: "#d33",
+                    })
+                  } else {
+                    Swal.fire("Error", result.message || "Disable failed", "error");
+                  }
                   setShowConfirmModal(false);
                 }}
                 className="bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded-full"

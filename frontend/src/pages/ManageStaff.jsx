@@ -20,7 +20,6 @@ const ManageStaff = () => {
   const [error, setError] = useState("");
   const [staffList, setStaffList] = useState([]);
   const [selectedStaff, setSelectedStaff] = useState(null);
-  const [isEditMode, setIsEditMode] = useState(false);
   const [editForm, setEditForm] = useState({
     username: "",
     yourname: "",
@@ -140,8 +139,8 @@ const ManageStaff = () => {
 
           </div>
 
-          {staffList && staffList.length > 0 ? (
-            staffList.map((staff, index) => (
+          {staffList && staffList.filter(staff => staff.isActive).length > 0 ? (
+            staffList.filter(staff => staff.isActive).map((staff, index) => (
               <div
                 key={staff._id || index}
                 className="grid grid-cols-7 gap-4 border-b p-3 text-sm bg-white hover:bg-gray-50 transition"
@@ -319,15 +318,27 @@ const ManageStaff = () => {
                 <h2 className="text-xl font-bold text-center mb-4">Confirm Delete</h2>
                 <p className="text-center mb-6">Do you sure want to disable this customer account?</p>
                 <div className="flex justify-center gap-4">
-                  <button
-                    onClick={async() => {
+                <button
+                  onClick={async () => {
+                    const result = await deleteUser({id: selectedIdToDelete});
+                    if (result.success) {
                       setStaffList(prev => prev.filter(staff => staff._id !== selectedIdToDelete));
-                      setShowConfirmModal(false); // Còn lỗilỗi
-                    }}
-                    className="bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded-full"
-                  >
-                    Yes, disable
-                  </button>
+                      Swal.fire({
+                        icon: "success",
+                        title: "Success",
+                        text: "You have deleted the staff account",
+                        confirmButtonColor: "#d33",
+                      })
+                    } else {
+                      Swal.fire("Error", result.message || "Disable failed", "error");
+                    }
+                    setShowConfirmModal(false);
+                  }}
+                  className="bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded-full"
+                >
+                  Yes, disable
+                </button>
+
                   <button
                     onClick={() => setShowConfirmModal(false)}
                     className="bg-gray-300 hover:bg-gray-400 text-black px-5 py-2 rounded-full"
