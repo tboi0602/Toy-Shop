@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import Product from "../components/Product";
-import luffy from "../assets/1.jpg";
+import ListProduct from "../components/ListProduct";
 import Footer from "../layouts/Footer";
 import HdCustomer from "../layouts/HeaderCustomer";
 import { CheckUser } from "../Function/CheckUser";
@@ -12,7 +11,6 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const images = [picture3, picture4, picture5];
 const DashBoardCustomer = () => {
-  const [products, setProducts] = useState([]);
   const [index, setIndex] = useState(0);
   const nextSlide = () => setIndex((index + 1) % images.length);
   const prevSlide = () => setIndex((index - 1 + images.length) % images.length);
@@ -21,63 +19,7 @@ const DashBoardCustomer = () => {
     const timer = setTimeout(nextSlide, 2500);
     return () => clearTimeout(timer);
   }, [index]);
-  useEffect(() => {
-    // Giả lập API call, thay bằng fetch
-    // fetch("....")
-    // .then((res) => res.json())
-    // .then((data) => setProducts(data));
-    const fakeAPI = [
-      {
-        id: 1,
-        name: "Luffy Gear 2",
-        price: "2.9",
-        oldprice: "4.2",
-        sales: "21.4k",
-        image: luffy,
-      },
-      {
-        id: 2,
-        name: "Luffy Gear 2",
-        price: "2.9",
-        oldprice: "4.2",
-        sales: "21.4k",
-        image: luffy,
-      },
-      {
-        id: 3,
-        name: "Luffy Gear 2",
-        price: "2.9",
-        oldprice: "4.2",
-        sales: "21.4k",
-        image: luffy,
-      },
-      {
-        id: 4,
-        name: "Luffy Gear 2",
-        price: "2.9",
-        oldprice: "4.2",
-        sales: "21.4k",
-        image: luffy,
-      },
-      {
-        id: 5,
-        name: "Luffy Gear 2",
-        price: "2.9",
-        oldprice: "4.2",
-        sales: "21.4k",
-        image: luffy,
-      },
-      {
-        id: 6,
-        name: "Luffy Gear 2",
-        price: "2.9",
-        oldprice: "4.2",
-        sales: "21.4k",
-        image: luffy,
-      },
-    ];
-    setProducts(fakeAPI);
-  }, []);
+ 
   CheckUser("Customer");
 
   return (
@@ -122,21 +64,8 @@ const DashBoardCustomer = () => {
           </div>
         </div>
 
-        {/* Hiển thị sản phẩm */}
-        <div className="my-10 mx-auto px-4 max-w-screen-xl">
-          <div className="formatProducts">
-            {products.map(({ id, name, price, oldprice, sales, image }) => (
-              <Product
-                key={id}
-                name={name}
-                price={price}
-                oldprice={oldprice}
-                sales={sales}
-                image={image}
-              />
-            ))}
-          </div>
-        </div>
+        <ListProduct/>
+        
       </div>
 
       <Footer />

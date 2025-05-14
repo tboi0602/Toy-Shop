@@ -14,18 +14,24 @@ const Icon = ({ children, onClick, className = "" }) => (
 );
 
 const HeaderCustomer = ({ stylePro, styleCart, styleOrder }) => {
-  const [isScrolled, setIsScrolled] = useState(false)
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [backToTop, setBackToTop] = useState(false);
+
   useEffect(() => {
-      const handleScroll = () => {
-        if (window.scrollY > 10) {
-          setIsScrolled(true);
-        } else {
-          setIsScrolled(false);
+    const handleScroll = () => {
+      if (window.scrollY > 10) {
+        setIsScrolled(true);
+        if (window.scrollY > 500) {
+          setBackToTop(true);
         }
-      };
-      window.addEventListener("scroll", handleScroll);
-      return () => window.removeEventListener("scroll", handleScroll);
-    }, []);
+      } else {
+        setIsScrolled(false);
+        setBackToTop(false);
+      }
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
   const handleLogout = async () => {
@@ -46,9 +52,39 @@ const HeaderCustomer = ({ stylePro, styleCart, styleOrder }) => {
     }
   };
   const { info } = useInfo();
+  const [isClickNotifi, setIsClickNotifi] = useState(false);
+  const notification = [
+    {
+      id: 1,
+      title: "Sales",
+      content: "hehe 100$",
+    },
+    {
+      id: 2,
+      title: "Sales",
+      content: "hi 100$",
+    },
+    {
+      id: 3,
+      title: "Sales",
+      content: "hihi 100$",
+    },
+    {
+      id: 4,
+      title: "Sales",
+      content: "hihi 100$",
+    },
+  ];
+
+  //!product
+  const product = [{ a: 1 }, { a: 1 }, { a: 1 }, { a: 1 }, { a: 1 }];
   return (
-    <header className={`relative flex gap-5 p-5 bg-white ${isScrolled ? "shadow-md" :""} `}>
-      <BackToTop></BackToTop>
+    <header
+      className={`relative flex gap-5 p-5 bg-white ${
+        isScrolled ? "shadow-md" : ""
+      } `}
+    >
+      {backToTop && <BackToTop />}
       <button className="center">
         <img
           src={logo}
@@ -121,24 +157,69 @@ const HeaderCustomer = ({ stylePro, styleCart, styleOrder }) => {
           </svg>
           Orders
         </Icon>
-        <Icon className="Notification btn-line" onClick={() => {}}>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
-            className="w-6 h-6"
+        <div>
+          <Icon
+            className="Notification btn-line relative"
+            onClick={() => {
+              setIsClickNotifi(!isClickNotifi);
+            }}
           >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0"
-            />
-          </svg>
-        </Icon>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              className="w-6 h-6"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0"
+              />
+            </svg>
+          </Icon>
+          <div
+            className={`absolute right-0 mt-2 w-96 max-h-64 bg-white rounded-xl shadow-xl overflow-y-auto z-50 ${
+              isClickNotifi ? "block" : "hidden"
+            }`}
+          >
+            <h2 className="px-4 py-2 text-lg font-semibold text-red-600 border-b">
+              Notifications
+            </h2>
+            {notification.map(({ id, title, content }) => (
+              <div
+                key={id}
+                className="flex items-start gap-3 px-4 py-2 border-b hover:bg-gray-50"
+              >
+                <div className="p-2 bg-red-100 text-red-600 rounded-full">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="currentColor"
+                    className="w-5 h-5"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022 23.848 23.848 0 005.455 1.31m5.714 0a3 3 0 11-5.714 0"
+                    />
+                  </svg>
+                </div>
+                <div className="flex-1">
+                  <h3 className="font-medium text-sm">{title}</h3>
+                  <p className="text-sm text-gray-600 line-clamp-2">
+                    {content}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
         <Icon
-          className={`Cart ${styleCart} flex items-center`}
+          className={`Cart ${styleCart} flex items-center relative`}
           onClick={() => navigate("/my-cart")}
         >
           <svg
@@ -156,6 +237,11 @@ const HeaderCustomer = ({ stylePro, styleCart, styleOrder }) => {
             />
           </svg>
           Cart
+          {product && (
+            <div className="w-4 h-4 bg-red-600 rounded-full text-white  center absolute -top-1 left-[10px]">
+              <p className="text-[10px]">{product.length}</p>
+            </div>
+          )}
         </Icon>
         <Icon
           className={`Profile ${stylePro} center`}

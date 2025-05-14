@@ -43,8 +43,8 @@ const SignupPage = () => {
   };
 
   return (
-    <div className=" center h-screen flex items-center justify-center">
-      <div className=" rounded-3xl overflow-hidden shadow-lg">
+    <div className="center h-screen flex items-center justify-center">
+      <div className="rounded-3xl overflow-hidden shadow-lg">
         <div className="relative grid grid-cols-2 max-[900px]:grid-cols-1 gap-4 w-full max-w-4xl h-auto">
           <div className="flex justify-center items-center p-4 max-[900px]:hidden">
             <img
@@ -55,10 +55,9 @@ const SignupPage = () => {
             />
           </div>
           <form
-            
             className="flex flex-col gap-y-10 justify-center items-center w-full lg:w-[400px] mx-auto h-full px-4 lg:px-0"
           >
-            <h1 className="font-bold text-center text-3xl lg:text-4xl  whitespace-nowrap pt-10">
+            <h1 className="font-bold text-center text-3xl lg:text-4xl whitespace-nowrap pt-10">
               Create your account
             </h1>
             <div className="flex flex-col pt-8 gap-4 w-full">
@@ -109,7 +108,7 @@ const SignupPage = () => {
                 onChange={(e) => setPassword(e.target.value)}
               />
               <InputUser
-                name="Repeat password"
+                name="Confirm password"
                 icon={
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -132,7 +131,7 @@ const SignupPage = () => {
                 onChange={(e) => setRePassword(e.target.value)}
               />
             </div>
-            {error ? <p className="text-red-600 -my-5">{error}</p>:<p className="text-red-600 -my-5 h-6"></p>}
+            {error ? <p className="text-red-600 -my-5">{error}</p> : <p className="text-red-600 -my-5 h-6"></p>}
 
             <div className="flex w-full">
               <button
