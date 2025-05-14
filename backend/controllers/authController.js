@@ -245,7 +245,7 @@ export const deleteUser = async (req, res) => {
 
 export const addProducts = async(req, res) => {
   try {
-    const {productId, productName, oldprice, sales, description} = req.body;
+    const {productId, productName, oldprice, sales, description, image} = req.body;
     const saleprice = oldprice - sales;
     const existingProduct = await Product.findOne({ productId });
     if (existingProduct) {
@@ -255,7 +255,7 @@ export const addProducts = async(req, res) => {
       });
     }
 
-    const product = new Product({productId, productName, oldprice, sales, saleprice,description,});
+    const product = new Product({productId, productName, oldprice, sales, saleprice,description, image,});
     await product.save();
     res.status(201).json({ success: true });
   } catch (err) {
@@ -279,6 +279,27 @@ export const getProducts = async (req, res) => {
   } catch (error) {
     console.error("Error taking products list:", error);
     res.status(500).json({ message: "" });
+  }
+};
+
+export const updateProductByAdmin = async (req,res) =>{
+  try {
+    const { productId, productName, oldprice, sales, imag, quantity, description } = req.body;
+
+    const result = await Product.findByOneAndUpdate(
+      productId,
+      {  productName, oldprice, sales, imag, quantity, description },
+      { new: true }
+    );
+
+    if (!result) {
+      return res.status(404).json({ success: false, message: "Product not found" });
+    }
+
+    res.json({ success: true, product: result });
+  } catch (error) {
+    console.error("Error updating product:", error);
+    res.status(500).json({ success: false, message: "Server error" });
   }
 };
 

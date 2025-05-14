@@ -18,6 +18,7 @@ import {
   usernameExist,
   deleteUser,
   addProducts,
+  updateProductByAdmin,
   deleteProducts,
 } from "../controllers/authController.js";
 const __filename = fileURLToPath(import.meta.url);
@@ -60,5 +61,7 @@ router.post("/deleteUser", deleteUser);
 router.post("/addProducts", addProducts);
 router.get("/getProducts", getProducts);
 router.post("/deleteProducts", deleteProducts);
+router.post("/updateProducts", updateProductByAdmin);
+
 
 export default router;

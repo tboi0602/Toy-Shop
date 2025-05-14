@@ -12,7 +12,6 @@
       saleQuantity:   {type: Number, default: 0},
       quantity:{type: Number, default:0},
       description: { type: String },
-      isUsing: {type: Boolean, default: true},
     }
   );
 

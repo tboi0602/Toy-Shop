@@ -3,7 +3,7 @@ import InputUser from "../components/InputUser";
 import Swal from "sweetalert2";
 import HdAdmin from "../layouts/HeaderAdmin";
 import { CheckUser } from "../Function/CheckUser";
-import { addProducts, loadInfoProducts, deleteProducts} from "../services/handleAPI";
+import { addProducts, loadInfoProducts, deleteProducts, uploadImage, updateProducts} from "../services/handleAPI";
 
 const Icon = ({ children, onClick, className = "" }) => (
   <button onClick={onClick} className={`hover:scale-110 ${className}`}>
@@ -19,9 +19,21 @@ const ManageProduct = () => {
   const [sales, setOffer] = useState("");
   const [oldprice, setPrice] = useState("");
   const [description, setDescription] = useState("");
+  const [image, setImage] = useState("");
   const [productList, setProductList] = useState([]);
   const [selectedIdToDelete, setSelectedIdToDelete] = useState(null);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [productInfo, setProductInfo] = useState({
+    productId:"",
+    productName:"",
+    saleprice:"",
+    oldprice:"",
+    sales:"",
+    image:"",
+    saleQuantity:"",
+    quantity:"",
+    description:""
+  });
 
 
   console.log(productList)
@@ -36,7 +48,7 @@ const ManageProduct = () => {
       }
   
       try {
-        const data = await addProducts(productId, productName, Number(oldprice), Number(sales), description);
+        const data = await addProducts(productId, productName, Number(oldprice), Number(sales), description, image);
         if (data.success) {
           Swal.fire({
             icon: "success",
@@ -50,6 +62,7 @@ const ManageProduct = () => {
             setPrice("");
             setOffer("");
             setDescription("");
+            setImage("");
             setError("");
             loadData(); // refresh lại danh sách
           });
@@ -71,17 +84,27 @@ const ManageProduct = () => {
     useEffect(() => {
         loadData();
       }, []);
-    // const handlefaload = (e) => {
-    //   const file = e.target.files[0];
-    //   if (file) {
-    //     const reader = new FileReader();
-    //     reader.onloadend = () => {
-    //       setUploadedImage(reader.result);
-    //       handleChange(e);
-    //     };
-    //     reader.readAsDataURL(file);
-    //   }
-    // };
+
+      const handleUpload = async (e) => {
+        const file = e.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onloadend = () => {
+            setUploadedImage(reader.result);
+          };
+          reader.readAsDataURL(file);
+      
+          // Gửi ảnh lên server
+          const formData = new FormData();
+          formData.append("image", file);
+          const res = await uploadImage(formData);
+          if (res.success) {
+            setImage(res.path); // Lưu đường dẫn ảnh để khi submit addProducts
+          } else {
+            Swal.fire("Error", "Failed to upload product image", "error");
+          }
+        }
+      };      
 
   return (
     <div>
@@ -176,7 +199,7 @@ const ManageProduct = () => {
 
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white rounded-xl shadow-xl w-full max-w-md p-6 relative mx-4 sm:mx-0">
+          <div className="bg-white shadow-xl w-full max-w-md p-6 relative mx-4 sm:mx-0 max-h-[90vh] overflow-y-auto">
             <button
               onClick={() => setShowModal(false)}
               className="absolute top-2 right-2 text-gray-500 hover:text-red-600"
@@ -237,6 +260,22 @@ const ManageProduct = () => {
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                 />
+              </div>
+              <div className="flex flex-col gap-1">
+                <label className="text-[20px]">Product image</label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleUpload}
+                  className="border p-2 rounded-md"
+                />
+                {uploadedImage && (
+                  <img
+                    src={uploadedImage}
+                    alt="Preview"
+                    className="w-32 h-32 object-cover mt-2 rounded border"
+                  />
+                )}
               </div>
 
               {error && (
