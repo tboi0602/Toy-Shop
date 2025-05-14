@@ -1,9 +1,15 @@
 import React, { useState, useEffect } from "react";
 import HdAdmin from "../layouts/HeaderAdmin";
 import { CheckUser } from "../Function/CheckUser";
-import { loadInfoCustomer, register } from "../services/handleAPI";
+import { loadInfoCustomer, register, deleteUser } from "../services/handleAPI";
 import InputUser from "../components/InputUser";
 import Swal from "sweetalert2";
+
+const Icon = ({ children, onClick, className = "" }) => (
+  <button onClick={onClick} className={`hover:scale-110 ${className}`}>
+    {children}
+  </button>
+);
 
 const ManageCustomer = () => {
   const [showModal, setShowModal] = useState(false);
@@ -12,6 +18,9 @@ const ManageCustomer = () => {
   const [repassword, setRePassword] = useState("");
   const [error, setError] = useState("");
   const [customerList, setCustomerList] = useState([]);
+  const [selectedIdToDelete, setSelectedIdToDelete] = useState(null);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+
 
   CheckUser("Admin");
 
@@ -83,17 +92,10 @@ const ManageCustomer = () => {
             onClick={() => setShowModal(true)}
             className="px-6 py-2 text-white bg-red-600 hover:bg-red-700 rounded-full shadow transition"
           >
-            Add Customer
-          </button>
-          <button
-            onClick={() => setShowModal(true)}
-            className="px-6 py-2 text-white bg-red-600 hover:bg-red-700 rounded-full shadow transition"
-          >
-            Delete Customer
+            Add
           </button>
         </div>
       </div>
-
 
       {/* Customer Table */}
       <div className="px-6 overflow-x-auto">
@@ -105,22 +107,39 @@ const ManageCustomer = () => {
             <span>Gender</span>
             <span>Email</span>
             <span>Addresss</span>
-            <span>Spending</span>
           </div>
 
           {customerList && customerList.length > 0 ? (
             customerList.map((cus, index) => (
               <div
                 key={cus._id || index}
-                className="grid grid-cols-7 gap-4 border-b p-3 text-sm bg-white hover:bg-gray-50 transition"
-              >
+                className={`grid grid-cols-7 gap-4 border-b p-3 text-sm transition`}              
+                >
                 <span className="truncate">{cus.username}</span>
                 <span className="truncate">{cus.yourname}</span>
                 <span>{cus.birthDay?.split("T")[0] || ""}</span>
                 <span>{cus.gender}</span>
                 <span className="truncate">{cus.email}</span>
                 <span className="truncate">{cus.address}</span>
-                <span className="truncate">{}</span>
+                <div className="flex justify-end gap-7">
+                  <Icon className="Trash btn-line" onClick={() => {
+                      setSelectedIdToDelete(cus._id);
+                      setShowConfirmModal(true);
+                    }}>
+                      <svg xmlns="http://www.w3.org/2000/svg" 
+                      fill="none" 
+                      viewBox="0 0 24 24" 
+                      stroke-width="1.5" 
+                      stroke="currentColor" 
+                      class="size-6"
+                    >
+                      <path 
+                      stroke-linecap="round" 
+                      stroke-linejoin="round" 
+                      d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                    </svg>
+                  </Icon>
+                </div>
               </div>
             ))
           ) : (
@@ -184,6 +203,33 @@ const ManageCustomer = () => {
           </div>
         </div>
       )}
+
+      {showConfirmModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white rounded-xl shadow-xl p-6 w-full max-w-md relative mx-4 sm:mx-0">
+            <h2 className="text-xl font-bold text-center mb-4">Confirm Delete</h2>
+            <p className="text-center mb-6">Do you sure want to disable this customer account?</p>
+            <div className="flex justify-center gap-4">
+              <button
+                onClick={async() => {
+                  setCustomerList(prev => prev.filter(cus => cus._id !== selectedIdToDelete));
+                  setShowConfirmModal(false);
+                }}
+                className="bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded-full"
+              >
+                Yes, disable
+              </button>
+              <button
+                onClick={() => setShowConfirmModal(false)}
+                className="bg-gray-300 hover:bg-gray-400 text-black px-5 py-2 rounded-full"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 };

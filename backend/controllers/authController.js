@@ -224,3 +224,20 @@ export const updateInfoByAdmin = async (req,res) =>{
     res.status(500).json({ success: false, message: "Server error" });
   }
 };
+
+export const deleteUser = async (req, res) => {
+  try {
+    const updated = await User.findByIdAndUpdate(
+      req.body.id,
+      { isActive: false },
+      { new: true }
+    );
+    if (!updated) {
+      return res.status(404).json({ success: false, message: "Customer not found" });
+    }
+    res.json({ success: true, customer: updated });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+};
