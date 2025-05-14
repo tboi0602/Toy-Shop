@@ -16,6 +16,9 @@ import ManageProduct from "./pages/ManageProduct";
 import ManageStaff from "./pages/ManageStaff";
 import ManageRevenue from "./pages/ManageRevenue";
 import ResetPassword from "./pages/ResetPassword";
+import CartPage from "./pages/CartPage";
+import OrderPage from "./pages/OrderPage";
+import CheckoutPage from "./pages/CheckoutPage";
 
 function App() {
   return (
@@ -38,6 +41,10 @@ function App() {
         <Route path="/manage-staff" element={<ManageStaff />} /> 
         <Route path="/manage-revenue" element={<ManageRevenue />} /> 
         <Route path="/reset-password" element={<ResetPassword />} /> 
+        <Route path="/my-orders" element={<OrderPage />} /> 
+        <Route path="/my-cart" element={<CartPage />} /> 
+        <Route path="/checkout" element={<CheckoutPage />} /> 
+
       </Routes>
     </Router>
   );

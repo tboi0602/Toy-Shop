@@ -34,8 +34,8 @@ const LoginPage = () => {
   };
 
   return (
-    <div className=" center h-screen flex items-center justify-center">
-      <div className=" rounded-3xl overflow-hidden shadow-lg">
+    <div className="center h-screen flex items-center justify-center">
+      <div className="rounded-3xl overflow-hidden shadow-lg">
         <div className="relative grid grid-cols-2 max-lg:grid-cols-1 gap-4 w-full max-w-4xl h-auto">
           <div className="flex justify-center items-center p-4 max-lg:hidden">
             <img
@@ -45,13 +45,11 @@ const LoginPage = () => {
               alt="Background"
             />
           </div>
-          <form
-            className="flex flex-col gap-y-10 justify-center items-center w-full lg:w-[400px] px-4 lg:px-0 mx-auto h-full"
-          >
-            <h1 className="font-bold text-center text-3xl lg:text-4xl  whitespace-nowrap pt-10">
+          <form className="flex flex-col gap-8 justify-center items-center w-full lg:w-[400px] px-4 lg:px-0 mx-auto h-full">
+            <h1 className="font-bold text-center text-3xl lg:text-4xl whitespace-nowrap pt-10">
               Welcome to NinJaShop
             </h1>
-            <div className="flex flex-col pt-8 gap-8 w-full">
+            <div className="flex flex-col gap-6 w-full">
               <InputUser
                 name="User name"
                 icon={
@@ -101,7 +99,11 @@ const LoginPage = () => {
                 autoComplete="off"
               />
             </div>
-            {error ? <p className="text-red-600 -my-5">{error}</p>:<p className="text-red-600 -my-5 h-6"></p>}
+            {error ? (
+              <p className="text-red-600 -my-5">{error}</p>
+            ) : (
+              <p className="text-red-600 -my-5 h-6"></p>
+            )}
             <div className="flex w-full">
               <button
                 className="btn-error px-16 py-4 rounded-full w-full"
@@ -110,7 +112,7 @@ const LoginPage = () => {
                 Log in
               </button>
             </div>
-            <div className="flex flex-col items-center text-sm  text-gray-500 -mt-6 mb-6">
+            <div className="flex flex-col items-center text-sm text-gray-500 -mt-6 mb-6">
               <button
                 onClick={() => navigate("/reset-password")}
                 className="text-black hover:underline"
