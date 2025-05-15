@@ -57,7 +57,11 @@ const HeaderAdmin = ({ stylePro }) => {
   };
 
   return (
-    <header className={`relative flex justify-between items-center p-5 bg-white ${isScrolled ? " shadow-md" : ""}`}>
+    <header
+      className={`relative flex justify-between items-center p-5 bg-white ${
+        isScrolled ? " shadow-md" : ""
+      }`}
+    >
       <BackToTop></BackToTop>
       <button className="flex items-center">
         <img
@@ -109,14 +113,6 @@ const HeaderAdmin = ({ stylePro }) => {
           onClick={() => navigate("/manage-order")}
         >
           Order
-        </div>
-        <div
-          className={`text-red-600 hover:translate-y-[-5px] font-bold cursor-pointer ${getLinkClass(
-            "/manage-revenue"
-          )}`}
-          onClick={() => navigate("/manage-revenue")}
-        >
-          Revenue
         </div>
       </div>
 

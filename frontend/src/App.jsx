@@ -14,7 +14,6 @@ import ManageNoti from "./pages/ManageNoti";
 import ManageOrder from "./pages/ManageOrder";
 import ManageProduct from "./pages/ManageProduct";
 import ManageStaff from "./pages/ManageStaff";
-import ManageRevenue from "./pages/ManageRevenue";
 import ResetPassword from "./pages/ResetPassword";
 import CartPage from "./pages/CartPage";
 import OrderPage from "./pages/OrderPage";
@@ -39,7 +38,6 @@ function App() {
         <Route path="/manage-order" element={<ManageOrder />} /> 
         <Route path="/manage-product" element={<ManageProduct />} /> 
         <Route path="/manage-staff" element={<ManageStaff />} /> 
-        <Route path="/manage-revenue" element={<ManageRevenue />} /> 
         <Route path="/reset-password" element={<ResetPassword />} /> 
         <Route path="/my-orders" element={<OrderPage />} /> 
         <Route path="/my-cart" element={<CartPage />} /> 
