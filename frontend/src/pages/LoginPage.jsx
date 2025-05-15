@@ -20,12 +20,12 @@ const LoginPage = () => {
     try {
       const data = await login(username, password);
       if (data.success) {
-        data.position === "Customer" ? navigate("/dashboard-customer") : data.position === "Admin" ? navigate("/dashboard-admin") : navigate("/dashboard-customer");
-      }
-      if (data.isActive === false){
-        setError("Account is disabled.");
-      }
-      else {
+        data.position === "Customer"
+          ? navigate("/dashboard-customer")
+          : data.position === "Admin"
+          ? navigate("/dashboard-admin")
+          : navigate("/dashboard-customer");
+      } else {
         setError(data.message || "Login failed!");
       }
     } catch (err) {

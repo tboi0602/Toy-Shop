@@ -33,7 +33,7 @@ const storage = multer.diskStorage({
     cb(null, path.join(__dirname, "../public/uploads"));
   },
   filename: function (req, file, cb) {
-    const newFileName = `avt_${Math.floor(Date.now() / 1000)}`; // Nếu là sản phẩm thì nổi avt => product
+    const newFileName = `image_${Math.floor(Date.now() / 1000)}`;
     cb(null, newFileName + path.extname(file.originalname));
   },
 });
@@ -70,6 +70,5 @@ router.post("/updateProducts", updateProductByAdmin);
 router.post("/addNotifications", addNotification);
 router.get("/getNotifications", getNotifications);
 router.post("/deleteNotifications", deleteNotifications);
-
 
 export default router;

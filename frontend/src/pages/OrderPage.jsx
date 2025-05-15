@@ -85,28 +85,30 @@ export default function OrderPage() {
       <div className="p-4 space-y-6 max-w-4xl mx-auto">
         {/* Filter Buttons */}
         <div className="mb-4 flex flex-wrap gap-3">
-          {["All", "Cancelled", "Completed", "Processing", "Confirmed"].map((status) => {
-            const colors = {
-              All: "blue",
-              Cancelled: "red",
-              Completed: "green",
-              Processing: "yellow",
-              Confirmed: "blue",
-            };
-            return (
-              <button
-                key={status}
-                onClick={() => setSelectedStatus(status)}
-                className={`px-4 py-2 rounded-xl ${
-                  selectedStatus === status
-                    ? `bg-${colors[status]}-500 text-white`
-                    : "bg-gray-200 text-gray-700"
-                } hover:bg-opacity-80`}
-              >
-                {status}
-              </button>
-            );
-          })}
+          {["All", "Cancelled", "Completed", "Processing", "Confirmed"].map(
+            (status) => {
+              const colors = {
+                All: "blue",
+                Cancelled: "red",
+                Completed: "green",
+                Processing: "yellow",
+                Confirmed: "blue",
+              };
+              return (
+                <button
+                  key={status}
+                  onClick={() => setSelectedStatus(status)}
+                  className={`px-4 py-2 rounded-xl ${
+                    selectedStatus === status
+                      ? `bg-${colors[status]}-500 text-white`
+                      : "bg-gray-200 text-gray-700"
+                  } hover:bg-opacity-80`}
+                >
+                  {status}
+                </button>
+              );
+            }
+          )}
         </div>
 
         {/* Orders */}
@@ -118,9 +120,7 @@ export default function OrderPage() {
             {/* Status */}
             <div
               className={`text-sm font-semibold ${
-                order.status === "Cancelled"
-                  ? "text-red-500"
-                  : "text-green-600"
+                order.status === "Cancelled" ? "text-red-500" : "text-green-600"
               }`}
             >
               {order.status.toUpperCase()}
