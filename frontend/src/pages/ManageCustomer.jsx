@@ -20,6 +20,9 @@ const ManageCustomer = () => {
   const [customerList, setCustomerList] = useState([]);
   const [selectedIdToDelete, setSelectedIdToDelete] = useState(null);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [showFormModal, setShowFormModal] = useState(false);
+  const [selectedCustomer, setSelectedCustomer] = useState(null);
+  
 
 
   CheckUser("Admin");
@@ -61,6 +64,11 @@ const ManageCustomer = () => {
     }
   };
 
+  const handleViewDetail = (cus) => {
+    setSelectedCustomer(cus);
+    setShowModal(true);
+  };
+
   const loadData = async () => {
     const data = await loadInfoCustomer();
     if (data.success) setCustomerList(data.customers);
@@ -89,7 +97,7 @@ const ManageCustomer = () => {
         {/* Bọc hai nút trong 1 div flex */}
         <div className="flex gap-4">
           <button
-            onClick={() => setShowModal(true)}
+            onClick={() => setShowFormModal(true)}
             className="px-6 py-2 text-white bg-red-600 hover:bg-red-700 rounded-full shadow transition"
           >
             Add
@@ -122,6 +130,26 @@ const ManageCustomer = () => {
                 <span className="truncate">{cus.email}</span>
                 <span className="truncate">{cus.address}</span>
                 <div className="flex justify-end gap-7">
+                  <Icon className="View btn-line" onClick={() => {
+                      handleViewDetail(cus);
+                    }}>
+                    <svg 
+                      xmlns="http://www.w3.org/2000/svg" 
+                      fill="none" viewBox="0 0 24 24"
+                      stroke-width="1.5"
+                      stroke="currentColor" 
+                      class="size-6"
+                    >
+                    <path 
+                      stroke-linecap="round" 
+                      stroke-linejoin="round" 
+                      d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                    <path 
+                    stroke-linecap="round" 
+                    stroke-linejoin="round" 
+                    d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                    </svg>
+                  </Icon>
                   <Icon className="Trash btn-line" onClick={() => {
                       setSelectedIdToDelete(cus._id);
                       setShowConfirmModal(true);
@@ -149,11 +177,11 @@ const ManageCustomer = () => {
       </div>
 
       {/* Modal */}
-      {showModal && (
+      {showFormModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-white rounded-xl shadow-xl w-full max-w-lg p-6 relative mx-4 sm:mx-0">
             <button
-              onClick={() => setShowModal(false)}
+              onClick={() => setShowFormModal(false)}
               className="absolute top-2 right-2 text-gray-500 hover:text-red-600"
             >
               ✕
@@ -200,6 +228,31 @@ const ManageCustomer = () => {
                 Add Customer
               </button>
             </form>
+          </div>
+        </div>
+      )}
+
+      {showModal && selectedCustomer && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white shadow-xl w-full max-w-lg max-h-[90vh] overflow-y-auto p-6 relative mx-4 sm:mx-0">
+            <div className="flex flex-col gap-y-4">
+              <h1 className="text-2xl font-bold text-center mb-2">Thông tin nhân viên</h1>
+
+              <p><strong>Username:</strong> {selectedCustomer.username}</p>
+              <p><strong>Full Name:</strong> {selectedCustomer.yourname}</p>
+              <p><strong>Birthday:</strong> {selectedCustomer.birthDay}</p>
+              <p><strong>Gender:</strong> {selectedCustomer.gender}</p>
+              <p><strong>Email:</strong> {selectedCustomer.email}</p>
+              <p><strong>Phone Number:</strong> {selectedCustomer.phoneNum}</p>
+              <p><strong>Address:</strong> {selectedCustomer.address}</p>
+
+              <button
+                onClick={() => setShowModal(false)}
+                className="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-6 rounded-full transition"
+              >
+                Đóng
+              </button>
+            </div>
           </div>
         </div>
       )}

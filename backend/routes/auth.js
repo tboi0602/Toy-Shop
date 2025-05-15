@@ -12,6 +12,7 @@ import {
   checkSeSSion,
   changePassword,
   getCustomers,
+  addStaff,
   getStaffs,
   getProducts,
   resetPassword,
@@ -20,6 +21,9 @@ import {
   addProducts,
   updateProductByAdmin,
   deleteProducts,
+  addNotification,
+  getNotifications,
+  deleteNotifications,
 } from "../controllers/authController.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -56,12 +60,16 @@ router.post("/upload", upload.single("image"), (req, res) => {
   res.json({ success: true, path: filePath });
 });
 router.get("/staffs", getStaffs);
+router.post("/addStaffs", addStaff);
 router.post("/updateInfoByAd", updateInfoByAdmin);
 router.post("/deleteUser", deleteUser);
 router.post("/addProducts", addProducts);
 router.get("/getProducts", getProducts);
 router.post("/deleteProducts", deleteProducts);
 router.post("/updateProducts", updateProductByAdmin);
+router.post("/addNotifications", addNotification);
+router.get("/getNotifications", getNotifications);
+router.post("/deleteNotifications", deleteNotifications);
 
 
 export default router;

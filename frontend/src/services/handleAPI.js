@@ -139,12 +139,22 @@ export const deleteUser = async (updatedData) => {
   return res.json();
 };
 
-export async function addProducts(productId, productName, oldprice, sales, description) {
+export async function addStaffs(username, password, position, email, yourname, birthDay,address, gender, phoneNum) {
+  const res = await fetch("http://localhost:5000/api/addStaffs", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+    body: JSON.stringify({ username, password, position, email, yourname, birthDay,address, gender, phoneNum}),
+  });
+  return res.json();
+}
+
+export async function addProducts(productId, productName, oldprice, sales, description, image) {
   const res = await fetch("http://localhost:5000/api/addProducts", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     credentials: "include",
-    body: JSON.stringify({ productId, productName, oldprice, sales, description}),
+    body: JSON.stringify({ productId, productName, oldprice, sales, description, image}),
   });
   return res.json();
 }
@@ -174,6 +184,35 @@ export async function updateProducts(productId) {
     headers: { "Content-Type": "application/json" },
     credentials: "include",
     body: JSON.stringify({ productId}),
+  });
+  return res.json();
+}
+
+export async function addNotifications(title, content) {
+  const res = await fetch("http://localhost:5000/api/addNotifications", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+    body: JSON.stringify({ title, content}),
+  });
+  return res.json();
+}
+
+export const loadInfoNotifications = async () => {
+  const res = await fetch("http://localhost:5000/api/getNotifications", {
+    method: "GET",
+    credentials: "include",
+    headers: { Accept: "application/json" },
+  });
+  return res.json();
+};
+
+export async function deleteNotifications(id) {
+  const res = await fetch("http://localhost:5000/api/deleteNotifications", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+    body: JSON.stringify({ id}),
   });
   return res.json();
 }

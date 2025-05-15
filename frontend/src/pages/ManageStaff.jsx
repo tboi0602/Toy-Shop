@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import HdAdmin from "../layouts/HeaderAdmin";
 import { CheckUser } from "../Function/CheckUser";
-import { loadInfoStaff, register, updateInfoByAd, deleteUser } from "../services/handleAPI";
+import { loadInfoStaff, addStaffs, updateInfoByAd, deleteUser } from "../services/handleAPI";
 import InputUser from "../components/InputUser";
 import Swal from "sweetalert2";
 
@@ -12,14 +12,22 @@ const Icon = ({ children, onClick, className = "" }) => (
 );
 
 const ManageStaff = () => {
-  const [showModal, setShowModal] = useState(false);
-  const [showEditModal, setShowEditModal] = useState(false);
+  const [isEditting, setIsEditting] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [address, setAddress] = useState("");
+  const [phoneNum, setPhoneNum] = useState("");
+  const [gender, setGender] = useState("");
+  const [yourname, setName] = useState("");
+  const [birthDay, setBirthDay] = useState("");
   const [repassword, setRePassword] = useState("");
   const [error, setError] = useState("");
   const [staffList, setStaffList] = useState([]);
+  const [showFormModal, setShowFormModal] = useState(false);
   const [selectedStaff, setSelectedStaff] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+
   const [editForm, setEditForm] = useState({
     username: "",
     yourname: "",
@@ -35,7 +43,9 @@ const ManageStaff = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!username || !password || !repassword) {
+    if (!username || !password || !repassword || !gender || !yourname ||
+      !birthDay || !address || !email || !phoneNum
+    ) {
       setError("Please do not leave blank!");
       return;
     }
@@ -45,8 +55,14 @@ const ManageStaff = () => {
       return;
     }
 
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setError("Email is invalid!");
+      return;
+    }
+
     try {
-      const data = await register(username, password, "Staff");
+      const data = await addStaffs(username, password, "Staff", email, yourname, birthDay, address, gender, phoneNum);
       if (data.success) {
         Swal.fire({
           icon: "success",
@@ -54,10 +70,16 @@ const ManageStaff = () => {
           text: "You have signed up successfully",
           confirmButtonColor: "#d33",
         }).then(() => {
-          setShowModal(false);
+          setShowFormModal(false);
           setUsername("");
           setPassword("");
           setRePassword("");
+          setAddress("");
+          setBirthDay("");
+          setEmail("");
+          setGender("");
+          setName("");
+          setPhoneNum("");
           setError("");
           loadData(); // refresh lại danh sách
         });
@@ -78,7 +100,7 @@ const ManageStaff = () => {
       if (data.success) {
         Swal.fire("Updated!", "Staff info has been updated.", "success");
         console.log("Success");
-        setShowEditModal(false);
+        setShowFormModal(false);
         loadData();
       } else {
         Swal.fire("Failed", data.message || "Update failed", "error");
@@ -87,6 +109,11 @@ const ManageStaff = () => {
       console.error(err);
       Swal.fire("Error", "Server error", "error");
     }
+  };
+
+  const handleViewDetail = (staff) => {
+    setSelectedStaff(staff);
+    setShowModal(true);
   };
 
   const loadData = async () => {
@@ -117,7 +144,10 @@ const ManageStaff = () => {
         {/* Bọc hai nút trong 1 div flex */}
         <div className="flex gap-4">
             <button
-            onClick={() => setShowModal(true)}
+            onClick={() =>{
+              setIsEditting(false);
+              setShowFormModal(true);
+              }}
             className="px-6 py-2 text-white bg-red-600 hover:bg-red-700 rounded-full shadow transition"
             >
             Add
@@ -152,7 +182,31 @@ const ManageStaff = () => {
                 <span className="truncate">{staff.phoneNum}</span>
                 <span className="truncate">{staff.email}</span>
                 <div className="flex justify-end gap-7">
-                  <Icon className="Wrench btn-line"onClick={() => {
+
+                <Icon className="View btn-line" onClick={() => {
+                    handleViewDetail(staff);
+                  }}>
+                  <svg 
+                    xmlns="http://www.w3.org/2000/svg" 
+                    fill="none" viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor" 
+                    class="size-6"
+                  >
+                  <path 
+                    stroke-linecap="round" 
+                    stroke-linejoin="round" 
+                    d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                  <path 
+                  stroke-linecap="round" 
+                  stroke-linejoin="round" 
+                  d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                  </svg>
+                </Icon>
+                  
+                  <Icon className="Edit btn-line"onClick={() => {
+                      e.stopPropagation();
+                      setIsEditting(true);
                       setSelectedStaff(staff);
                       setEditForm({
                         username: staff.username || "",
@@ -162,25 +216,26 @@ const ManageStaff = () => {
                         email: staff.email || "",
                         phoneNum: staff.phoneNum || "",
                       });
-                      setShowEditModal(true);
+                      setShowFormModal(true);
                     }}
                     >
-                      <svg
-                       xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                         viewBox="0 0 24 24"
-                         stroke-width="1.5"
-                         stroke="currentColor"
-                         class="size-6"
-                        >
-                        <path
-                         stroke-linecap="round"
-                         stroke-linejoin="round"
-                         d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
-                      </svg>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                        viewBox="0 0 24 24"
+                        stroke-width="1.5"
+                        stroke="currentColor"
+                        class="size-6"
+                      >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+                    </svg>
                   </Icon>
 
                   <Icon className="Trash btn-line" onClick={() => {
+                    e.stopPropagation();
                     setSelectedIdToDelete(staff._id);
                     setShowConfirmModal(true);
                   }}>
@@ -207,111 +262,116 @@ const ManageStaff = () => {
       </div>
 
       {/* Modal */}
-      {showModal && (
+      {showFormModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white rounded-xl shadow-xl w-full max-w-lg p-6 relative mx-4 sm:mx-0">
+          <div className="bg-white shadow-xl w-full max-w-lg max-h-[90vh] overflow-y-auto p-6 relative mx-4 sm:mx-0">
             <button
-              onClick={() => setShowModal(false)}
+              onClick={() => setShowFormModal(false)}
               className="absolute top-2 right-2 text-gray-500 hover:text-red-600"
             >
               ✕
             </button>
 
-            <form
-              onSubmit={handleSubmit}
-              className="flex flex-col gap-y-8 w-full"
-            >
+            <form onSubmit={isEditting ? handleUpdate : handleSubmit} className="flex flex-col gap-y-4">
               <h1 className="text-2xl font-bold text-center mb-2">
-                Add Staff
+                {isEditting ? "Edit Staff Info" : "Add Staff"}
               </h1>
 
-              <InputUser
-                name="User name"
-                placeholder="Enter user name"
-                type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-              />
-              <InputUser
-                name="Password"
-                placeholder="Enter your password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-              <InputUser
-                name="Repeat password"
-                placeholder="Re-enter your password"
-                type="password"
-                value={repassword}
-                onChange={(e) => setRePassword(e.target.value)}
-              />
-
-              {error && (
-                <p className="text-red-600 text-center text-sm">{error}</p>
+              {/* Form Fields */}
+              {!isEditting && (
+                <>
+                  <InputUser name="Username" value={username} onChange={(e) => setUsername(e.target.value)} />
+                  <InputUser name="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                  <InputUser name="Repeat Password" type="password" value={repassword} onChange={(e) => setRePassword(e.target.value)} />
+                  <InputUser name="Address" value={address} onChange={(e) => setAddress(e.target.value)} />
+                </>
               )}
 
-              <button
+              <InputUser
+                name="Full Name"
+                value={isEditting ? editForm.yourname : yourname}
+                onChange={(e) =>
+                  isEditting
+                    ? setEditForm({ ...editForm, yourname: e.target.value })
+                    : setName(e.target.value)
+                }
+              />
+              <InputUser
+                name="Birthday"
+                type="date"
+                value={isEditting ? editForm.birthDay : birthDay}
+                onChange={(e) =>
+                  isEditting
+                    ? setEditForm({ ...editForm, birthDay: e.target.value })
+                    : setBirthDay(e.target.value)
+                }
+              />
+              <InputUser
+                name="Gender"
+                value={isEditting ? editForm.gender : gender}
+                onChange={(e) =>
+                  isEditting
+                    ? setEditForm({ ...editForm, gender: e.target.value })
+                    : setGender(e.target.value)
+                }
+              />
+              <InputUser
+                name="Email"
+                value={isEditting ? editForm.email : email}
+                onChange={(e) =>
+                  isEditting
+                    ? setEditForm({ ...editForm, email: e.target.value })
+                    : setEmail(e.target.value)
+                }
+              />
+              <InputUser
+                name="Phone Number"
+                value={isEditting ? editForm.phoneNum : phoneNum}
+                onChange={(e) =>
+                  isEditting
+                    ? setEditForm({ ...editForm, phoneNum: e.target.value })
+                    : setPhoneNum(e.target.value)
+                }
+              />
+
+              {error && <p className="text-red-600 text-center text-sm">{error}</p>}
+
+              <button onClick={()=> showFormModal(false)}
                 type="submit"
                 className="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-6 rounded-full transition"
               >
-                Add staff
+                {isEditting ? "Update" : "Add"} Staff
               </button>
             </form>
           </div>
         </div>
       )}
 
-    {showEditModal && (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-        <div className="bg-white rounded-xl shadow-xl w-full max-w-lg p-6 relative mx-4 sm:mx-0">
-        <button
-            onClick={() => setShowEditModal(false)}
-            className="absolute top-2 right-2 text-gray-500 hover:text-red-600"
-        >
-            ✕
-        </button>
+    {showModal && selectedStaff && (
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+        <div className="bg-white shadow-xl w-full max-w-lg max-h-[90vh] overflow-y-auto p-6 relative mx-4 sm:mx-0">
+          <div className="flex flex-col gap-y-4">
+            <h1 className="text-2xl font-bold text-center mb-2">Thông tin nhân viên</h1>
 
-        <form onSubmit={handleUpdate} className="flex flex-col gap-y-4">
-            <h1 className="text-2xl font-bold text-center mb-2">Edit Staff Info</h1>
-
-            <InputUser
-            name="Full Name"
-            value={editForm.yourname}
-            onChange={(e) => setEditForm({ ...editForm, yourname: e.target.value })}
-            />
-            <InputUser
-            name="Birthday"
-            type="date"
-            value={editForm.birthDay}
-            onChange={(e) => setEditForm({ ...editForm, birthDay: e.target.value })}
-            />
-            <InputUser
-            name="Gender"
-            value={editForm.gender}
-            onChange={(e) => setEditForm({ ...editForm, gender: e.target.value })}
-            />
-            <InputUser
-            name="Email"
-            value={editForm.email}
-            onChange={(e) => setEditForm({ ...editForm, email: e.target.value })}
-            />
-            <InputUser
-            name="Phone Number"
-            value={editForm.phoneNum}
-            onChange={(e) => setEditForm({ ...editForm, phoneNum: e.target.value })}
-            />
+            <p><strong>Username:</strong> {selectedStaff.username}</p>
+            <p><strong>Full Name:</strong> {selectedStaff.yourname}</p>
+            <p><strong>Birthday:</strong> {selectedStaff.birthDay}</p>
+            <p><strong>Gender:</strong> {selectedStaff.gender}</p>
+            <p><strong>Email:</strong> {selectedStaff.email}</p>
+            <p><strong>Phone Number:</strong> {selectedStaff.phoneNum}</p>
+            <p><strong>Address:</strong> {selectedStaff.address}</p>
 
             <button
-            type="submit"
-            className="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-6 rounded-full transition"
+              onClick={() => setShowModal(false)}
+              className="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-6 rounded-full transition"
             >
-            Update
+              Close
             </button>
-        </form>
+          </div>
         </div>
-    </div>
+      </div>
     )}
+
     {showConfirmModal && (
             <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
               <div className="bg-white rounded-xl shadow-xl p-6 w-full max-w-md relative mx-4 sm:mx-0">

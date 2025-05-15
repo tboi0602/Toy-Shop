@@ -85,26 +85,26 @@ const ManageProduct = () => {
         loadData();
       }, []);
 
-      const handleUpload = async (e) => {
-        const file = e.target.files[0];
-        if (file) {
-          const reader = new FileReader();
-          reader.onloadend = () => {
-            setUploadedImage(reader.result);
-          };
-          reader.readAsDataURL(file);
-      
-          // Gửi ảnh lên server
-          const formData = new FormData();
-          formData.append("image", file);
-          const res = await uploadImage(formData);
-          if (res.success) {
-            setImage(res.path); // Lưu đường dẫn ảnh để khi submit addProducts
-          } else {
-            Swal.fire("Error", "Failed to upload product image", "error");
-          }
+    const handleUpload = async (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setUploadedImage(reader.result);
+        };
+        reader.readAsDataURL(file);
+    
+        // Gửi ảnh lên server
+        const formData = new FormData();
+        formData.append("image", file);
+        const res = await uploadImage(formData);
+        if (res.success) {
+          setImage(res.path); // Lưu đường dẫn ảnh để khi submit addProducts
+        } else {
+          Swal.fire("Error", "Failed to upload product image", "error");
         }
-      };      
+      }
+    };      
 
   return (
     <div>

@@ -1,5 +1,6 @@
   import User from "../models/User.js";
   import Product from "../models/Product.js";
+  import Notification from "../models/Notification.js";
   import bcrypt from "bcrypt";
   //!Đăng ký
   export const handleRegister = async (req, res) => {
@@ -189,6 +190,29 @@
     }
   };
 
+  export const addStaff = async (req, res) => {
+    try {
+      const { username, password, position, email, yourname, birthDay,address, gender, phoneNum } = req.body;
+
+      const existingUser = await User.findOne({ username });
+      if (existingUser) {
+        return res.status(409).json({
+          success: false,
+          message: "Username already exists",
+        });
+      }
+
+      const user = new User({ username, password, position, email, yourname, birthDay,address, gender, phoneNum });
+      await user.save();
+      res.status(201).json({ success: true });
+    } catch (err) {
+      res.status(500).json({
+        success: false,
+        message: "Server error during sign up",
+      });
+    }
+  };
+
 // Lấy danh sách Staff
 export const getStaffs = async (req, res) => {
   try {
@@ -311,6 +335,49 @@ export const deleteProducts = async (req, res) => {
       return res.status(404).json({ success: false, message: "Product not found" });
     }
     res.json({ success: true, message: "Product deleted successfully" });
+  } catch (error) {
+    console.error("Delete error:", error); // log ra terminal để kiểm tra lỗi thật sự
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+};
+
+
+export const addNotification = async (req, res) => {
+  try {
+    const { title, content } = req.body;
+    const newNoti = new Notification({ title, content });
+    await newNoti.save();
+
+    res.status(201).json({ success: true });
+  } catch (err) {
+    console.error("Error adding notification:", err);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+};
+
+export const getNotifications = async (req, res) => {
+  try {
+    const notifications = await Notification.find();
+    if (!notifications)
+      return res.json({
+        success: false,
+        message: "No notifications have added yet!",
+      });
+    res.json({ success: true, notifications });
+  } catch (error) {
+    console.error("Error taking notifications list:", error);
+    res.status(500).json({ message: "" });
+  }
+};
+
+export const deleteNotifications = async (req, res) => {
+  try {
+    console.log("Notification ID received:", req.body.id);
+    const deleted = await Notification.findByIdAndDelete(req.body.id); // kiểm tra đúng field chưa
+    if (!deleted) {
+      return res.status(404).json({ success: false, message: "Notification not found" });
+    }
+    res.json({ success: true, message: "Notification deleted successfully" });
   } catch (error) {
     console.error("Delete error:", error); // log ra terminal để kiểm tra lỗi thật sự
     res.status(500).json({ success: false, message: "Server error" });
