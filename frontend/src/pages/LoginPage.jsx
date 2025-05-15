@@ -20,21 +20,12 @@ const LoginPage = () => {
     try {
       const data = await login(username, password);
       if (data.success) {
-<<<<<<< HEAD
         data.position === "Customer"
           ? navigate("/dashboard-customer")
           : data.position === "Admin"
           ? navigate("/dashboard-admin")
           : navigate("/dashboard-customer");
       } else {
-=======
-        data.position === "Customer" ? navigate("/dashboard-customer") : data.position === "Admin" ? navigate("/dashboard-admin") : navigate("/dashboard-customer");
-      }
-      if (data.isActive === false){
-        setError("Account is disabled.");
-      }
-      else {
->>>>>>> 7ff338b1fe446ab5448869e89983976d447f214d
         setError(data.message || "Login failed!");
       }
     } catch (err) {
