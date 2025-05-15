@@ -138,3 +138,42 @@ export const deleteUser = async (updatedData) => {
   });
   return res.json();
 };
+
+export async function addProducts(productInfo) {
+  const res = await fetch("http://localhost:5000/api/addProducts", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+    body: JSON.stringify(productInfo),
+  });
+  return res.json();
+}
+
+export const loadInfoProducts = async () => {
+  const res = await fetch("http://localhost:5000/api/getProducts", {
+    method: "GET",
+    credentials: "include",
+    headers: { Accept: "application/json" },
+  });
+  return res.json();
+};
+
+export async function deleteProducts(productId) {
+  const res = await fetch("http://localhost:5000/api/deleteProducts", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+    body: JSON.stringify({ productId}),
+  });
+  return res.json();
+}
+
+export async function updateProducts(productId) {
+  const res = await fetch("http://localhost:5000/api/updateProducts", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+    body: JSON.stringify({ productId}),
+  });
+  return res.json();
+}

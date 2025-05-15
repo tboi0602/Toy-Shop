@@ -13,9 +13,13 @@ import {
   changePassword,
   getCustomers,
   getStaffs,
+  getProducts,
   resetPassword,
   usernameExist,
   deleteUser,
+  addProducts,
+  updateProductByAdmin,
+  deleteProducts,
 } from "../controllers/authController.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -25,7 +29,7 @@ const storage = multer.diskStorage({
     cb(null, path.join(__dirname, "../public/uploads"));
   },
   filename: function (req, file, cb) {
-    const newFileName = `avt_${Math.floor(Date.now() / 1000)}`; // Nếu là sản phẩm thì nổi avt => product
+    const newFileName = `image_${Math.floor(Date.now() / 1000)}`;
     cb(null, newFileName + path.extname(file.originalname));
   },
 });
@@ -54,5 +58,9 @@ router.post("/upload", upload.single("image"), (req, res) => {
 router.get("/staffs", getStaffs);
 router.post("/updateInfoByAd", updateInfoByAdmin);
 router.post("/deleteUser", deleteUser);
+router.post("/addProducts", addProducts);
+router.get("/getProducts", getProducts);
+router.post("/deleteProducts", deleteProducts);
+router.post("/updateProducts", updateProductByAdmin);
 
 export default router;
