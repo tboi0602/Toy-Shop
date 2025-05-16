@@ -29,7 +29,7 @@ const ProductList = () => {
             price={oldprice}
             oldprice={saleprice}
             sales={sales}
-            image={`http://localhost:5000/${image.replace(/^\/+/, "")}`}
+            image={`http://localhost:5000/${image?.replace(/^\/+/, "")}`}
             onClick={() =>
               setSelectedProduct({ productId, productName, oldprice, saleprice, sales, image, description })
             }

@@ -47,7 +47,7 @@ const ManageProduct = () => {
     e.preventDefault();
     const { productId, productName, oldprice, sales } = productInfo;
 
-    if (!productId || !productName || !oldprice || !sales) {
+    if (!productId || !productName || !oldprice ) {
       setError("Please do not leave blank!");
       return;
     }
@@ -154,7 +154,7 @@ const ManageProduct = () => {
                 <span>
                   {product.image ? (
                     <img
-                      src={`http://localhost:5000/${product.image.replace(/^\/+/, "")}`}
+                      src={`http://localhost:5000/${product.image?.replace(/^\/+/, "")}`}
                       alt={product.productName}
                       className="w-32 h-32 object-cover rounded"
                     />
@@ -256,7 +256,7 @@ const ManageProduct = () => {
                 required
               />
               <InputUser
-                label="Offer"
+                label="Sales"
                 name="sales"
                 type="number"
                 value={productInfo.sales}

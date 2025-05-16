@@ -33,7 +33,7 @@ export default function DetailProductModal({ product, isOpen, onClose, userId, o
         <button onClick={onClose} className="absolute top-3 right-3 text-xl font-bold text-gray-600 hover:text-red-500">&times;</button>
 
         <div className="flex flex-col md:flex-row gap-6">
-          <img src={`http://localhost:5000/${product.image.replace(/^\/+/, "")}`} alt="product" className="w-full md:w-1/2 h-auto object-cover rounded" />
+          <img src={`http://localhost:5000/${product.image?.replace(/^\/+/, "")}`} alt="product" className="w-full md:w-1/2 h-auto object-cover rounded" />
 
           <div className="flex-1 flex flex-col justify-between">
             <div>

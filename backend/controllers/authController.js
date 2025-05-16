@@ -1,6 +1,7 @@
 import User from "../models/User.js";
 import Product from "../models/Product.js";
 import Notification from "../models/Notification.js"
+import Order from "../models/Order.js";
 import Cart from '../models/Cart.js';
 import bcrypt from "bcrypt";
 //!Đăng ký
@@ -478,5 +479,20 @@ export const deleteItem = async (req, res) => {
     res.json(cart);
   } catch (error) {
     res.status(500).json({ message: 'Error deleting item', error });
+  }
+};
+
+export const getOrders = async (req, res) => {
+  try {
+    const orders = await Order.find();
+    if (!orders)
+      return res.json({
+        success: false,
+        message: "No orders have added yet!",
+      });
+    res.json({ success: true, orders });
+  } catch (error) {
+    console.error("Error taking orders list:", error);
+    res.status(500).json({ message: "" });
   }
 };

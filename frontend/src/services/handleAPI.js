@@ -281,3 +281,12 @@ export async function deleteItem(productId) {
   });
   return res.json();
 }
+
+export const loadInfoOrders = async () => {
+  const res = await fetch("http://localhost:5000/api/getOrders", {
+    method: "GET",
+    credentials: "include",
+    headers: { Accept: "application/json" },
+  });
+  return res.json();
+};

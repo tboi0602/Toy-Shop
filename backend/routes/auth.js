@@ -27,6 +27,7 @@ import {
   addToCart,
   getCart,
   deleteItem,
+  getOrders,
 } from "../controllers/authController.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -73,8 +74,9 @@ router.post("/updateProducts", updateProductByAdmin);
 router.post("/addNotifications", addNotification);
 router.get("/getNotifications", getNotifications);
 router.post("/deleteNotifications", deleteNotifications);
-
 router.post("/addToCart", addToCart); // Thêm sản phẩm vào giỏ
 router.get("/userCart", getCart); // Lấy giỏ hàng theo user
 router.delete("/removeCart", deleteItem); // Xoá 1 item khỏi giỏ
+router.get("/getOrders", getOrders); // Lấy giỏ hàng theo user
+
 export default router;
