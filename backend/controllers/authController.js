@@ -1,13 +1,7 @@
 import User from "../models/User.js";
 import Product from "../models/Product.js";
-<<<<<<< HEAD
 import Notification from "../models/Notification.js";
 import Cart from "../models/Cart.js";
-=======
-import Notification from "../models/Notification.js"
-import Order from "../models/Order.js";
-import Cart from '../models/Cart.js';
->>>>>>> fa6c9ea3b77d505c1ee6862807d4c0485eedec80
 import bcrypt from "bcrypt";
 //!Đăng ký
 export const handleRegister = async (req, res) => {
@@ -197,7 +191,6 @@ export const getCustomers = async (req, res) => {
   }
 };
 
-<<<<<<< HEAD
 export const addStaff = async (req, res) => {
   try {
     const {
@@ -215,25 +208,6 @@ export const addStaff = async (req, res) => {
     const existingUser = await User.findOne({ username });
     if (existingUser) {
       return res.status(409).json({
-=======
-  export const addStaff = async (req, res) => {
-    try {
-      const { username, password, position, email, yourname, birthDay, address, gender, phoneNum } = req.body;
-
-      const existingUser = await User.findOne({ username });
-      if (existingUser) {
-        return res.status(409).json({
-          success: false,
-          message: "Username already exists",
-        });
-      }
-
-      const user = new User({ username, password, position, email, yourname, birthDay, address, gender, phoneNum });
-      await user.save();
-      res.status(201).json({ success: true });
-    } catch (err) {
-      res.status(500).json({
->>>>>>> fa6c9ea3b77d505c1ee6862807d4c0485eedec80
         success: false,
         message: "Username already exists",
       });

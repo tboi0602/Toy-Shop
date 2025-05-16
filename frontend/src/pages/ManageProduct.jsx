@@ -46,11 +46,7 @@ const ManageProduct = () => {
     e.preventDefault();
     const { productId, productName,saleprice, oldprice,  image, quantity,description } = productInfo;
 
-<<<<<<< HEAD
     if (!productId || !productName || !saleprice|| !oldprice || !description || !image || !quantity ) {
-=======
-    if (!productId || !productName || !oldprice ) {
->>>>>>> fa6c9ea3b77d505c1ee6862807d4c0485eedec80
       setError("Please do not leave blank!");
       return;
     }
@@ -258,18 +254,7 @@ const ManageProduct = () => {
                 onChange={handleChange}
                 required
               />
-<<<<<<< HEAD
             
-=======
-              <InputUser
-                label="Sales"
-                name="sales"
-                type="number"
-                value={productInfo.sales}
-                onChange={handleChange}
-                required
-              />
->>>>>>> fa6c9ea3b77d505c1ee6862807d4c0485eedec80
               <InputUser
                 label="Saled Price"
                 name="saleprice"

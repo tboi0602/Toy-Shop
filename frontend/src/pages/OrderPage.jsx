@@ -100,7 +100,6 @@ export default function OrderPage() {
         {/* Filter Buttons */}
         <div className="mb-4 flex flex-wrap gap-3">
           {["All", "Cancelled", "Completed", "Processing", "Confirmed"].map(
-<<<<<<< HEAD
             (status) => (
               <button
                 key={status}
@@ -110,72 +109,10 @@ export default function OrderPage() {
                 {status}
               </button>
             )
-=======
-            (status) => {
-              const colors = {
-                All: "blue",
-                Cancelled: "red",
-                Completed: "green",
-                Processing: "yellow",
-                Confirmed: "blue",
-              };
-              return (
-                <button
-                  key={status}
-                  onClick={() => setSelectedStatus(status)}
-                  className={`px-4 py-2 rounded-xl ${
-                    selectedStatus === status
-                      ? `bg-${colors[status]}-500 text-red`
-                      : "bg-gray-200 text-gray-700"
-                  } hover:bg-opacity-80`}
-                >
-                  {status}
-                </button>
-              );
-            }
->>>>>>> fa6c9ea3b77d505c1ee6862807d4c0485eedec80
           )}
         </div>
 
         {/* Orders */}
-<<<<<<< HEAD
-        {filteredOrders.map((order) => (
-          <div
-            key={order.id}
-            className="bg-white shadow-md rounded-xl p-6 space-y-6 border"
-          >
-            {/* Status */}
-            <div className={`text-sm font-semibold ${statusColor(order.status)}`}>
-              {order.status.toUpperCase()}
-            </div>
-
-            {/* Product Info */}
-            <div className="flex flex-col sm:flex-row gap-4 border-b pb-4">
-              <img
-                src={order.img}
-                alt={order.productName}
-                className="w-full sm:w-28 max-h-32 object-contain rounded-lg bg-white"
-              />
-              <div className="flex-1">
-                <div className="flex flex-col sm:flex-row sm:justify-between">
-                  <div>
-                    <h2 className="text-lg font-medium text-gray-800">
-                      {order.productName}
-                    </h2>
-                    <p className="text-sm text-gray-500">
-                      Quantity: x{order.quantity}
-                    </p>
-                  </div>
-                  <div className="text-right">
-                    <p className="line-through text-sm text-gray-400">
-                      ${order.oldPrice.toLocaleString()}
-                    </p>
-                    <p className="text-red-600 text-base font-semibold">
-                      ${order.price.toLocaleString()}
-                    </p>
-                  </div>
-                </div>
-=======
         {filteredOrders.map((order) => {
           const isExpanded = expandedOrderId === order.orderId;
           const total = order.items.reduce(
@@ -195,7 +132,6 @@ export default function OrderPage() {
                 }`}
               >
                 {order.status.toUpperCase()}
->>>>>>> fa6c9ea3b77d505c1ee6862807d4c0485eedec80
               </div>
 
               {/* Product Info */}
