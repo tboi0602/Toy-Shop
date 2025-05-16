@@ -9,8 +9,7 @@
       oldprice: { type: Number },  
       sales: { type: Number},
       image: { type: String},
-      saleQuantity:   {type: Number, default: 0},
-      quantity:{type: Number, default:0},
+      quantity:{type: Number},
       description: { type: String },
     }
   );
