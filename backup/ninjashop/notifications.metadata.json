@@ -1,0 +1,26 @@
+{
+  "indexes": [
+    {
+      "v": { "$numberInt": "2" },
+      "key": { "_id": { "$numberInt": "1" } },
+      "name": "_id_"
+    },
+    {
+      "v": { "$numberInt": "2" },
+      "key": { "title": { "$numberInt": "1" } },
+      "name": "title_1",
+      "background": true,
+      "unique": true
+    },
+    {
+      "v": { "$numberInt": "2" },
+      "key": { "content": { "$numberInt": "1" } },
+      "name": "content_1",
+      "background": true,
+      "unique": true
+    }
+  ],
+  "uuid": "9a2614dca5b740aa8e6f8ca45c4f4bc6",
+  "collectionName": "notifications",
+  "type": "collection"
+}
