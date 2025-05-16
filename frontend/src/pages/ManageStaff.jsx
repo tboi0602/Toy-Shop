@@ -159,26 +159,21 @@ const ManageStaff = () => {
       {/* Customer Table */}
       <div className="px-6 overflow-x-auto">
         <div className="min-w-[900px]">
-          <div className="grid grid-cols-7 gap-4 text-sm font-semibold bg-red-100 text-red-800 p-3 rounded-t-lg">
+          <div className="grid grid-cols-5 gap-4 text-sm font-semibold bg-red-100 text-red-800 p-3 rounded-t-lg">
             <span>Username</span>
             <span>Name</span>
-            <span>Birthday</span>
-            <span>Gender</span>
             <span>Phone number</span>
             <span>Email</span>
-
           </div>
 
           {staffList && staffList.filter(staff => staff.isActive).length > 0 ? (
             staffList.filter(staff => staff.isActive).map((staff, index) => (
               <div
                 key={staff._id || index}
-                className="grid grid-cols-7 gap-4 border-b p-3 text-sm bg-white hover:bg-gray-50 transition"
+                className="grid grid-cols-5 gap-4 border-b p-3 text-sm bg-white hover:bg-gray-50 transition"
               >
                 <span className="truncate">{staff.username}</span>
                 <span className="truncate">{staff.yourname}</span>
-                <span>{staff.birthDay?.split("T")[0] || ""}</span>
-                <span>{staff.gender}</span>
                 <span className="truncate">{staff.phoneNum}</span>
                 <span className="truncate">{staff.email}</span>
                 <div className="flex justify-end gap-7">
@@ -205,7 +200,6 @@ const ManageStaff = () => {
                 </Icon>
                   
                   <Icon className="Edit btn-line"onClick={() => {
-                      e.stopPropagation();
                       setIsEditting(true);
                       setSelectedStaff(staff);
                       setEditForm({
@@ -215,6 +209,7 @@ const ManageStaff = () => {
                         gender: staff.gender || "",
                         email: staff.email || "",
                         phoneNum: staff.phoneNum || "",
+                        address: staff.address || "", 
                       });
                       setShowFormModal(true);
                     }}
@@ -235,7 +230,6 @@ const ManageStaff = () => {
                   </Icon>
 
                   <Icon className="Trash btn-line" onClick={() => {
-                    e.stopPropagation();
                     setSelectedIdToDelete(staff._id);
                     setShowConfirmModal(true);
                   }}>
@@ -334,18 +328,29 @@ const ManageStaff = () => {
                 }
               />
 
-              {error && <p className="text-red-600 text-center text-sm">{error}</p>}
+              <InputUser
+                name="Address"
+                value={isEditting ? editForm.address : address}
+                onChange={(e) =>
+                  isEditting
+                    ? setEditForm({ ...editForm, address: e.target.value })
+                    : setAddress(e.target.value)
+                }
+              />
 
-              <button onClick={()=> showFormModal(false)}
+              {error && <p className="text-red-500 text-sm">{error}</p>}
+
+              <button
                 type="submit"
-                className="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-6 rounded-full transition"
+                className="bg-red-600 text-white py-2 rounded hover:bg-red-700 transition"
               >
-                {isEditting ? "Update" : "Add"} Staff
+                {isEditting ? "Update" : "Add"}
               </button>
             </form>
           </div>
         </div>
       )}
+
 
     {showModal && selectedStaff && (
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">

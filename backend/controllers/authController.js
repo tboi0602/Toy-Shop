@@ -192,7 +192,7 @@ export const getCustomers = async (req, res) => {
 
   export const addStaff = async (req, res) => {
     try {
-      const { username, password, position, email, yourname, birthDay,address, gender, phoneNum } = req.body;
+      const { username, password, position, email, yourname, birthDay, address, gender, phoneNum } = req.body;
 
       const existingUser = await User.findOne({ username });
       if (existingUser) {
@@ -202,7 +202,7 @@ export const getCustomers = async (req, res) => {
         });
       }
 
-      const user = new User({ username, password, position, email, yourname, birthDay,address, gender, phoneNum });
+      const user = new User({ username, password, position, email, yourname, birthDay, address, gender, phoneNum });
       await user.save();
       res.status(201).json({ success: true });
     } catch (err) {
@@ -231,11 +231,11 @@ export const getStaffs = async (req, res) => {
 
 export const updateInfoByAdmin = async (req, res) => {
   try {
-    const { _id, yourname, birthDay, gender, email, phoneNum } = req.body;
+    const { _id, yourname, birthDay, gender, email, phoneNum, address } = req.body;
 
     const result = await User.findByIdAndUpdate(
       _id,
-      { yourname, birthDay, gender, email, phoneNum },
+      { yourname, birthDay, gender, email, phoneNum, address },
       { new: true }
     );
 

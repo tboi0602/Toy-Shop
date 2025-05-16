@@ -108,11 +108,9 @@ const ManageCustomer = () => {
       {/* Customer Table */}
       <div className="px-6 overflow-x-auto">
         <div className="min-w-[900px]">
-          <div className="grid grid-cols-7 gap-4 text-sm font-semibold bg-red-100 text-red-800 p-3 rounded-t-lg">
+          <div className="grid grid-cols-5 gap-4 text-sm font-semibold bg-red-100 text-red-800 p-3 rounded-t-lg">
             <span>Username</span>
             <span>Name</span>
-            <span>Birthday</span>
-            <span>Gender</span>
             <span>Email</span>
             <span>Addresss</span>
           </div>
@@ -121,12 +119,10 @@ const ManageCustomer = () => {
             customerList.filter(cus => cus.isActive).map((cus, index) => (
               <div
                 key={cus._id || index}
-                className={`grid grid-cols-7 gap-4 border-b p-3 text-sm transition`}              
+                className={`grid grid-cols-5 gap-4 border-b p-3 text-sm transition`}              
                 >
                 <span className="truncate">{cus.username}</span>
                 <span className="truncate">{cus.yourname}</span>
-                <span>{cus.birthDay?.split("T")[0] || ""}</span>
-                <span>{cus.gender}</span>
                 <span className="truncate">{cus.email}</span>
                 <span className="truncate">{cus.address}</span>
                 <div className="flex justify-end gap-7">
