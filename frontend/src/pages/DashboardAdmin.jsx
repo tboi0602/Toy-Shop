@@ -100,7 +100,7 @@ export default function DashboardAdmin() {
                 <YAxis />
                 <Tooltip formatter={(value) => `$${value}`} />
                 <Legend />
-                <Bar dataKey="revenue" fill="#8884d8" name="Revenue ($)" />
+                <Bar dataKey="revenue" fill="#CC0000" name="Revenue ($)" />
               </BarChart>
             </ResponsiveContainer>
           )}

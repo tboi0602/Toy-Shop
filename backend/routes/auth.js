@@ -62,17 +62,24 @@ router.post("/upload", upload.single("image"), (req, res) => {
   const filePath = `/uploads/${req.file.filename}`;
   res.json({ success: true, path: filePath });
 });
+
+
 router.get("/staffs", getStaffs);
 router.post("/addStaffs", addStaff);
 router.post("/updateInfoByAd", updateInfoByAdmin);
 router.post("/deleteUser", deleteUser);
+
+
 router.post("/addProducts", addProducts);
 router.get("/getProducts", getProducts);
 router.post("/deleteProducts", deleteProducts);
 router.post("/updateProducts", updateProductByAdmin);
+
+
 router.post("/addNotifications", addNotification);
 router.get("/getNotifications", getNotifications);
 router.post("/deleteNotifications", deleteNotifications);
+
 
 router.post("/addToCart", addToCart); // Thêm sản phẩm vào giỏ
 router.get("/userCart", getCart); // Lấy giỏ hàng theo user

@@ -1,55 +1,28 @@
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
 import HeaderCustomer from "../layouts/HeaderCustomer";
 import { useNavigate } from "react-router-dom";
-
-// Mẫu dữ liệu có ảnh thật
-const sampleData = [
-  {
-    id: 1,
-    name: "Luffy Default",
-    price: 28.4,
-    oldPrice: 40.3,
-    img: "https://kenhtinhoc.vn/wp-content/uploads/2022/10/mo-hinh-one-piece-monkey-d-luffy-1.jpg",
-    quantity: 1,
-  },
-  {
-    id: 2,
-    name: "Luffy Gear 2",
-    price: 28.4,
-    oldPrice: 40.3,
-    img: "https://jola.vn/cdn/720/Product/CVgE_el4O/40cbd865aac0f59cb7e226e2d7738674.jpg",
-    quantity: 1,
-  },
-  {
-    id: 3,
-    name: "Luffy Gear 3",
-    price: 28.4,
-    oldPrice: 40.3,
-    img: "https://m.media-amazon.com/images/I/61r3gQCNGuL.jpg",
-    quantity: 1,
-  },
-  {
-    id: 4,
-    name: "Luffy Gear 4",
-    price: 28.4,
-    oldPrice: 40.3,
-    img: "https://bizweb.dktcdn.net/100/418/981/products/bf90c2e9-36a4-4315-86a3-cbe783a3f9a2.jpg?v=1651989141587",
-    quantity: 1,
-  },
-  {
-    id: 5,
-    name: "Luffy Gear 5",
-    price: 28.4,
-    oldPrice: 40.3,
-    img: "https://bizweb.dktcdn.net/100/299/021/products/455206.jpg?v=1716522500483",
-    quantity: 1,
-  },
-];
+import { deleteItem, getCart } from "../services/handleAPI";
 
 export default function CartPage() {
-  const [cart, setCart] = useState(sampleData);
+  const [cart, setCart] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [selectedIds, setSelectedIds] = useState([]);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchCart = async () => {
+      try {
+        const myCart = await getCart();
+        setCart(myCart.items || []);
+      } catch (err) {
+        console.error("Error loading cart:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchCart();
+  }, []);
+
   const toggleSelect = (id) => {
     setSelectedIds((prev) =>
       prev.includes(id) ? prev.filter((pid) => pid !== id) : [...prev, id]
@@ -59,27 +32,53 @@ export default function CartPage() {
   const changeQuantity = (id, delta) => {
     setCart((prev) =>
       prev.map((item) =>
-        item.id === id
-          ? { ...item, quantity: Math.max(1, item.quantity + delta) }
+        item.productId === id
+          ? { ...item, buyQuantity: Math.max(1, item.buyQuantity + delta) }
           : item
       )
     );
   };
 
   const total = cart
-    .filter((item) => selectedIds.includes(item.id))
-    .reduce((sum, item) => sum + item.price * item.quantity, 0);
+    .filter((item) => selectedIds.includes(item.productId))
+    .reduce((sum, item) => sum + item.saleprice * item.buyQuantity, 0);
 
-  const selectAll = selectedIds.length === cart.length;
+  const selectAll = selectedIds.length === cart.length && cart.length > 0;
 
-  const handleDelete = () => {
-    setCart((prev) => prev.filter((item) => !selectedIds.includes(item.id)));
+  const handleDelete = async  () => {
+    try {
+    await deleteItem(selectedIds);
+    // Sau khi xoá backend thành công, cập nhật state frontend
+    setCart(prev => prev.filter(item => !selectedIds.includes(item.productId)));
     setSelectedIds([]);
+  } catch (error) {
+    console.error("Delete error:", error);
+  }
+  };
+
+  const handleBuyNow = () => {
+    const selectedItems = cart.filter((item) =>
+      selectedIds.includes(item.productId)
+    ).map(item => ({
+      id: item.productId,
+      name: item.productName,
+      price: item.saleprice,
+      quantity: item.buyQuantity,
+      image: `http://localhost:5000/${item.image.replace(/^\/+/, "")}`
+    }));
+
+    navigate("/checkout", { state: { cartItems: selectedItems } });
   };
 
   return (
     <>
-      <HeaderCustomer styleCart={"line"} styleOrder={"btn-line"} stylePro={"btn-line"} />
+      <div className="sticky top-0">
+        <HeaderCustomer
+        styleOrder="btn-line"
+        styleCart="line"
+        stylePro=" btn-line"
+      ></HeaderCustomer>
+      </div>
       <div className="bg-gray-100 min-h-screen px-6 py-6">
         <div className="bg-white rounded-xl shadow-lg p-4">
           <h2 className="text-4xl font-bold mb-4 text-red-600">Your Cart</h2>
@@ -91,87 +90,100 @@ export default function CartPage() {
             <div className="text-center">Subtotal</div>
           </div>
 
-          {cart.map((item) => (
-            <div
-              key={item.id}
-              className="grid grid-cols-6 items-center p-4 mb-3 bg-white rounded-xl shadow transition hover:shadow-md"
-            >
-              <div className="col-span-3 flex items-center space-x-4">
-                <input
-                  type="checkbox"
-                  checked={selectedIds.includes(item.id)}
-                  onChange={() => toggleSelect(item.id)}
-                />
-                <img
-                  src={item.img}
-                  className="w-20 h-20 object-cover rounded-md border"
-                  alt={item.name}
-                />
-                <div>
-                  <p className="font-semibold">{item.name}</p>
+          {loading ? (
+            <p className="text-gray-500 mt-4">Loading your cart...</p>
+          ) : cart.length === 0 ? (
+            <p className="text-gray-500 mt-4">Your cart is empty.</p>
+          ) : (
+            cart.map((item) => (
+              <div
+                key={item.productId}
+                className="grid grid-cols-6 items-center p-4 mb-3 bg-white rounded-xl shadow transition hover:shadow-md"
+              >
+                <div className="col-span-3 flex items-center space-x-4">
+                  <input
+                    type="checkbox"
+                    checked={selectedIds.includes(item.productId)}
+                    onChange={() => toggleSelect(item.productId)}
+                  />
+                  <img
+                    src={`http://localhost:5000/${item.image.replace(/^\/+/, "")}`}
+                    className="w-20 h-20 object-cover rounded-md border"
+                    alt={item.productName}
+                  />
+                  <div>
+                    <p className="font-semibold">{item.productName}</p>
+                  </div>
+                </div>
+                <div className="text-center">
+                  <p className="line-through text-sm text-gray-400">
+                    ${item.oldprice}
+                  </p>
+                  <p className="text-red-600 font-semibold">
+                    ${item.saleprice}
+                  </p>
+                </div>
+                <div className="flex justify-center items-center space-x-2">
+                  <button
+                    onClick={() => changeQuantity(item.productId, -1)}
+                    className="border px-2 rounded text-gray-700 hover:bg-gray-100"
+                  >
+                    -
+                  </button>
+                  <span>{item.buyQuantity}</span>
+                  <button
+                    onClick={() => changeQuantity(item.productId, 1)}
+                    className="border px-2 rounded text-gray-700 hover:bg-gray-100"
+                  >
+                    +
+                  </button>
+                </div>
+                <div className="text-center text-red-600 font-semibold">
+                  ${(item.buyQuantity * item.saleprice).toLocaleString()}
                 </div>
               </div>
-              <div className="text-center">
-                <p className="line-through text-sm text-gray-400">
-                  ${item.oldPrice.toLocaleString()}
-                </p>
-                <p className="text-red-600 font-semibold">
-                  ${item.price.toLocaleString()}
-                </p>
-              </div>
-              <div className="flex justify-center items-center space-x-2">
-                <button
-                  onClick={() => changeQuantity(item.id, -1)}
-                  className="border px-2 rounded text-gray-700 hover:bg-gray-100"
-                >
-                  -
-                </button>
-                <span>{item.quantity}</span>
-                <button
-                  onClick={() => changeQuantity(item.id, 1)}
-                  className="border px-2 rounded text-gray-700 hover:bg-gray-100"
-                >
-                  +
-                </button>
-              </div>
-              <div className="text-center text-red-600 font-semibold">
-                ${(item.quantity * item.price).toLocaleString()}
-              </div>
-            </div>
-          ))}
+            ))
+          )}
 
-          <div className="flex justify-between items-center mt-6 pt-4 border-t border-gray-200">
-            <div className="flex items-center space-x-4">
-              <input
-                type="checkbox"
-                checked={selectAll}
-                onChange={() =>
-                  setSelectedIds(selectAll ? [] : cart.map((i) => i.id))
-                }
-              />
-              <span className="text-sm text-gray-600">
-                Select All ({selectedIds.length})
-              </span>
-              <button
-                className="text-red-600 text-sm hover:underline"
-                onClick={handleDelete}
-              >
-                Delete
-              </button>
-            </div>
-            <div className="flex items-center space-x-6">
-              <p className="text-sm">
-                Total ({selectedIds.length} item
-                {selectedIds.length !== 1 ? "s" : ""}):{" "}
-                <span className="text-red-600 text-lg font-semibold">
-                  ${total.toLocaleString()}
+          {!loading && cart.length > 0 && (
+            <div className="flex justify-between items-center mt-6 pt-4 border-t border-gray-200">
+              <div className="flex items-center space-x-4">
+                <input
+                  type="checkbox"
+                  checked={selectAll}
+                  onChange={() =>
+                    setSelectedIds(selectAll ? [] : cart.map((i) => i.productId))
+                  }
+                />
+                <span className="text-sm text-gray-600">
+                  Select All ({selectedIds.length})
                 </span>
-              </p>
-              <button className="bg-red-600 text-white px-6 py-2 rounded hover:bg-red-700" onClick={()=>{navigate("/checkout")}}>
-                Buy Now
-              </button>
+                <button
+                  className="text-red-600 text-sm hover:underline"
+                  onClick={handleDelete}
+                  disabled={selectedIds.length === 0}
+                >
+                  Delete
+                </button>
+              </div>
+              <div className="flex items-center space-x-6">
+                <p className="text-sm">
+                  Total ({selectedIds.length} item
+                  {selectedIds.length !== 1 ? "s" : ""}):{" "}
+                  <span className="text-red-600 text-lg font-semibold">
+                    ${total.toLocaleString()}
+                  </span>
+                </p>
+                <button
+                  className="bg-red-600 text-white px-6 py-2 rounded hover:bg-red-700 cursor-pointer"
+                  onClick={handleBuyNow}
+                  disabled={selectedIds.length === 0}
+                >
+                  Buy Now
+                </button>
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </>

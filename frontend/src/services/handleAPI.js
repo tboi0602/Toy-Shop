@@ -169,26 +169,12 @@ export async function addStaffs(
   return res.json();
 }
 
-export async function addProducts(
-  productId,
-  productName,
-  oldprice,
-  sales,
-  description,
-  image
-) {
+export async function addProducts(productInfo) {
   const res = await fetch("http://localhost:5000/api/addProducts", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     credentials: "include",
-    body: JSON.stringify({
-      productId,
-      productName,
-      oldprice,
-      sales,
-      description,
-      image,
-    }),
+    body: JSON.stringify(productInfo),
   });
   return res.json();
 }
@@ -252,12 +238,13 @@ export async function deleteNotifications(id) {
 }
 
 //! Thêm sản phẩm vào giỏ hàng
-export async function addToCart(userId, productId, buyQuantity) {
+export async function addToCart(userId, product, buyQuantity) {
+  console.log(buyQuantity);
   const res = await fetch(`http://localhost:5000/api/addToCart`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     credentials: "include",
-    body: JSON.stringify({ userId, productId, buyQuantity }),
+    body: JSON.stringify({ userId, product, buyQuantity }),
   });
   return res.json();
 }
@@ -271,13 +258,13 @@ export async function getCart() {
   return res.json();
 }
 
-//! Xoá 1 sản phẩm khỏi giỏ hàng
-export async function deleteItem(productId) {
+//! Xoá  sản phẩm khỏi giỏ hàng
+export async function deleteItem(productIds) {
   const res = await fetch(`http://localhost:5000/api/removeCart`, {
     method: "DELETE",
     headers: { "Content-Type": "application/json" },
     credentials: "include",
-    body: JSON.stringify({ productId }),
+    body: JSON.stringify({ productIds }),
   });
   return res.json();
 }

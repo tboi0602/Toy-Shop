@@ -18,6 +18,7 @@ import ResetPassword from "./pages/ResetPassword";
 import CartPage from "./pages/CartPage";
 import OrderPage from "./pages/OrderPage";
 import CheckoutPage from "./pages/CheckoutPage";
+import SearchPage from "./pages/SearchPage";
 
 function App() {
   return (
@@ -42,6 +43,7 @@ function App() {
         <Route path="/my-orders" element={<OrderPage />} /> 
         <Route path="/my-cart" element={<CartPage />} /> 
         <Route path="/checkout" element={<CheckoutPage />} /> 
+        <Route path="/search" element={<SearchPage />} /> 
 
       </Routes>
     </Router>

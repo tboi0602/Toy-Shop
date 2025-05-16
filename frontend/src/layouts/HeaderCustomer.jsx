@@ -2,11 +2,16 @@ import React, { useState } from "react";
 import "../Styles/main.css";
 import logo from "../assets/logo.png";
 import { useNavigate } from "react-router-dom";
-import { logout } from "../services/handleAPI.js";
+import {
+  getCart,
+  logout,
+  loadInfoNotifications
+} from "../services/handleAPI.js";
 import Swal from "sweetalert2";
 import useInfo from "../Function/UseInfoUser.js"; // Import custom hook
 import BackToTop from "../components/Button/BackToTop.jsx";
 import { useEffect } from "react";
+import BoxSearch from "../components/Button/BoxSearch.jsx";
 const Icon = ({ children, onClick, className = "" }) => (
   <button onClick={onClick} className={`hover:scale-110 ${className}`}>
     {children}
@@ -53,31 +58,23 @@ const HeaderCustomer = ({ stylePro, styleCart, styleOrder }) => {
   };
   const { info } = useInfo();
   const [isClickNotifi, setIsClickNotifi] = useState(false);
-  const notification = [
-    {
-      id: 1,
-      title: "Sales",
-      content: "hehe 100$",
-    },
-    {
-      id: 2,
-      title: "Sales",
-      content: "hi 100$",
-    },
-    {
-      id: 3,
-      title: "Sales",
-      content: "hihi 100$",
-    },
-    {
-      id: 4,
-      title: "Sales",
-      content: "hihi 100$",
-    },
-  ];
-
+  const [productCart, setProductCart] = useState([]);
+  const [notification, setNotification] = useState([]);
   //!product
-  const product = [{ a: 1 }, { a: 1 }, { a: 1 }, { a: 1 }, { a: 1 }];
+
+  const fetchCart = async () => {
+    try {
+      const myCart = await getCart();
+      const data = await loadInfoNotifications();
+      setNotification(data.notifications);
+      setProductCart(myCart.items);
+    } catch (err) {
+      console.error("Error loading cart:", err);
+    }
+  };
+  useEffect(() => {
+    fetchCart();
+  }, [productCart]);
   return (
     <header
       className={`relative flex gap-5 p-5 bg-white ${
@@ -94,47 +91,7 @@ const HeaderCustomer = ({ stylePro, styleCart, styleOrder }) => {
         />
       </button>
 
-      <div className="Box-Search min-w-[80px] flex-1 center bg-gray-100 hover:bg-white hover:border hover:border-red-500 h-[56px] rounded-full border border-transparent">
-        <input
-          type="text"
-          placeholder="What are you looking for?"
-          className="inline-block w-11/12 h-full pl-5 bg-transparent outline-none placeholder:text-black"
-        />
-        <div className="flex items-center h-full gap-3 pr-2">
-          <Icon>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth="1.5"
-              stroke="currentColor"
-              className="w-6 h-6 text-gray-400 hover:text-black"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
-          </Icon>
-          <Icon className="w-10 h-10 text-white bg-red-600 rounded-full center hover:bg-red-500">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth="1.5"
-              stroke="currentColor"
-              className="w-6 h-6"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
-              />
-            </svg>
-          </Icon>
-        </div>
-      </div>
+      <BoxSearch></BoxSearch>
 
       <div className="center gap-10 max-lg:hidden ">
         <Icon
@@ -180,16 +137,16 @@ const HeaderCustomer = ({ stylePro, styleCart, styleOrder }) => {
             </svg>
           </Icon>
           <div
-            className={`absolute right-0 mt-2 w-96 max-h-64 bg-white rounded-xl shadow-xl overflow-y-auto z-50 ${
+            className={`absolute right-24 mt-2 w-80 max-h-64 bg-white rounded-xl shadow-xl overflow-y-auto z-50 ${
               isClickNotifi ? "block" : "hidden"
             }`}
           >
             <h2 className="px-4 py-2 text-lg font-semibold text-red-600 border-b">
-              Notifications
+              {notification.length > 0 ? "Notification" : "No notification "}
             </h2>
-            {notification.map(({ id, title, content }) => (
+            {notification.map(({ _id, title, content }) => (
               <div
-                key={id}
+                key={_id}
                 className="flex items-start gap-3 px-4 py-2 border-b hover:bg-gray-50"
               >
                 <div className="p-2 bg-red-100 text-red-600 rounded-full">
@@ -237,9 +194,9 @@ const HeaderCustomer = ({ stylePro, styleCart, styleOrder }) => {
             />
           </svg>
           Cart
-          {product && (
+          {productCart && (
             <div className="w-4 h-4 bg-red-600 rounded-full text-white  center absolute -top-1 left-[10px]">
-              <p className="text-[10px]">{product.length}</p>
+              <p className="text-[10px]">{productCart.length}</p>
             </div>
           )}
         </Icon>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import HeaderCustomer from "../layouts/HeaderCustomer";
 
 const orders = [
@@ -67,10 +67,57 @@ export default function OrderPage() {
   const [selectedReason, setSelectedReason] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("All");
 
+  useEffect(() => {
+    setSelectedReason(""); // Reset reason when switching cancel order
+  }, [cancelOrderId]);
+
   const filteredOrders =
     selectedStatus === "All"
       ? orders
       : orders.filter((order) => order.status === selectedStatus);
+
+  const handleCancelOrder = (id) => {
+    if (!selectedReason) {
+      alert("Please select a reason");
+      return;
+    }
+
+    // You can replace this with actual API call
+    console.log(`Order ${id} cancelled. Reason: ${selectedReason}`);
+    alert(`Order ${id} cancelled. Reason: ${selectedReason}`);
+    setCancelOrderId(null);
+    setSelectedReason("");
+  };
+
+  const statusClass = (status) => {
+    const base = "px-4 py-2 rounded-xl";
+    const active = "text-white";
+    const map = {
+      All: "bg-blue-500",
+      Cancelled: "bg-red-500",
+      Completed: "bg-green-500",
+      Processing: "bg-yellow-500",
+      Confirmed: "bg-blue-500",
+    };
+    return selectedStatus === status
+      ? `${base} ${map[status]} ${active}`
+      : `${base} bg-gray-200 text-gray-700 hover:bg-gray-300`;
+  };
+
+  const statusColor = (status) => {
+    switch (status) {
+      case "Cancelled":
+        return "text-red-500";
+      case "Completed":
+        return "text-green-600";
+      case "Processing":
+        return "text-yellow-600";
+      case "Confirmed":
+        return "text-blue-600";
+      default:
+        return "text-gray-600";
+    }
+  };
 
   return (
     <>
@@ -86,28 +133,15 @@ export default function OrderPage() {
         {/* Filter Buttons */}
         <div className="mb-4 flex flex-wrap gap-3">
           {["All", "Cancelled", "Completed", "Processing", "Confirmed"].map(
-            (status) => {
-              const colors = {
-                All: "blue",
-                Cancelled: "red",
-                Completed: "green",
-                Processing: "yellow",
-                Confirmed: "blue",
-              };
-              return (
-                <button
-                  key={status}
-                  onClick={() => setSelectedStatus(status)}
-                  className={`px-4 py-2 rounded-xl ${
-                    selectedStatus === status
-                      ? `bg-${colors[status]}-500 text-white`
-                      : "bg-gray-200 text-gray-700"
-                  } hover:bg-opacity-80`}
-                >
-                  {status}
-                </button>
-              );
-            }
+            (status) => (
+              <button
+                key={status}
+                onClick={() => setSelectedStatus(status)}
+                className={statusClass(status)}
+              >
+                {status}
+              </button>
+            )
           )}
         </div>
 
@@ -118,11 +152,7 @@ export default function OrderPage() {
             className="bg-white shadow-md rounded-xl p-6 space-y-6 border"
           >
             {/* Status */}
-            <div
-              className={`text-sm font-semibold ${
-                order.status === "Cancelled" ? "text-red-500" : "text-green-600"
-              }`}
-            >
+            <div className={`text-sm font-semibold ${statusColor(order.status)}`}>
               {order.status.toUpperCase()}
             </div>
 
@@ -195,12 +225,15 @@ export default function OrderPage() {
                       >
                         <option value="">Select a reason</option>
                         {cancelReasons.map((reason, idx) => (
-                          <option key={idx} value={reason}>
+                          <option key={`reason-${idx}`} value={reason}>
                             {reason}
                           </option>
                         ))}
                       </select>
-                      <button className="w-full px-4 py-2 bg-red-600 text-white rounded-xl hover:bg-red-700 transition font-medium">
+                      <button
+                        onClick={() => handleCancelOrder(order.id)}
+                        className="w-full px-4 py-2 bg-red-600 text-white rounded-xl hover:bg-red-700 transition font-medium"
+                      >
                         Send
                       </button>
                     </div>

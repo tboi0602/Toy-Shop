@@ -1,7 +1,7 @@
 import User from "../models/User.js";
 import Product from "../models/Product.js";
-import Notification from "../models/Notification.js"
-import Cart from '../models/Cart.js';
+import Notification from "../models/Notification.js";
+import Cart from "../models/Cart.js";
 import bcrypt from "bcrypt";
 //!Đăng ký
 export const handleRegister = async (req, res) => {
@@ -191,28 +191,48 @@ export const getCustomers = async (req, res) => {
   }
 };
 
-  export const addStaff = async (req, res) => {
-    try {
-      const { username, password, position, email, yourname, birthDay,address, gender, phoneNum } = req.body;
+export const addStaff = async (req, res) => {
+  try {
+    const {
+      username,
+      password,
+      position,
+      email,
+      yourname,
+      birthDay,
+      address,
+      gender,
+      phoneNum,
+    } = req.body;
 
-      const existingUser = await User.findOne({ username });
-      if (existingUser) {
-        return res.status(409).json({
-          success: false,
-          message: "Username already exists",
-        });
-      }
-
-      const user = new User({ username, password, position, email, yourname, birthDay,address, gender, phoneNum });
-      await user.save();
-      res.status(201).json({ success: true });
-    } catch (err) {
-      res.status(500).json({
+    const existingUser = await User.findOne({ username });
+    if (existingUser) {
+      return res.status(409).json({
         success: false,
-        message: "Server error during sign up",
+        message: "Username already exists",
       });
     }
-  };
+
+    const user = new User({
+      username,
+      password,
+      position,
+      email,
+      yourname,
+      birthDay,
+      address,
+      gender,
+      phoneNum,
+    });
+    await user.save();
+    res.status(201).json({ success: true });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: "Server error during sign up",
+    });
+  }
+};
 
 // Lấy danh sách Staff
 export const getStaffs = async (req, res) => {
@@ -274,22 +294,15 @@ export const deleteUser = async (req, res) => {
 
 export const addProducts = async (req, res) => {
   try {
-    const { productId, productName, oldprice, sales, description, image } =
-      req.body;
-    if (
-      !productId ||
-      !productName ||
-      !oldprice ||
-      sales === undefined ||
-      !description ||
-      !image
-    ) {
-      return res.status(400).json({
-        success: false,
-        message: "Missing required product fields",
-      });
-    }
-    const saleprice = oldprice - sales;
+    const {
+      productId,
+      productName,
+      saleprice,
+      oldprice,
+      image,
+      quantity,
+      description,
+    } = req.body;
     const existingProduct = await Product.findOne({ productId });
     if (existingProduct) {
       return res.status(409).json({
@@ -307,11 +320,11 @@ export const addProducts = async (req, res) => {
     const product = new Product({
       productId,
       productName,
-      oldprice,
-      sales,
       saleprice,
-      description,
+      oldprice,
       image,
+      quantity,
+      description,
     });
     await product.save();
     res.status(201).json({ success: true });
@@ -388,7 +401,6 @@ export const deleteProducts = async (req, res) => {
   }
 };
 
-
 export const addNotification = async (req, res) => {
   try {
     const { title, content } = req.body;
@@ -422,7 +434,9 @@ export const deleteNotifications = async (req, res) => {
     console.log("Notification ID received:", req.body.id);
     const deleted = await Notification.findByIdAndDelete(req.body.id); // kiểm tra đúng field chưa
     if (!deleted) {
-      return res.status(404).json({ success: false, message: "Notification not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "Notification not found" });
     }
     res.json({ success: true, message: "Notification deleted successfully" });
   } catch (error) {
@@ -434,49 +448,60 @@ export const deleteNotifications = async (req, res) => {
 //!Cart
 export const addToCart = async (req, res) => {
   try {
-    const { userId, product,buyQuantity } = req.body;
-
+    const { userId, product, buyQuantity } = req.body;
+    console.log("Received data:", req.body);
     let cart = await Cart.findOne({ userId });
-
     if (!cart) {
-      cart = new Cart({ userId, items: [{...product,buyQuantity}] });
+      cart = new Cart({ userId, items: [{ ...product, buyQuantity }] });
     } else {
-      const index = cart.items.findIndex((item) => item.productId.toString() === product.productId);
+      const index = cart.items.findIndex(
+        (item) => item.productId === product.productId
+      );
       if (index > -1) {
-        cart.items[index].buyQuantity += buyQuantity;
+        cart.items[index].buyQuantity += Number(buyQuantity);
       } else {
         cart.items.push({ ...product, buyQuantity });
       }
     }
 
     await cart.save();
-    res.json(cart);
+    res.status(200).json(cart);
   } catch (error) {
-    res.status(500).json({ message: 'Error adding to cart', error });
+    console.error("Error Add to Cart", error);
+    res.status(500).json({ message: "Error server!", error });
   }
 };
 
 export const getCart = async (req, res) => {
   try {
-    const { userId } = req.params;
-    const cart = await Cart.findOne({ userId }).populate('items.productId');
+    const userId = req.session.user.id;
+    const cart = await Cart.findOne({ userId });
     res.json(cart || { items: [] });
   } catch (error) {
-    res.status(500).json({ message: 'Error fetching cart', error });
+    res.status(500).json({ message: "Error fetching cart", error });
   }
 };
 
 export const deleteItem = async (req, res) => {
   try {
-    const { userId, productId } = req.body;
+    const { productIds } = req.body;
+    const userId = req.session.user.id;
+
+    if (!Array.isArray(productIds) || productIds.length === 0) {
+      return res.status(400).json({ message: "Invalid productIds" });
+    }
 
     const cart = await Cart.findOne({ userId });
-    if (!cart) return res.status(404).json({ message: 'Cart not found' });
+    if (!cart) return res.status(404).json({ message: "Cart not found" });
 
-    cart.items = cart.items.filter(item => item.productId.toString() !== productId);
+    cart.items = cart.items.filter(
+      (item) => !productIds.includes(item.productId.toString())
+    );
+
     await cart.save();
-    res.json(cart);
+    res.json({ message: "Deleted items successfully", cart });
   } catch (error) {
-    res.status(500).json({ message: 'Error deleting item', error });
+    console.error("Delete error:", error);
+    res.status(500).json({ message: "Error deleting items", error });
   }
 };

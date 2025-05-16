@@ -2,7 +2,7 @@ import logo from "../assets/logo.png";
 
 const Footer = () => {
   return (
-    <footer className="w-full bg-red-800 text-white px-4 py-10 md:px-20 lg:px-40">
+    <footer className="absolute w-full bg-red-800 text-white px-4 py-10 md:px-20 lg:px-40 z-20">
       <div className="flex flex-col md:flex-row justify-between items-start gap-10">
         {/* Logo + Mô tả */}
         <div className="md:w-1/3 flex flex-col gap-4">

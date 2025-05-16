@@ -30,7 +30,6 @@ const ManageProduct = () => {
     productName: "",
     saleprice: "",
     oldprice: "",
-    sales: "",
     image: "",
     quantity: "",
     description: "",
@@ -45,14 +44,15 @@ const ManageProduct = () => {
 
   const addProduct = async (e) => {
     e.preventDefault();
-    const { productId, productName, oldprice, sales } = productInfo;
+    const { productId, productName,saleprice, oldprice,  image, quantity,description } = productInfo;
 
-    if (!productId || !productName || !oldprice || !sales) {
+    if (!productId || !productName || !saleprice|| !oldprice || !description || !image || !quantity ) {
       setError("Please do not leave blank!");
       return;
     }
 
     try {
+      console.log(productInfo)
       const data = await addProducts(productInfo);
       if (data.success) {
         Swal.fire({
@@ -67,7 +67,6 @@ const ManageProduct = () => {
             productName: "",
             saleprice: "",
             oldprice: "",
-            sales: "",
             image: "",
             quantity: "",
             description: "",
@@ -255,14 +254,7 @@ const ManageProduct = () => {
                 onChange={handleChange}
                 required
               />
-              <InputUser
-                label="Offer"
-                name="sales"
-                type="number"
-                value={productInfo.sales}
-                onChange={handleChange}
-                required
-              />
+            
               <InputUser
                 label="Saled Price"
                 name="saleprice"

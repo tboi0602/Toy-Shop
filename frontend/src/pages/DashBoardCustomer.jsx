@@ -19,12 +19,12 @@ const DashBoardCustomer = () => {
     const timer = setTimeout(nextSlide, 2500);
     return () => clearTimeout(timer);
   }, [index]);
- 
+
   CheckUser("Customer");
 
   return (
     <div className="min-h-screen">
-      <div className="sticky top-0 z-10">
+      <div className="sticky top-0 z-50 ">
         <HdCustomer
           styleCart="btn-line"
           styleOrder="btn-line"
@@ -35,7 +35,6 @@ const DashBoardCustomer = () => {
       <div className="relative">
         {/* Hình ảnh chính */}
         <div className="w-full center flex-col bg-white py-10">
-          
           <div className="relative w-full max-w-7xl h-auto min-h-[250px] md:min-h-[400px] lg:min-h-[500px] flex items-center justify-center overflow-hidden rounded-2xl shadow-lg mt-4">
             <AnimatePresence mode="wait">
               <motion.img
@@ -64,8 +63,7 @@ const DashBoardCustomer = () => {
           </div>
         </div>
 
-        <ListProduct/>
-        
+        <ListProduct />
       </div>
 
       <Footer />

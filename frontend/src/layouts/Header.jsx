@@ -13,12 +13,18 @@ const Header = () => {
     navigate("/");
   };
   const [isScrolled, setIsScrolled] = useState(false);
+  const [backToTop, setBackToTop] = useState(false);
+
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 10) {
         setIsScrolled(true);
+        if (window.scrollY > 500) {
+          setBackToTop(true);
+        }
       } else {
         setIsScrolled(false);
+        setBackToTop(false);
       }
     };
     window.addEventListener("scroll", handleScroll);
@@ -26,8 +32,12 @@ const Header = () => {
   }, []);
   return (
     <>
-      <BackToTop></BackToTop>
-      <header className={`flex justify-between gap-5 p-5 bg-white ${isScrolled ?" shadow-md":""}`}>
+      {backToTop && <BackToTop />}
+      <header
+        className={`flex justify-between gap-5 p-5 bg-white ${
+          isScrolled ? " shadow-md" : ""
+        }`}
+      >
         <button className="center" onClick={handleLogoClick}>
           <img
             src={logo}

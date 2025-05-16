@@ -7,7 +7,6 @@
       productName: { type: String, required: true, unique: true },
       saleprice: { type: Number },
       oldprice: { type: Number },  
-      sales: { type: Number},
       image: { type: String},
       quantity:{type: Number},
       description: { type: String },

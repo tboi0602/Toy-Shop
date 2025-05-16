@@ -11,7 +11,7 @@ export default function DetailProductModal({ product, isOpen, onClose, userId, o
 
   const handleAddToCart = async () => {
     try {
-      await addToCart(userId, product.id, buyQuantity);
+      await addToCart(userId, product, buyQuantity);
       alert(`Added ${buyQuantity} item(s) to the cart!`);
       if (onCartUpdated) onCartUpdated();  // để reload giỏ hàng ở cha
       onClose();
