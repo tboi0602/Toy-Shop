@@ -1,80 +1,37 @@
-import React, { useState } from "react";
+import  { useState, useEffect } from "react";
 import Product from "./Product";
 import DetailProductModal from "./DetailProductModal";
-
+import {loadInfoProducts,loadInfoUser} from "../services/handleAPI"
 const ProductList = () => {
-  const products = [
-    {
-      id: 1,
-      name: "Luffy Gear 2",
-      price: "2.9",
-      oldprice: "4.2",
-      sales: "21.4k",
-      image: "https://kenhtinhoc.vn/wp-content/uploads/2022/10/mo-hinh-one-piece-monkey-d-luffy-1.jpg",
-      description: "High-quality PVC figure of Luffy in Gear 2 mode. Height: 25cm. Collectible item.",
-    },
-    {
-      id: 2,
-      name: "Luffy Gear 3",
-      price: "3.2",
-      oldprice: "4.5",
-      sales: "18.2k",
-      image: "https://kenhtinhoc.vn/wp-content/uploads/2022/10/mo-hinh-one-piece-monkey-d-luffy-1.jpg",
-      description: "Detail of Luffy Gear 3.",
-    },
-    {
-      id: 3,
-      name: "Luffy Gear 4",
-      price: "3.8",
-      oldprice: "5.2",
-      sales: "15.9k",
-      image: "https://kenhtinhoc.vn/wp-content/uploads/2022/10/mo-hinh-one-piece-monkey-d-luffy-1.jpg",
-      description: "Detail of Luffy Gear 4.",
-    },
-    {
-      id: 4,
-      name: "Luffy Gear 5",
-      price: "4.0",
-      oldprice: "5.9",
-      sales: "22.3k",
-      image: "https://kenhtinhoc.vn/wp-content/uploads/2022/10/mo-hinh-one-piece-monkey-d-luffy-1.jpg",
-      description: "Detail of Luffy Gear 5.",
-    },
-    {
-      id: 5,
-      name: "Zoro Sword Style",
-      price: "3.5",
-      oldprice: "4.9",
-      sales: "19.7k",
-      image: "https://kenhtinhoc.vn/wp-content/uploads/2022/10/mo-hinh-one-piece-monkey-d-luffy-1.jpg",
-      description: "Zoro three-sword collectible figure.",
-    },
-    {
-      id: 6,
-      name: "Sanji Fire Leg",
-      price: "2.7",
-      oldprice: "3.8",
-      sales: "13.6k",
-      image: "https://kenhtinhoc.vn/wp-content/uploads/2022/10/mo-hinh-one-piece-monkey-d-luffy-1.jpg",
-      description: "Sanji with fire kick effects.",
-    },
-  ];
-
+  const [products, setProducts] = useState([]);
+  const [userID, setUserID] = useState("");
   const [selectedProduct, setSelectedProduct] = useState(null);
-
+  useEffect(() => {
+    async function fetchProducts() {
+      try {
+        const data1 = await loadInfoProducts();
+        const data2 = await loadInfoUser();
+        setUserID(data2.user._id)
+        setProducts(data1.products)
+      } catch (error) {
+        console.error("Failed to load products", error);
+      }
+    }
+    fetchProducts();
+  }, []);
   return (
     <div className="my-10 mx-auto px-4 max-w-screen-xl">
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-        {products.map(({ id, name, price, oldprice, sales, image, description }) => (
+        {products.map(({ productId, productName, oldprice, saleprice, sales, image, description }) => (
           <Product
-            key={id}
-            name={name}
-            price={price}
-            oldprice={oldprice}
+            key={productId}
+            name={productName}
+            price={oldprice}
+            oldprice={saleprice}
             sales={sales}
-            image={image}
+            image={`http://localhost:5000/${image.replace(/^\/+/, "")}`}
             onClick={() =>
-              setSelectedProduct({ id, name, price, oldprice, sales, image, description })
+              setSelectedProduct({ productId, productName, oldprice, saleprice, sales, image, description })
             }
           />
         ))}
@@ -85,6 +42,7 @@ const ProductList = () => {
         product={selectedProduct}
         isOpen={!!selectedProduct}
         onClose={() => setSelectedProduct(null)}
+        userId={userID}
       />
     </div>
   );

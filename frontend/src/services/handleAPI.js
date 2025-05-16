@@ -139,22 +139,56 @@ export const deleteUser = async (updatedData) => {
   return res.json();
 };
 
-export async function addStaffs(username, password, position, email, yourname, birthDay,address, gender, phoneNum) {
+export async function addStaffs(
+  username,
+  password,
+  position,
+  email,
+  yourname,
+  birthDay,
+  address,
+  gender,
+  phoneNum
+) {
   const res = await fetch("http://localhost:5000/api/addStaffs", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     credentials: "include",
-    body: JSON.stringify({ username, password, position, email, yourname, birthDay,address, gender, phoneNum}),
+    body: JSON.stringify({
+      username,
+      password,
+      position,
+      email,
+      yourname,
+      birthDay,
+      address,
+      gender,
+      phoneNum,
+    }),
   });
   return res.json();
 }
 
-export async function addProducts(productId, productName, oldprice, sales, description, image) {
+export async function addProducts(
+  productId,
+  productName,
+  oldprice,
+  sales,
+  description,
+  image
+) {
   const res = await fetch("http://localhost:5000/api/addProducts", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     credentials: "include",
-    body: JSON.stringify({ productId, productName, oldprice, sales, description, image}),
+    body: JSON.stringify({
+      productId,
+      productName,
+      oldprice,
+      sales,
+      description,
+      image,
+    }),
   });
   return res.json();
 }
@@ -173,7 +207,7 @@ export async function deleteProducts(productId) {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     credentials: "include",
-    body: JSON.stringify({ productId}),
+    body: JSON.stringify({ productId }),
   });
   return res.json();
 }
@@ -183,7 +217,7 @@ export async function updateProducts(productId) {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     credentials: "include",
-    body: JSON.stringify({ productId}),
+    body: JSON.stringify({ productId }),
   });
   return res.json();
 }
@@ -193,7 +227,7 @@ export async function addNotifications(title, content) {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     credentials: "include",
-    body: JSON.stringify({ title, content}),
+    body: JSON.stringify({ title, content }),
   });
   return res.json();
 }
@@ -212,7 +246,38 @@ export async function deleteNotifications(id) {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     credentials: "include",
-    body: JSON.stringify({ id}),
+    body: JSON.stringify({ id }),
+  });
+  return res.json();
+}
+
+//! Thêm sản phẩm vào giỏ hàng
+export async function addToCart(userId, productId, buyQuantity) {
+  const res = await fetch(`http://localhost:5000/api/addToCart`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+    body: JSON.stringify({ userId, productId, buyQuantity }),
+  });
+  return res.json();
+}
+
+//! Lấy giỏ hàng của user theo userId
+export async function getCart() {
+  const res = await fetch(`http://localhost:5000/api/userCart`, {
+    method: "GET",
+    credentials: "include",
+  });
+  return res.json();
+}
+
+//! Xoá 1 sản phẩm khỏi giỏ hàng
+export async function deleteItem(productId) {
+  const res = await fetch(`http://localhost:5000/api/removeCart`, {
+    method: "DELETE",
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+    body: JSON.stringify({ productId }),
   });
   return res.json();
 }

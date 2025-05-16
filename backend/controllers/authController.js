@@ -1,6 +1,7 @@
 import User from "../models/User.js";
 import Product from "../models/Product.js";
 import Notification from "../models/Notification.js"
+import Cart from '../models/Cart.js';
 import bcrypt from "bcrypt";
 //!Đăng ký
 export const handleRegister = async (req, res) => {
@@ -427,5 +428,55 @@ export const deleteNotifications = async (req, res) => {
   } catch (error) {
     console.error("Delete error:", error); // log ra terminal để kiểm tra lỗi thật sự
     res.status(500).json({ success: false, message: "Server error" });
+  }
+};
+
+//!Cart
+export const addToCart = async (req, res) => {
+  try {
+    const { userId, product,buyQuantity } = req.body;
+
+    let cart = await Cart.findOne({ userId });
+
+    if (!cart) {
+      cart = new Cart({ userId, items: [{...product,buyQuantity}] });
+    } else {
+      const index = cart.items.findIndex((item) => item.productId.toString() === product.productId);
+      if (index > -1) {
+        cart.items[index].buyQuantity += buyQuantity;
+      } else {
+        cart.items.push({ ...product, buyQuantity });
+      }
+    }
+
+    await cart.save();
+    res.json(cart);
+  } catch (error) {
+    res.status(500).json({ message: 'Error adding to cart', error });
+  }
+};
+
+export const getCart = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const cart = await Cart.findOne({ userId }).populate('items.productId');
+    res.json(cart || { items: [] });
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching cart', error });
+  }
+};
+
+export const deleteItem = async (req, res) => {
+  try {
+    const { userId, productId } = req.body;
+
+    const cart = await Cart.findOne({ userId });
+    if (!cart) return res.status(404).json({ message: 'Cart not found' });
+
+    cart.items = cart.items.filter(item => item.productId.toString() !== productId);
+    await cart.save();
+    res.json(cart);
+  } catch (error) {
+    res.status(500).json({ message: 'Error deleting item', error });
   }
 };
