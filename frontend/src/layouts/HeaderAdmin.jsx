@@ -195,17 +195,7 @@ const HeaderAdmin = ({ stylePro }) => {
           >
             Order
           </div>
-          <div
-            className={`font-bold cursor-pointer ${getLinkClass(
-              "/manage-revenue"
-            )}`}
-            onClick={() => {
-              navigate("/manage-revenue");
-              setMenuOpen(false);
-            }}
-          >
-            Revenue
-          </div>
+          
 
           {/* Profile button */}
           <div

@@ -255,7 +255,8 @@ export const getStaffs = async (req, res) => {
 
 export const updateInfoByAdmin = async (req, res) => {
   try {
-    const { _id, yourname, birthDay, gender, email, phoneNum, address } = req.body;
+    const { _id, yourname, birthDay, gender, email, phoneNum, address } =
+      req.body;
 
     const result = await User.findByIdAndUpdate(
       _id,
@@ -368,8 +369,16 @@ export const updateProductByAdmin = async (req, res) => {
     } = req.body;
 
     const result = await Product.findOneAndUpdate(
-      {productId},
-      {productId, productName, oldprice, image, saleprice, quantity, description },
+      { productId },
+      {
+        productId,
+        productName,
+        oldprice,
+        image,
+        saleprice,
+        quantity,
+        description,
+      },
       { new: true }
     );
 
@@ -451,7 +460,6 @@ export const deleteNotifications = async (req, res) => {
 export const addToCart = async (req, res) => {
   try {
     const { userId, product, buyQuantity } = req.body;
-    console.log("Received data:", req.body);
     let cart = await Cart.findOne({ userId });
     if (!cart) {
       cart = new Cart({ userId, items: [{ ...product, buyQuantity }] });
@@ -494,17 +502,52 @@ export const deleteItem = async (req, res) => {
     }
 
     const cart = await Cart.findOne({ userId });
-    if (!cart) return res.status(404).json({ message: "Cart not found" });
+    if (!cart)
+      return res
+        .status(404)
+        .json({ suscess: false, message: "Cart not found" });
 
     cart.items = cart.items.filter(
       (item) => !productIds.includes(item.productId.toString())
     );
 
     await cart.save();
-    res.json({ message: "Deleted items successfully", cart });
+    res.json({ suscess: true });
   } catch (error) {
     console.error("Delete error:", error);
     res.status(500).json({ message: "Error deleting items", error });
+  }
+};
+
+//!Orders
+export const addOrder = async (req, res) => {
+  try {
+    const { id, products, subtotal, totalPayment, address, status } = req.body;
+    const userId = req.session.user.id;
+
+    if (!userId) {
+      return res.status(401).json({ success: false, message: "Unauthorized" });
+    }
+
+    const order = new Order({
+      orderId: id,
+      userId: userId,
+      items: products,
+      total: subtotal,
+      totalPayment: totalPayment,
+      address: address,
+      status: status,
+    });
+
+    await order.save();
+
+    res.status(201).json({ success: true, order });
+  } catch (err) {
+    console.error("Add Order Error:", err);
+    res.status(500).json({
+      success: false,
+      message: "Server error during add order",
+    });
   }
 };
 
@@ -520,8 +563,9 @@ export const getOrders = async (req, res) => {
       });
     }
 
-    // Lọc đơn hàng theo userId từ session
-    const orders = await Order.find({ userId: new mongoose.Types.ObjectId(userId) }); // userId là string, trùng với Order.userId
+    const orders = await Order.find({
+      userId: new mongoose.Types.ObjectId(userId),
+    }); // userId là string, trùng với Order.userId
 
     if (!orders || orders.length === 0) {
       return res.json({
@@ -536,5 +580,56 @@ export const getOrders = async (req, res) => {
     res.status(500).json({ success: false, message: "Server error" });
   }
 };
+//!update
+export const updateOrder = async (req, res) => {
+  try {
+    const {
+      orderId: id,
+      items: products,
+      total: subtotal,
+      totalPayment: totalPayment,
+      status: status,
+      reason: reason,
+    } = req.body;
 
+    const result = await Order.findOneAndUpdate(
+      { orderId: id },
+      {
+        items: products,
+        total: subtotal,
+        totalPayment: totalPayment,
+        status: status,
+        cancelReason: reason,
+      },
+      { new: true }
+    );
 
+    if (!result) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Order not found" });
+    }
+
+    res.json({ success: true, product: result });
+  } catch (error) {
+    console.error("Error updating order:", error);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+};
+export const getOrdersByAdmin = async (req, res) => {
+  try {
+    const orders = await Order.find({});
+
+    if (!orders || orders.length === 0) {
+      return res.json({
+        success: false,
+        message: "You haven't placed any orders yet.",
+      });
+    }
+
+    res.json({ success: true, orders });
+  } catch (error) {
+    console.error("Error fetching orders:", error);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+};

@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { addToCart } from "../services/handleAPI";
+import { useNavigate } from "react-router-dom";
 
 export default function DetailProductModal({ product, isOpen, onClose, userId, onCartUpdated }) {
   const [buyQuantity, setBuyQuantity] = useState(1);
+  const navigate = useNavigate();
+
   useEffect(() => {
     if (product) setBuyQuantity(1);
   }, [product]);
@@ -22,7 +25,20 @@ export default function DetailProductModal({ product, isOpen, onClose, userId, o
   };
 
   const handleBuyNow = () => {
-    
+    // Chuyển sang CheckoutPage với sản phẩm hiện tại và số lượng buyQuantity
+    navigate("/checkout", {
+      state: {
+        cartItems: [
+          {
+            ...product,
+            buyQuantity,
+            productId: product.id || product.productId, // đảm bảo có productId
+            image: `http://localhost:5000/${product.image?.replace(/^\/+/, "")}`,
+          },
+        ],
+      },
+    });
+    onClose();
   };
 
   const totalPrice = product.saleprice * buyQuantity;
