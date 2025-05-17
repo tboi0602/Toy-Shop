@@ -24,7 +24,7 @@ const ManageProduct = () => {
   const [productList, setProductList] = useState([]);
   const [selectedIdToDelete, setSelectedIdToDelete] = useState(null);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
-
+  const [showEditModal, setShowEditModal] = useState(false);
   const [productInfo, setProductInfo] = useState({
     productId: "",
     productName: "",
@@ -44,15 +44,14 @@ const ManageProduct = () => {
 
   const addProduct = async (e) => {
     e.preventDefault();
-    const { productId, productName,saleprice, oldprice,  image, quantity,description } = productInfo;
+    const { productId, productName, saleprice, oldprice, image, quantity, description } = productInfo;
 
-    if (!productId || !productName || !saleprice|| !oldprice || !description || !image || !quantity ) {
+    if (!productId || !productName || !saleprice || !oldprice || !description || !image || !quantity) {
       setError("Please do not leave blank!");
       return;
     }
 
     try {
-      console.log(productInfo)
       const data = await addProducts(productInfo);
       if (data.success) {
         Swal.fire({
@@ -76,6 +75,41 @@ const ManageProduct = () => {
         });
       } else {
         setError(data.message || "Add new product failed!");
+      }
+    } catch (err) {
+      console.error(err);
+      setError("Server error. Please try again.");
+    }
+  };
+
+  const updateProduct = async (e) => {
+    e.preventDefault();
+    const { productId, productName, saleprice, oldprice, image, quantity, description } = productInfo;
+
+    if (!productId || !productName || !saleprice || !oldprice || !description || !image || !quantity) {
+      setError("Please do not leave blank!");
+      return;
+    }
+
+    try {
+      const data = await updateProducts(productInfo);
+      if (data.success) {
+        Swal.fire("Updated!", "Product updated successfully!", "success").then(() => {
+          setShowEditModal(false);
+          setProductInfo({
+            productId: "",
+            productName: "",
+            saleprice: "",
+            oldprice: "",
+            image: "",
+            quantity: "",
+            description: "",
+          });
+          setUploadedImage(null);
+          loadData();
+        });
+      } else {
+        setError(data.message || "Update failed!");
       }
     } catch (err) {
       console.error(err);
@@ -112,6 +146,12 @@ const ManageProduct = () => {
     }
   };
 
+  const handleEditClick = (product) => {
+    setProductInfo({ ...product });
+    setUploadedImage(`http://localhost:5000/${product.image?.replace(/^\/+/, "")}`);
+    setShowEditModal(true);
+    setError("");
+  };
   return (
     <div>
       <div className="sticky top-0 z-10">
@@ -167,7 +207,10 @@ const ManageProduct = () => {
                 <span className="truncate">{product.quantity}</span>
                 <span className="truncate">{product.description}</span>
                 <div className="flex justify-end gap-7">
-                  <Icon className="Wrench btn-line">
+                  <Icon
+                   className="Wrench btn-line"
+                   onClick={()=>handleEditClick(product)}
+                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
@@ -219,7 +262,18 @@ const ManageProduct = () => {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-white shadow-xl w-full max-w-md p-6 relative mx-4 sm:mx-0 max-h-[90vh] overflow-y-auto">
             <button
-              onClick={() => setShowModal(false)}
+              onClick={() => 
+                {setShowModal(false)
+                  setProductInfo({
+                    productId: "",
+                    productName: "",
+                    saleprice: "",
+                    oldprice: "",
+                    image: "",
+                    quantity: "",
+                    description: "",
+                  });
+                }}
               className="absolute top-4 right-4 text-red-500 hover:text-red-700 font-bold text-xl"
             >
               &times;
@@ -251,14 +305,6 @@ const ManageProduct = () => {
                 name="oldprice"
                 type="number"
                 value={productInfo.oldprice}
-                onChange={handleChange}
-                required
-              />
-              <InputUser
-                label="Sales"
-                name="sales"
-                type="number"
-                value={productInfo.sales}
                 onChange={handleChange}
                 required
               />
@@ -311,6 +357,56 @@ const ManageProduct = () => {
           </div>
         </div>
       )}
+
+      {showEditModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white shadow-xl w-full max-w-md p-6 relative mx-4 sm:mx-0 max-h-[90vh] overflow-y-auto">
+            <button
+              onClick={() => {
+                setShowEditModal(false)
+                setProductInfo({
+                  productId: "",
+                  productName: "",
+                  saleprice: "",
+                  oldprice: "",
+                  image: "",
+                  quantity: "",
+                  description: "",
+                });
+              }}
+              className="absolute top-4 right-4 text-red-500 hover:text-red-700 font-bold text-xl"
+            >
+              &times;
+            </button>
+            <h3 className="text-xl font-semibold mb-4 text-center">
+              Update Product
+            </h3>
+            {error && <p className="text-red-500 mb-2">{error}</p>}
+
+            <form onSubmit={updateProduct} className="space-y-4">
+              <InputUser label="Product ID" name="productId" type="text" value={productInfo.productId} onChange={handleChange} readOnly />
+              <InputUser label="Product Name" name="productName" type="text" value={productInfo.productName} onChange={handleChange} />
+              <InputUser label="Price" name="oldprice" type="number" value={productInfo.oldprice} onChange={handleChange} />
+              <InputUser label="Saled Price" name="saleprice" type="number" value={productInfo.saleprice} onChange={handleChange} />
+              <InputUser label="Quantity" name="quantity" type="number" value={productInfo.quantity} onChange={handleChange} />
+              <InputUser label="Description" name="description" type="text" value={productInfo.description} onChange={handleChange} />
+
+              <div>
+                <label className="block font-semibold mb-1">Image</label>
+                <input type="file" accept="image/*" onChange={handleUpload} className="block w-full text-sm text-gray-900 border border-gray-300 rounded cursor-pointer bg-gray-50" />
+                {uploadedImage && (
+                  <img src={uploadedImage} alt="preview" className="mt-2 w-20 h-20 object-cover rounded" />
+                )}
+              </div>
+
+              <button type="submit" className="w-full py-2 bg-red-600 text-white rounded hover:bg-green-700 transition">
+                Update Product
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
+
 
       {showConfirmModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">

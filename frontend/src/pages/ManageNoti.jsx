@@ -137,7 +137,10 @@ const ManageNoti = () => {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-white rounded-xl shadow-xl w-full max-w-lg p-6 relative mx-4 sm:mx-0">
             <button
-              onClick={() => setShowModal(false)}
+              onClick={() => {
+                setShowModal(false)
+                setTitle("")
+                setContent("")}}
               className="absolute top-2 right-2 text-gray-500 hover:text-red-600"
             >
               ✕

@@ -80,11 +80,8 @@ router.post("/updateProducts", updateProductByAdmin);
 router.post("/addNotifications", addNotification);
 router.get("/getNotifications", getNotifications);
 router.post("/deleteNotifications", deleteNotifications);
-<<<<<<< HEAD
 
 
-=======
->>>>>>> fa6c9ea3b77d505c1ee6862807d4c0485eedec80
 router.post("/addToCart", addToCart); // Thêm sản phẩm vào giỏ
 router.get("/userCart", getCart); // Lấy giỏ hàng theo user
 router.delete("/removeCart", deleteItem); // Xoá 1 item khỏi giỏ

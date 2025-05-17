@@ -198,12 +198,12 @@ export async function deleteProducts(productId) {
   return res.json();
 }
 
-export async function updateProducts(productId) {
+export async function updateProducts(productInfo) {
   const res = await fetch("http://localhost:5000/api/updateProducts", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     credentials: "include",
-    body: JSON.stringify({ productId }),
+    body: JSON.stringify(productInfo),
   });
   return res.json();
 }
@@ -277,3 +277,4 @@ export const loadInfoOrders = async () => {
   });
   return res.json();
 };
+

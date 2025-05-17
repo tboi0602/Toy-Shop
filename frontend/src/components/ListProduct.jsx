@@ -28,7 +28,6 @@ const ListProduct = ({ searchTerm = "" }) => {
     }
     fetchProducts();
   }, []);
-<<<<<<< HEAD
 
   const applyFilter = () => {
     setMinPrice(tempMinPrice);
@@ -84,24 +83,6 @@ const ListProduct = ({ searchTerm = "" }) => {
           onChange={(e) => setTempMinPrice(e.target.value)}
           placeholder="Min"
         />
-=======
-  return (
-    <div className="my-10 mx-auto px-4 max-w-screen-xl">
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-        {products.map(({ productId, productName, oldprice, saleprice, sales, image, description }) => (
-          <Product
-            key={productId}
-            name={productName}
-            price={oldprice}
-            oldprice={saleprice}
-            sales={sales}
-            image={`http://localhost:5000/${image?.replace(/^\/+/, "")}`}
-            onClick={() =>
-              setSelectedProduct({ productId, productName, oldprice, saleprice, sales, image, description })
-            }
-          />
-        ))}
->>>>>>> fa6c9ea3b77d505c1ee6862807d4c0485eedec80
       </div>
 
       <div className="mb-4">
@@ -213,7 +194,7 @@ const ListProduct = ({ searchTerm = "" }) => {
                 price={saleprice}
                 oldprice={oldprice}
                 quantity={quantity}
-                image={`http://localhost:5000/${image.replace(/^\/+/, "")}`}
+                image={`http://localhost:5000/${image?.replace(/^\/+/, "")}`}
                 onClick={() =>
                   setSelectedProduct({
                     productId,

@@ -1,13 +1,9 @@
 import User from "../models/User.js";
 import Product from "../models/Product.js";
-<<<<<<< HEAD
 import Notification from "../models/Notification.js";
 import Cart from "../models/Cart.js";
-=======
-import Notification from "../models/Notification.js"
 import Order from "../models/Order.js";
-import Cart from '../models/Cart.js';
->>>>>>> fa6c9ea3b77d505c1ee6862807d4c0485eedec80
+import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 //!Đăng ký
 export const handleRegister = async (req, res) => {
@@ -49,6 +45,7 @@ export const handleLogin = async (req, res) => {
         .json({ success: false, message: "Incorrect password" });
     req.session.user = { id: user._id, position: user.position }; // Lưu session
     res.json({ success: true, position: user.position });
+    console.log("Session user:", req.session.user);
   } catch (err) {
     res.status(500).json({ success: false, message: err });
   }
@@ -197,7 +194,6 @@ export const getCustomers = async (req, res) => {
   }
 };
 
-<<<<<<< HEAD
 export const addStaff = async (req, res) => {
   try {
     const {
@@ -215,25 +211,6 @@ export const addStaff = async (req, res) => {
     const existingUser = await User.findOne({ username });
     if (existingUser) {
       return res.status(409).json({
-=======
-  export const addStaff = async (req, res) => {
-    try {
-      const { username, password, position, email, yourname, birthDay, address, gender, phoneNum } = req.body;
-
-      const existingUser = await User.findOne({ username });
-      if (existingUser) {
-        return res.status(409).json({
-          success: false,
-          message: "Username already exists",
-        });
-      }
-
-      const user = new User({ username, password, position, email, yourname, birthDay, address, gender, phoneNum });
-      await user.save();
-      res.status(201).json({ success: true });
-    } catch (err) {
-      res.status(500).json({
->>>>>>> fa6c9ea3b77d505c1ee6862807d4c0485eedec80
         success: false,
         message: "Username already exists",
       });
@@ -384,15 +361,15 @@ export const updateProductByAdmin = async (req, res) => {
       productId,
       productName,
       oldprice,
-      sales,
-      imag,
+      saleprice,
+      image,
       quantity,
       description,
     } = req.body;
 
-    const result = await Product.findByOneAndUpdate(
-      productId,
-      { productName, oldprice, sales, imag, quantity, description },
+    const result = await Product.findOneAndUpdate(
+      {productId},
+      {productId, productName, oldprice, image, saleprice, quantity, description },
       { new: true }
     );
 
@@ -432,7 +409,6 @@ export const addNotification = async (req, res) => {
     const { title, content } = req.body;
     const newNoti = new Notification({ title, content });
     await newNoti.save();
-
     res.status(201).json({ success: true });
   } catch (err) {
     console.error("Error adding notification:", err);
@@ -534,15 +510,31 @@ export const deleteItem = async (req, res) => {
 
 export const getOrders = async (req, res) => {
   try {
-    const orders = await Order.find();
-    if (!orders)
+    console.log("Session user:", req.session.user.id);
+    const userId = req.session.user.id;
+
+    if (!userId) {
+      return res.status(401).json({
+        success: false,
+        message: "Unauthorized: User not logged in.",
+      });
+    }
+
+    // Lọc đơn hàng theo userId từ session
+    const orders = await Order.find({ userId: new mongoose.Types.ObjectId(userId) }); // userId là string, trùng với Order.userId
+
+    if (!orders || orders.length === 0) {
       return res.json({
         success: false,
-        message: "No orders have added yet!",
+        message: "You haven't placed any orders yet.",
       });
+    }
+
     res.json({ success: true, orders });
   } catch (error) {
-    console.error("Error taking orders list:", error);
-    res.status(500).json({ message: "" });
+    console.error("Error fetching orders:", error);
+    res.status(500).json({ success: false, message: "Server error" });
   }
 };
+
+

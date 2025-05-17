@@ -107,7 +107,7 @@ export default function CartPage() {
                     onChange={() => toggleSelect(item.productId)}
                   />
                   <img
-                    src={`http://localhost:5000/${item.image.replace(/^\/+/, "")}`}
+                    src={`http://localhost:5000/${item.image?.replace(/^\/+/, "")}`}
                     className="w-20 h-20 object-cover rounded-md border"
                     alt={item.productName}
                   />
