@@ -269,6 +269,16 @@ export async function deleteItem(productIds) {
   return res.json();
 }
 
+export async function addOrders(ordersInfo) {
+  const res = await fetch("http://localhost:5000/api/addOrders", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+    body: JSON.stringify(ordersInfo),
+  });
+  return res.json();
+}
+
 export const loadInfoOrders = async () => {
   const res = await fetch("http://localhost:5000/api/getOrders", {
     method: "GET",

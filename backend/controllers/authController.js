@@ -508,9 +508,35 @@ export const deleteItem = async (req, res) => {
   }
 };
 
+export const addOrders = async (req, res) => {
+    try {
+        const { orderId, userId, items, status, total } = req.body;
+
+        if (!orderId || !userId || !items || items.length === 0) {
+            return res.status(400).json({ message: 'Invalid info or items do not exist' });
+        }
+
+        const newOrder = new Order({
+            orderId,
+            userId,
+            items,
+            status: status || 'pending',
+            total,
+        });
+
+        const savedOrder = await newOrder.save();
+
+        return res.status(201).json({ message: 'Tạo đơn hàng thành công.', order: savedOrder });
+    } catch (error) {
+        console.error("Lỗi khi tạo đơn hàng:", error);
+        return res.status(500).json({ message: 'Lỗi server.' });
+    }
+};
+
 export const getOrders = async (req, res) => {
   try {
     console.log("Session user:", req.session.user.id);
+    console.log("Type:",typeof(req.session.user.id))
     const userId = req.session.user.id;
 
     if (!userId) {
@@ -521,7 +547,7 @@ export const getOrders = async (req, res) => {
     }
 
     // Lọc đơn hàng theo userId từ session
-    const orders = await Order.find({ userId: new mongoose.Types.ObjectId(userId) }); // userId là string, trùng với Order.userId
+    const orders = await Order.find({ userId: userId }); // userId là string, trùng với Order.userId
 
     if (!orders || orders.length === 0) {
       return res.json({
