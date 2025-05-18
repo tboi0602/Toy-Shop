@@ -275,7 +275,7 @@ const CheckoutPage = () => {
           type="text"
           value={addressDetail}
           onChange={(e) => setAddressDetail(e.target.value)}
-          placeholder="House number, street name"
+          placeholder="Number phone ,house number, street name,..."
           className="w-full border rounded-md p-3 mb-3"
         />
 
@@ -361,14 +361,6 @@ const CheckoutPage = () => {
           Place Order
         </button>
       </div>
-
-      <p className="text-sm text-gray-500 text-center mt-4">
-        By clicking 'Place Order', you confirm that you agree to{" "}
-        <a href="" className="text-blue-600 hover:underline">
-          NinjaShop's Terms and Conditions
-        </a>
-        .
-      </p>
     </div>
   );
 };

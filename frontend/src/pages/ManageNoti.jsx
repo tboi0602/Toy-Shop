@@ -67,8 +67,6 @@ const ManageNoti = () => {
       {/* Header */}
     <div className="sticky top-0 z-10">
       <HdAdmin
-        styleCart="btn-line"
-        styleOrder="btn-line"
         stylePro="btn-line"
       />
     </div>

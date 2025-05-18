@@ -11,17 +11,8 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { CheckUser } from "../Function/CheckUser";
-
+import { loadInfoOrdersByAdmin } from "../services/handleAPI";
 // Hàm gọi API lấy đơn hàng
-export const loadInfoOrdersByAdmin = async () => {
-  const res = await fetch("http://localhost:5000/api/getOrdersByAdmin", {
-    method: "GET",
-    credentials: "include",
-    headers: { Accept: "application/json" },
-  });
-  return res.json();
-};
-
 export default function DashboardAdmin() {
   const [orders, setOrders] = useState([]);
   const [filterFrom, setFilterFrom] = useState("2025-05-01");
@@ -120,79 +111,92 @@ export default function DashboardAdmin() {
   }, [orders, filterFrom, filterTo]);
 
   return (
-  <>
-    <div className="sticky top-0 z-30 bg-white">
-      <HdAdmin stylePro="btn-line" />
-    </div>
-    <main className="p-4 sm:p-6 md:p-8 max-w-7xl mx-auto min-h-screen">
-      <h1 className="text-2xl sm:text-3xl font-bold mb-6 text-red-600 text-center">
-        Revenue Dashboard (Completed Orders)
-      </h1>
-
-      {/* Filter chọn khoảng thời gian */}
-      <div className="mb-8 flex flex-col sm:flex-row justify-center gap-6 max-w-lg mx-auto">
-        <div className="w-full sm:w-auto">
-          <label className="block mb-1 font-semibold text-sm sm:text-base">From Date:</label>
-          <input
-            type="date"
-            value={filterFrom}
-            max={filterTo}
-            onChange={(e) => setFilterFrom(e.target.value)}
-            className="border p-2 rounded w-full sm:w-48"
-          />
-        </div>
-        <div className="w-full sm:w-auto">
-          <label className="block mb-1 font-semibold text-sm sm:text-base">To Date:</label>
-          <input
-            type="date"
-            value={filterTo}
-            min={filterFrom}
-            onChange={(e) => setFilterTo(e.target.value)}
-            className="border p-2 rounded w-full sm:w-48"
-          />
-        </div>
+    <>
+      <div className="sticky top-0 z-30 bg-white">
+        <HdAdmin stylePro="btn-line" />
       </div>
+      <main className="p-4 sm:p-6 md:p-8 max-w-7xl mx-auto min-h-screen">
+        <h1 className="text-2xl sm:text-3xl font-bold mb-6 text-red-600 text-center">
+          Revenue Dashboard (Completed Orders)
+        </h1>
 
-      {/* Biểu đồ doanh thu */}
-      <section className="bg-white shadow-md rounded-xl p-6 border border-red-600 mb-10 max-w-full overflow-x-auto">
-        <h2 className="text-xl sm:text-2xl font-semibold mb-4 text-red-600 text-center sm:text-left">
-          Revenue by Date
-        </h2>
-        {filteredData.length === 0 ? (
-          <p className="text-center text-gray-600">No data in selected date range.</p>
-        ) : (
-          <ResponsiveContainer width="100%" height={350} minWidth={320} minHeight={300}>
-            <BarChart
-              data={filteredData}
-              margin={{ top: 20, right: 30, left: 0, bottom: 5 }}
+        {/* Filter chọn khoảng thời gian */}
+        <div className="mb-8 flex flex-col sm:flex-row justify-center gap-6 max-w-lg mx-auto">
+          <div className="w-full sm:w-auto">
+            <label className="block mb-1 font-semibold text-sm sm:text-base">
+              From Date:
+            </label>
+            <input
+              type="date"
+              value={filterFrom}
+              max={filterTo}
+              onChange={(e) => setFilterFrom(e.target.value)}
+              className="border p-2 rounded w-full sm:w-48"
+            />
+          </div>
+          <div className="w-full sm:w-auto">
+            <label className="block mb-1 font-semibold text-sm sm:text-base">
+              To Date:
+            </label>
+            <input
+              type="date"
+              value={filterTo}
+              min={filterFrom}
+              onChange={(e) => setFilterTo(e.target.value)}
+              className="border p-2 rounded w-full sm:w-48"
+            />
+          </div>
+        </div>
+
+        {/* Biểu đồ doanh thu */}
+        <section className="bg-white shadow-md rounded-xl p-6 border border-red-600 mb-10 max-w-full overflow-x-auto">
+          <h2 className="text-xl sm:text-2xl font-semibold mb-4 text-red-600 text-center sm:text-left">
+            Revenue by Date
+          </h2>
+          {filteredData.length === 0 ? (
+            <p className="text-center text-gray-600">
+              No data in selected date range.
+            </p>
+          ) : (
+            <ResponsiveContainer
+              width="100%"
+              height={350}
+              minWidth={320}
+              minHeight={300}
             >
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="date" tickFormatter={(str) => str.slice(5)} />
-              <YAxis />
-              <Tooltip formatter={(value) => `$${value.toFixed(2)}`} />
-              <Legend />
-              <Bar dataKey="revenue" fill="#CC0000" name="Revenue ($)" />
-            </BarChart>
-          </ResponsiveContainer>
-        )}
-      </section>
+              <BarChart
+                data={filteredData}
+                margin={{ top: 20, right: 30, left: 0, bottom: 5 }}
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="date" tickFormatter={(str) => str.slice(5)} />
+                <YAxis />
+                <Tooltip formatter={(value) => `$${value.toFixed(2)}`} />
+                <Legend />
+                <Bar dataKey="revenue" fill="#CC0000" name="Revenue ($)" />
+              </BarChart>
+            </ResponsiveContainer>
+          )}
+        </section>
 
-      {/* Thông tin tổng số lượng sản phẩm và sản phẩm bán chạy */}
-      <section className="bg-white shadow-md rounded-xl p-6 border border-red-600 max-w-md mx-auto text-center">
-        <h2 className="text-xl sm:text-2xl font-semibold mb-4 text-red-600">Sales Summary</h2>
-        <p className="text-lg sm:text-xl mb-2">
-          <strong>Total Products Sold:</strong> {totalProductsSold}
-        </p>
-        {topProduct ? (
-          <p className="text-lg sm:text-xl">
-            <strong>Top Selling Product:</strong> {topProduct.name} ({topProduct.quantity} sold)
+        {/* Thông tin tổng số lượng sản phẩm và sản phẩm bán chạy */}
+        <section className="bg-white shadow-md rounded-xl p-6 border border-red-600 max-w-md mx-auto text-center">
+          <h2 className="text-xl sm:text-2xl font-semibold mb-4 text-red-600">
+            Sales Summary
+          </h2>
+          <p className="text-lg sm:text-xl mb-2">
+            <strong>Total Products Sold:</strong> {totalProductsSold}
           </p>
-        ) : (
-          <p className="text-gray-600">No product sales data.</p>
-        )}
-      </section>
-    </main>
-  </>
-);
-
+          {topProduct ? (
+            <p className="text-lg sm:text-xl">
+              <strong>Top Selling Product:</strong> {topProduct.name} (
+              {topProduct.quantity} sold)
+            </p>
+          ) : (
+            <p className="text-gray-600">No product sales data.</p>
+          )}
+        </section>
+      </main>
+    </>
+  );
 }

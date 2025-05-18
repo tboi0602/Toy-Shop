@@ -15,12 +15,17 @@ const Icon = ({ children, onClick, className = "" }) => (
 
 const HeaderAdmin = ({ stylePro }) => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [backToTop, setBackToTop] = useState(false);
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 10) {
         setIsScrolled(true);
+        if (window.scrollY > 500) {
+          setBackToTop(true);
+        }
       } else {
         setIsScrolled(false);
+        setBackToTop(false);
       }
     };
     window.addEventListener("scroll", handleScroll);
@@ -62,7 +67,7 @@ const HeaderAdmin = ({ stylePro }) => {
         isScrolled ? " shadow-md" : ""
       }`}
     >
-      <BackToTop></BackToTop>
+      {backToTop && <BackToTop />}
       <button className="flex items-center">
         <img
           src={logo}
@@ -195,7 +200,6 @@ const HeaderAdmin = ({ stylePro }) => {
           >
             Order
           </div>
-          
 
           {/* Profile button */}
           <div

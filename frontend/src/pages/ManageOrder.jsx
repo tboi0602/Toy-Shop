@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { loadInfoOrdersByAdmin, updateOrder } from "../services/handleAPI";
 import HeaderAdmin from "../layouts/HeaderAdmin";
-
+import { CheckUser } from "../Function/CheckUser";
 const statusOptions = [
   "Cancelled",
   "Completed",
@@ -37,7 +37,7 @@ const ManagerOrder = () => {
   const [statusMap, setStatusMap] = useState({});
   const [cancelReasonMap, setCancelReasonMap] = useState({});
   const [expandedMap, setExpandedMap] = useState({});
-
+  CheckUser("Admin");
   useEffect(() => {
     fetchOrders();
   }, []);
@@ -105,7 +105,9 @@ const ManagerOrder = () => {
 
   return (
     <>
-      <HeaderAdmin stylePro={"btn-line"} />
+      <div className="sticky top-0 z-10">
+        <HeaderAdmin stylePro="btn-line" />
+      </div>
       <div className="p-6 max-w-7xl mx-auto bg-gray-50 min-h-screen">
         <h1 className="text-4xl font-bold mb-8 text-center text-red-600">
           Admin Order Management
