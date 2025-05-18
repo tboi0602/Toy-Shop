@@ -82,7 +82,7 @@ export const getInfo = async (req, res) => {
     }
     res.json({ success: true, user });
   } catch (err) {
-    res.status(500).json({ success: false, message: message.err });
+    res.status(500).json({ success: false, message: err });
   }
 };
 
@@ -575,6 +575,7 @@ export const addOrder = async (req, res) => {
 export const getOrders = async (req, res) => {
   try {
     console.log("Session user:", req.session.user.id);
+    console.log("Type:",typeof(req.session.user.id))
     const userId = req.session.user.id;
 
     if (!userId) {
