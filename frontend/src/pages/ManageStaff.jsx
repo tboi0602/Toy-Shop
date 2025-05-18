@@ -277,7 +277,6 @@ const ManageStaff = () => {
                   <InputUser name="Username" value={username} onChange={(e) => setUsername(e.target.value)} />
                   <InputUser name="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
                   <InputUser name="Repeat Password" type="password" value={repassword} onChange={(e) => setRePassword(e.target.value)} />
-                  <InputUser name="Address" value={address} onChange={(e) => setAddress(e.target.value)} />
                 </>
               )}
 

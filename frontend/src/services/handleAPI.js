@@ -269,16 +269,17 @@ export async function deleteItem(productIds) {
   return res.json();
 }
 
-export async function addOrders(ordersInfo) {
-  const res = await fetch("http://localhost:5000/api/addOrders", {
+//!Orders
+export const addOrder = async (order) => {
+  const res = await fetch("http://localhost:5000/api/addOrder", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     credentials: "include",
-    body: JSON.stringify(ordersInfo),
+    body: JSON.stringify(order),
   });
   return res.json();
-}
-
+};
+//!LOAd
 export const loadInfoOrders = async () => {
   const res = await fetch("http://localhost:5000/api/getOrders", {
     method: "GET",
@@ -287,4 +288,20 @@ export const loadInfoOrders = async () => {
   });
   return res.json();
 };
-
+export const loadInfoOrdersByAdmin = async () => {
+  const res = await fetch("http://localhost:5000/api/getOrdersByAdmin", {
+    method: "GET",
+    credentials: "include",
+    headers: { Accept: "application/json" },
+  });
+  return res.json();
+};
+export const updateOrder = async (order) => {
+  const res = await fetch("http://localhost:5000/api/updateOrder", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+    body: JSON.stringify(order),
+  });
+  return res.json();
+};
