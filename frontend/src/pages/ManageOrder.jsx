@@ -7,7 +7,7 @@ const statusOptions = [
   "Completed",
   "Delivering",
   "Confirmed",
-  "WAITING FOR CONFIRMATION",
+  "Waiting for confirmation",
   "REQUEST CANCELLATION",
 ];
 
@@ -21,7 +21,7 @@ const getStatusStyle = (status) => {
       return "bg-blue-100 text-blue-700 font-bold";
     case "Confirmed":
       return "bg-yellow-100 text-yellow-700 font-bold";
-    case "WAITING FOR CONFIRMATION":
+    case "Waiting for confirmation":
       return "bg-gray-100 text-gray-800 font-bold";
     case "REQUEST CANCELLATION":
       return "bg-orange-100 text-orange-700 font-bold";
@@ -51,7 +51,7 @@ const ManagerOrder = () => {
       const reasonInit = {};
       const expandInit = {};
       res.orders.forEach((order) => {
-        statusInit[order._id] = order.status || "WAITING FOR CONFIRMATION";
+        statusInit[order._id] = order.status || "Waiting for confirmation";
         reasonInit[order._id] = order.cancelReason || "";
         expandInit[order._id] = false;
       });

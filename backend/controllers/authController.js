@@ -529,6 +529,27 @@ export const addOrder = async (req, res) => {
       return res.status(401).json({ success: false, message: "Unauthorized" });
     }
 
+    // Trừ số lượng tồn kho
+    for (const item of products) {
+      const product = await Product.findOne({ productId: item.productId });
+      if (!product) {
+        return res.status(404).json({
+          success: false,
+          message: `Product with ID ${item.productId} not found`,
+        });
+      }
+
+      if (product.quantity < item.buyQuantity) {
+        return res.status(400).json({
+          success: false,
+          message: `Not enough stock for ${product.productName}`,
+        });
+      }
+
+      product.quantity -= item.buyQuantity;
+      await product.save();
+    }
+
     const order = new Order({
       orderId: id,
       userId: userId,
@@ -609,8 +630,16 @@ export const updateOrder = async (req, res) => {
         .status(404)
         .json({ success: false, message: "Order not found" });
     }
-
     res.json({ success: true, product: result });
+    if (status === "Cancelled") {
+      for (const item of products) {
+        const product = await Product.findOne({ productId: item.productId });
+        if (product) {
+          product.quantity += item.buyQuantity;
+          await product.save();
+        }
+      }
+    }
   } catch (error) {
     console.error("Error updating order:", error);
     res.status(500).json({ success: false, message: "Server error" });
